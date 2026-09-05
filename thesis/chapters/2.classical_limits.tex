@@ -217,8 +217,8 @@ The observational evidence vector extracted from JWST telemetry was fixed as:
 
 The empirical simulation produced the following quantitative findings:
 \begin{enumerate}
-    \item \textbf{Rejection Sampling Failure:} Across $2,000,000$ generated planetary states, the acceptance rate under evidence $\mathbf{e}$ was only $8.72\%$. More than $91\%$ of all generated samples were discarded. Zero CFC detections occurred in accepted samples, demonstrating that conditioning on real telescope evidence compounds the rarity bottleneck.
-    \item \textbf{MCMC Rare-State Trap:} In a Metropolis-Hastings run of $100,000$ steps (burn-in $2,000$, global acceptance rate $30.8\%$), the biomarker DMS ($X_7$) was visited $1,472$ times ($P_{\mathrm{est}} \approx 0.0147$), while the technosignature CFC ($X_8$) recorded zero visits ($0$ hits), confirming the mode entrapment predicted by Kac's return theorem \eqref{eq:kac_return_theorem}.
+    \item \textbf{Rejection Sampling Failure:} Across $2,000,000$ generated planetary states, the acceptance rate under evidence $\mathbf{e}$ was only $9.58\%$. More than $90\%$ of all generated samples were discarded. Only $1$ CFC detection occurred in accepted samples, demonstrating that conditioning on real telescope evidence compounds the rarity bottleneck.
+    \item \textbf{MCMC Rare-State Trap:} In a Metropolis-Hastings run of $100,000$ steps (burn-in $2,000$, global acceptance rate $24.47\%$), the biomarker DMS ($X_7$) was visited $1,926$ times ($P_{\mathrm{est}} \approx 0.0192$), while the technosignature CFC ($X_8$) recorded $5$ fortuitous visits ($P_{\mathrm{est}} = 5 \times 10^{-5}$). This estimate deviates from the true rare prior ($10^{-6}$) by a factor of $50\times$, exhibiting the catastrophic asymptotic relative error divergence ($RE > 3.0$) predicted by L'Ecuyer's theorem.
     \item \textbf{Multi-Replica Monte Carlo Benchmark:} To evaluate L'Ecuyer's theorem rigorously, $R = 50$ independent Monte Carlo replicas were executed for sample sizes ranging from $M = 10^3$ to $M = 10^7$ with target $p = 10^{-6}$.
 \end{enumerate}
 

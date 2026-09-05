@@ -4,19 +4,23 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath, amssymb, amsfonts, amsthm}
+
+% Dirac Notation
+\providecommand{\ket}[1]{\left|#1\right\rangle}
+\providecommand{\bra}[1]{\left\langle#1\right|}
+\providecommand{\braket}[2]{\left\langle#1\middle|#2\right\rangle}
+\providecommand{\ketbra}[2]{\left|#1\middle\rangle\middle\langle#2\right|}
 \usepackage[scaled=0.85]{beramono}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usetikzlibrary{babel, positioning, shapes, arrows, arrows.meta, bending, decorations.pathmorphing, quantikz2, patterns}
+\usetikzlibrary{babel, positioning, shapes, arrows, arrows.meta, bending, decorations.pathmorphing, patterns}
 \usepackage[most]{tcolorbox}
 \usepackage{float}
 \usepackage{enumitem}
-\usepackage{circuitikz}
 \usepackage{listings}
 \usepackage{lstautogobble} 
 \usepackage{xcolor}
 \usepackage[autostyle=true]{csquotes}
-\MakeOuterQuote{"}
 \usepackage{ragged2e}
 \usepackage{helvet}
 \usepackage{booktabs}

@@ -18,7 +18,7 @@
     ]
 
     % Panel A: Grafo Dirigido Original
-    \node[draw=none] (titleA) at (0, 1.5) {\textbf{a) Grafo Dirigido Original}};
+    \node[draw=none] (titleA) at (0, 1.5) {\textbf{a) Original Directed Graph}};
     \node[original] (A1) at (0, 0) {$X_1$};
     \node[original] (A2) at (-1, -1.5) {$X_2$};
     \node[original] (A3) at (1, -1.5) {$X_3$};
@@ -30,7 +30,7 @@
     \draw[arrow] (A3) -- (A4);
 
     % Panel B: Grafo Moralizado
-    \node[draw=none] (titleB) at (4, 1.5) {\textbf{b) Grafo Moralizado}};
+    \node[draw=none] (titleB) at (4, 1.5) {\textbf{b) Moralized Graph}};
     \node[moral] (B1) at (4, 0) {$X_1$};
     \node[moral] (B2) at (3, -1.5) {$X_2$};
     \node[moral] (B3) at (5, -1.5) {$X_3$};
@@ -49,9 +49,9 @@
     \node[clique] (C1) at (9, 0) {$C_1$\\$\{X_1, X_2, X_3\}$};
     \node[clique] (C2) at (9, -2.5) {$C_2$\\$\{X_2, X_3, X_4\}$};
     
-    \draw[edge, double] (C1) -- (C2) node[midway, right, draw=none, font=\sffamily\scriptsize] {Separador: $\{X_2, X_3\}$};
+    \draw[edge, double] (C1) -- (C2) node[midway, right, draw=none, font=\sffamily\scriptsize] {Separator: $\{X_2, X_3\}$};
 
     \end{tikzpicture}
-    \caption{\textbf{Proceso de Compilación Clásica (Junction Tree) y Explosión del Treewidth.} \textbf{a)} Una red causal con variables interdependientes (ej. reacciones fotoquímicas). \textbf{b)} La moralización requiere "casar" a los padres ($X_2, X_3$) del nodo hijo ($X_4$), introduciendo enlaces no dirigidos de relleno (\textit{fill-in edges}). \textbf{c)} La triangulación resultante agrupa las variables en grandes subconjuntos llamados \textit{cliques}. El coste de memoria escala exponencialmente con el tamaño del clique más grande ($w = 2$ en este esquema simplificado), provocando la saturación de RAM en redes reales.}
+    \caption{\textbf{Classical Compilation Process (Junction Tree) and Treewidth Explosion.} \textbf{a)} A causal network featuring interdependent variables (e.g., photochemical reactions). \textbf{b)} Moralization requires "marrying" the parents ($X_2, X_3$) of the child node ($X_4$), introducing undirected fill-in edges. \textbf{c)} The resulting triangulation groups variables into large subsets known as cliques. The memory footprint scales exponentially with the size of the largest clique ($w = 2$ in this simplified schematic), precipitating RAM saturation in dense networks.}
     \label{fig:junction_tree_process}
 \end{figure}

@@ -16,9 +16,9 @@ ax.set_xlim(-0.2, 1.2)
 ax.set_ylim(-0.2, 1.2)
 
 # Ejes (Estados Base)
-ax.annotate(r'$|\Psi_0\rangle$ (Subespacio Fondo)', xy=(1.2, 0), xytext=(1.25, -0.05),
+ax.annotate(r'$|\Psi_0\rangle$ (Background Subspace)', xy=(1.2, 0), xytext=(1.25, -0.05),
             fontsize=12, ha='center')
-ax.annotate(r'$|\Psi_1\rangle$ (Subespacio Objetivo)', xy=(0, 1.2), xytext=(-0.1, 1.25),
+ax.annotate(r'$|\Psi_1\rangle$ (Target Subspace)', xy=(0, 1.2), xytext=(-0.1, 1.25),
             fontsize=12, ha='center')
 
 # Dibujar el arco del círculo unitario
@@ -62,7 +62,7 @@ arc2 = patches.Arc((0,0), 0.7, 0.7, angle=0, theta1=np.degrees(theta_0), theta2=
 ax.add_patch(arc2)
 ax.text(0.25, 0.35, r'$2\theta$', color='red', fontsize=14)
 
-plt.title('Representación Geométrica del Operador de Grover $\mathcal{Q}$', pad=20, fontsize=16, fontweight='bold')
+plt.title(r'Geometric Representation of the Grover Operator $\mathcal{Q}$', pad=20, fontsize=16, fontweight='bold')
 plt.grid(False)
 
 # Guardar figura

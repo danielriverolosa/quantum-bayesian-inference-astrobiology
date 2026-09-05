@@ -13,7 +13,7 @@ The exoplanet K2-18b, located approximately 124 light-years from Earth in the co
 \begin{enumerate}
     \item \textbf{Habitable Zone Orbit:} It orbits an M2.5V red dwarf host star with a semi-major axis of $\sim 0.159\,\mathrm{AU}$ (orbital period of $32.9$ days), receiving a stellar insolation comparable to Earth and permitting the theoretical condensation of liquid water.
     \item \textbf{Extended Atmosphere for Transmission Spectroscopy:} With a mass of $8.63 \pm 1.35\,M_\oplus$ and a radius of $2.61 \pm 0.09\,R_\oplus$, K2-18b possesses an extended hydrogen-helium ($\mathrm{H}_2\text{-}\mathrm{He}$) envelope, yielding prominent transit transmission features.
-    \item \textbf{Severe Chemical Disequilibrium:} JWST observations suggest that K2-18b is a candidate "Hycean" world---a sub-Neptune featuring a global liquid water ocean underlying a hydrogen-rich atmosphere \cite{madhusudhan2023}. Its atmospheric composition exhibits extreme disequilibrium that challenges purely abiotic geochemical models.
+    \item \textbf{Severe Chemical Disequilibrium:} JWST observations suggest that K2-18b is a candidate ``Hycean'' world---a sub-Neptune featuring a global liquid water ocean underlying a hydrogen-rich atmosphere \cite{madhusudhan2023}. Its atmospheric composition exhibits extreme disequilibrium that challenges purely abiotic geochemical models.
 \end{enumerate}
 
 \subsection{Empirical Data Extraction: Telescopic Priors from JWST}
@@ -149,7 +149,7 @@ Hierarchical child nodes are synthesized using multi-controlled rotation gates $
 \begin{equation}
 \texttt{RYGate(theta).control(num\_ctrl\_qubits)}.
 \end{equation}
-In accordance with our design rules, all internal subcircuits are compiled without barriers (\texttt{qc.barrier()}), ensuring clean modular conversion via \texttt{qc\_A.to\_gate(label="Op\_A")}.
+In accordance with our design rules, all internal subcircuits are compiled without barriers (\texttt{qc.barrier()}), ensuring clean modular conversion via \texttt{qc\_A.to\_gate(label='Op\_A')}.
 
 \subsection{Quantum Oracle ($S_\chi$) and Grover Diffuser ($S_0$)}
 The quantum phase oracle $S_\chi$ identifies the target technosignature configuration ($X_8 = 1$). A multi-controlled $X$ gate targets the ancilla qubit $q_{16}$ initialized in $\ket{-}$, flipping its phase by $-1$ via phase kickback:
