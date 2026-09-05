@@ -96,7 +96,7 @@ $X_8$ & Technosignature $\mathrm{CFC}$ & $\{X_3=1\}$ & $1.67 \times 10^{-5}$ ($p
 
 \section{Classical Baseline Implementation: Structuring the Failure Modes}\label{sec:classical_baseline_impl}
 
-The classical baseline was implemented using Python 3.11 with \texttt{pgmpy}, NumPy, and SciPy (\texttt{src/chapter_2_classical/build_and_run_01_classical.py}). We evaluated both exact inference (Variable Elimination and Junction Tree) and stochastic approximation (Rejection Sampling and Metropolis-Hastings MCMC) conditioned on JWST observational evidence:
+The classical baseline was implemented using Python 3.11 with \texttt{pgmpy}, NumPy, and SciPy (\texttt{src/chapter\_2\_classical/build\_and\_run\_01\_classical.py}). We evaluated both exact inference (Variable Elimination and Junction Tree) and stochastic approximation (Rejection Sampling and Metropolis-Hastings MCMC) conditioned on JWST observational evidence:
 \begin{equation}
 \mathbf{e} = \{X_1 = 1 \text{ (HZ)}, X_4 = 1 \text{ ($\mathrm{CH}_4$)}, X_5 = 1 \text{ ($\mathrm{CO}_2$)}\}.
 \label{eq:jwst_evidence_vector}
@@ -117,7 +117,7 @@ The Junction Tree algorithm moralized and triangulated the graph $\mathcal{G}$, 
 
 \section{Quantum Circuit Synthesis in Qiskit}\label{sec:quantum_circuit_synthesis}
 
-To resolve these classical failures, we synthesized the complete quantum pipeline in Qiskit 1.x (\texttt{src/chapter_4_quantum/build_and_run_02_qae_ideal.py}).
+To resolve these classical failures, we synthesized the complete quantum pipeline in Qiskit 1.x (\texttt{src/chapter\_4\_quantum/build\_and\_run\_02\_qae\_ideal.py}).
 
 \subsection{17-Qubit Topological Quantum Register Allocation}
 The architecture allocates 17 physical qubits partitioned into four distinct operational registers:
@@ -221,7 +221,7 @@ Because current superconducting QPUs lose coherence after $\sim 1,000$ two-qubit
 
 \section{Hardware Noise Injection and Zero-Noise Extrapolation (ZNE)}\label{sec:hardware_noise_zne}
 
-To evaluate hardware viability, we implemented a calibrated physical noise model in Qiskit Aer and applied Zero-Noise Extrapolation (ZNE) error mitigation (\texttt{src/chapter_4_quantum/build_and_run_03_nisq_zne.py}).
+To evaluate hardware viability, we implemented a calibrated physical noise model in Qiskit Aer and applied Zero-Noise Extrapolation (ZNE) error mitigation (\texttt{src/chapter\_4\_quantum/build\_and\_run\_03\_nisq\_zne.py}).
 
 \subsection{Modeling NISQ Decoherence in Superconducting Hardware}
 We calibrated a density-matrix noise model based on empirical metrics from IBM Quantum Eagle/Falcon processors:
