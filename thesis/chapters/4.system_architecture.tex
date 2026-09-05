@@ -133,7 +133,7 @@ where:
     \item \textbf{Classical Readout Register ($\mathrm{classical\_readout}$, $c_0 \dots c_4$):} $n_C = 5$ classical bits storing the measured evaluation register bitstring.
 \end{enumerate}
 
-\subsection{Amplitude Encoding Synthesis: The State Preparation Operator $\mathcal{A}$}
+\subsection{Amplitude Encoding Synthesis: The State Preparation Operator \texorpdfstring{$\mathcal{A}$}{A}}
 \notatfm{\textbf{Barrier-Free Synthesis:} Subcircuits for $\mathcal{A}$ are compiled without \texttt{qc.barrier()}, ensuring clean hierarchical transpilation via \texttt{.to\_gate()}.}
 The state preparation operator $\mathcal{A}$ compiles the joint distribution into probability amplitudes:
 \begin{equation}
@@ -151,7 +151,7 @@ Hierarchical child nodes are synthesized using multi-controlled rotation gates $
 \end{equation}
 In accordance with our design rules, all internal subcircuits are compiled without barriers (\texttt{qc.barrier()}), ensuring clean modular conversion via \texttt{qc\_A.to\_gate(label='Op\_A')}.
 
-\subsection{Quantum Oracle ($S_\chi$) and Grover Diffuser ($S_0$)}
+\subsection{Quantum Oracle (\texorpdfstring{$S_\chi$}{S\_chi}) and Grover Diffuser (\texorpdfstring{$S_0$}{S\_0})}
 The quantum phase oracle $S_\chi$ identifies the target technosignature configuration ($X_8 = 1$). A multi-controlled $X$ gate targets the ancilla qubit $q_{16}$ initialized in $\ket{-}$, flipping its phase by $-1$ via phase kickback:
 \begin{equation}
 S_\chi \ket{x} = (-1)^{\chi(x)} \ket{x}.

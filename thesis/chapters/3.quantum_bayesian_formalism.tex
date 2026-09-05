@@ -163,7 +163,7 @@ The computational challenge of probability estimation is thus transformed into t
     \label{fig:grover_geometry}
 \end{figure}
 
-\subsection{Matrix Algebra of Grover's Iteration Operator $\mathcal{Q}$}
+\subsection{Matrix Algebra of Grover's Iteration Operator \texorpdfstring{$\mathcal{Q}$}{Q}}
 To amplify the amplitude of $\ket{\Psi_1}$ and measure $\theta$, the architecture deploys Grover's iteration operator $\mathcal{Q}$. The operator $\mathcal{Q}$ is defined as the composite product of two unitary reflections within the 2D subspace:
 \begin{equation}
 \mathcal{Q} \equiv -\mathcal{A} S_0 \mathcal{A}^\dagger S_\chi.
@@ -204,7 +204,7 @@ Applying $\mathcal{Q}$ recursively $j$ times deterministically yields:
 \end{equation}
 Figure \ref{fig:circuito_operador_grover} illustrates the full quantum circuit synthesis of this composite operator.
 
-\subsection{Spectral Analysis and Eigenvalues of the $\mathcal{Q}$ Operator}
+\subsection{Spectral Analysis and Eigenvalues of the \texorpdfstring{$\mathcal{Q}$}{Q} Operator}
 To extract the continuous probability $a = \sin^2(\theta)$ without relying on destructive projective sampling, QAE performs spectral analysis on the Grover operator $\mathcal{Q}$. In the orthonormal basis $\{\ket{\Psi_0}, \ket{\Psi_1}\}$, the matrix representation of $\mathcal{Q}$ is:
 \begin{equation}
 \mathcal{Q} = \begin{pmatrix} \cos(2\theta) & -\sin(2\theta) \\ \sin(2\theta) & \cos(2\theta) \end{pmatrix}.
@@ -270,7 +270,7 @@ Measuring the evaluation register yields a classical integer $y \in \{0, \dots, 
 \end{equation}
 Figure \ref{fig:circuito_qae_maestro} shows the end-to-end master circuit architecture integrating the evaluation register, state register, Grover cascade, and IQFT block.
 
-\subsection{Mathematical Proof of the $\mathcal{O}(1/M)$ Convergence Limit}
+\subsection{Mathematical Proof of the \texorpdfstring{$\mathcal{O}(1/M)$}{O(1/M)} Convergence Limit}
 The fundamental theoretical justification for deploying QAE is the deterministic bound on the estimation error $\Delta a = |\tilde{a} - a|$. Brassard et al.~(2002) proved that the estimator $\tilde{a}$ satisfies:
 \begin{equation}
 |\tilde{a} - a| \le \frac{2\pi \sqrt{a(1-a)}}{M} + \frac{\pi^2}{M^2} = \mathcal{O}\left(\frac{1}{M}\right),
