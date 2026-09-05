@@ -65,6 +65,15 @@ ax.text(0.25, 0.35, r'$2\theta$', color='red', fontsize=14)
 plt.title(r'Geometric Representation of the Grover Operator $\mathcal{Q}$', pad=20, fontsize=16, fontweight='bold')
 plt.grid(False)
 
-# Guardar figura
-plt.savefig('/Users/daniel.rivero/Documents/Projects/quantum_software/tfm/thesis/figures/3.quantum_bayesian_formalism/figura_geometria_grover.png', dpi=300, bbox_inches='tight')
-print("Figura generada y guardada en thesis/figures/3.quantum_bayesian_formalism/figura_geometria_grover.png")
+# Save figure to both thesis and figures directories
+import os
+repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+targets = [
+    os.path.join(repo_root, 'thesis', 'figures', '3.quantum_bayesian_formalism', 'figure_grover_geometry.png'),
+    os.path.join(repo_root, 'figures', 'results', 'figure_grover_geometry.png')
+]
+
+for t in targets:
+    os.makedirs(os.path.dirname(t), exist_ok=True)
+    plt.savefig(t, dpi=300, bbox_inches='tight')
+    print(f"✓ Figure saved to: {t}")

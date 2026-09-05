@@ -117,12 +117,12 @@ For realistic astrobiological networks where each chemical species is directly i
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.70\textwidth, height=0.52\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuito_operador_A.png}
+    \includegraphics[width=0.70\textwidth, height=0.52\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuit_operator_A.png}
     \caption{\textbf{Quantum Circuit Architecture of the State Preparation Operator $\mathcal{A}$.} Topological compilation of the causal Bayesian network into an $N$-qubit register. Root nodes are initialized via single-qubit $R_y(\theta)$ rotations, while hierarchical dependencies are encoded through a topological cascade of multi-controlled Pauli-Y rotations ($C^k(R_y)$), establishing conditional entanglement without internal barriers.}
-    \label{fig:circuito_operador_A}
+    \label{fig:circuit_operator_A}
 \end{figure}
 
-As depicted in Figure \ref{fig:circuito_operador_A}, the state preparation operator $\mathcal{A}$ compiles the complete multi-gas dependency structure into a coherent, barrier-free quantum subcircuit.
+As depicted in Figure \ref{fig:circuit_operator_A}, the state preparation operator $\mathcal{A}$ compiles the complete multi-gas dependency structure into a coherent, barrier-free quantum subcircuit.
 
 \section{Quantum Amplitude Estimation (QAE): Geometric Deduction of Grover's Operator and Asymptotic Speedup}\label{sec:qae_derivation_speedup}
 
@@ -156,9 +156,9 @@ a = \sin^2(\theta), \quad \theta = \arcsin(\sqrt{a}) \in \left[0, \frac{\pi}{2}\
 \end{equation}
 The computational challenge of probability estimation is thus transformed into the geometric problem of estimating the continuous phase angle $\theta$.
 
-\begin{figure}[htbp]
+\\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth, height=0.40\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/figura_geometria_grover.png}
+    \includegraphics[width=0.65\textwidth, height=0.40\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/figure_grover_geometry.png}
     \caption{\textbf{Geometric Representation of the Grover Operator $\mathcal{Q}$.} In the two-dimensional invariant subspace spanned by $|\Psi_0\rangle$ and $|\Psi_1\rangle$, the initial state vector $|\Psi\rangle$ resides at an angle $\theta$. The composite reflection $-\mathcal{A}S_0\mathcal{A}^\dagger S_\chi$ performs a deterministic counter-clockwise rotation by $2\theta$, amplifying the amplitude of the target subspace $|\Psi_1\rangle$.}
     \label{fig:grover_geometry}
 \end{figure}
@@ -172,9 +172,9 @@ To amplify the amplitude of $\ket{\Psi_1}$ and measure $\theta$, the architectur
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth, height=0.45\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuito_operador_grover.png}
+    \includegraphics[width=0.85\textwidth, height=0.45\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuit_operator_grover.png}
     \caption{\textbf{Quantum Circuit Architecture of the Grover Iteration Operator $\mathcal{Q}$.} The operator executes a phase inversion of marked target states ($S_\chi$), followed by inverse state preparation ($\mathcal{A}^\dagger$), zero-state phase reflection ($S_0$), and forward state preparation ($\mathcal{A}$), producing a deterministic $2\theta$ rotation in the bipartite plane.}
-    \label{fig:circuito_operador_grover}
+    \label{fig:circuit_operator_grover}
 \end{figure}
 
 The algebraic components of $\mathcal{Q}$ operate as follows:
@@ -202,9 +202,9 @@ Applying $\mathcal{Q}$ recursively $j$ times deterministically yields:
 \mathcal{Q}^j \ket{\Psi} = \cos((2j+1)\theta)\ket{\Psi_0} + \sin((2j+1)\theta)\ket{\Psi_1}.
 \label{eq:j_grover_rotations_ch3}
 \end{equation}
-Figure \ref{fig:circuito_operador_grover} illustrates the full quantum circuit synthesis of this composite operator.
+Figure \ref{fig:circuit_operator_grover} illustrates the full quantum circuit synthesis of this composite operator.
 
-\subsection{Spectral Analysis and Eigenvalues of the \texorpdfstring{$\mathcal{Q}$}{Q} Operator}
+\subsection{Spectral Analysis and Eigenvalues of the \texorpdfstring{$\mathcal{Q}$}{Q}} Operator
 To extract the continuous probability $a = \sin^2(\theta)$ without relying on destructive projective sampling, QAE performs spectral analysis on the Grover operator $\mathcal{Q}$. In the orthonormal basis $\{\ket{\Psi_0}, \ket{\Psi_1}\}$, the matrix representation of $\mathcal{Q}$ is:
 \begin{equation}
 \mathcal{Q} = \begin{pmatrix} \cos(2\theta) & -\sin(2\theta) \\ \sin(2\theta) & \cos(2\theta) \end{pmatrix}.
@@ -243,9 +243,9 @@ To measure the eigenphase $\pm 2\theta$ coherently, QAE integrates the Grover op
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.90\textwidth, height=0.50\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuito_qae_maestro.png}
+    \includegraphics[width=0.90\textwidth, height=0.50\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuit_qae_master.png}
     \caption{\textbf{Master Quantum Amplitude Estimation (QAE) Circuit Architecture.} The full 17-qubit pipeline comprises the auxiliary evaluation register ($q_0 \dots q_4$, $n_E = 5$), the astrobiological state register ($q_5 \dots q_{13}$, $n_S = 9$), and the ancilla workspace ($q_{14} \dots q_{16}$, $n_A = 3$, with $q_{16}$ serving as the phase oracle flag). Hadamard gates initialize the evaluation register, followed by controlled Grover iterations ($\mathcal{Q}^{2^j}$) and the Inverse Quantum Fourier Transform ($\mathrm{IQFT}$), extracting the continuous probability into a digital bitstring.}
-    \label{fig:circuito_qae_maestro}
+    \label{fig:circuit_qae_master}
 \end{figure}
 
 The algorithm then executes a sequence of controlled Grover operations: for the $j$-th evaluation qubit ($j \in \{0, \dots, m-1\}$), the operator $\mathcal{Q}$ is applied $2^j$ times to the state register, controlled by that qubit. By phase kickback, the unknown phase $2\theta$ is accumulated into the relative phases of the evaluation register.
@@ -268,7 +268,7 @@ Measuring the evaluation register yields a classical integer $y \in \{0, \dots, 
 \tilde{a} = \sin^2\left(\frac{\pi y}{M}\right).
 \label{eq:qae_probability_estimator_ch3}
 \end{equation}
-Figure \ref{fig:circuito_qae_maestro} shows the end-to-end master circuit architecture integrating the evaluation register, state register, Grover cascade, and IQFT block.
+Figure \ref{fig:circuit_qae_master} shows the end-to-end master circuit architecture integrating the evaluation register, state register, Grover cascade, and IQFT block.
 
 \subsection{Mathematical Proof of the \texorpdfstring{$\mathcal{O}(1/M)$}{O(1/M)} Convergence Limit}
 The fundamental theoretical justification for deploying QAE is the deterministic bound on the estimation error $\Delta a = |\tilde{a} - a|$. Brassard et al.~(2002) proved that the estimator $\tilde{a}$ satisfies:
@@ -295,6 +295,7 @@ Table \ref{tab:algorithmic_complexity_comparison} summarizes the asymptotic scal
 \centering
 \caption{\textbf{Comprehensive Complexity Comparison: Classical vs. Quantum Bayesian Inference.}}
 \label{tab:algorithmic_complexity_comparison}
+\begin{adjustbox}{max width=\textwidth}
 \small
 \begin{tabular}{lccc}
 \toprule
@@ -305,6 +306,7 @@ Table \ref{tab:algorithmic_complexity_comparison} summarizes the asymptotic scal
 \textbf{Quantum Amplitude Estimation} & $\mathcal{O}(N)$ [Linear] & $\mathcal{O}(1/M)$ [Quadratic Speedup] & Bounded [Heisenberg Limit] \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 \section{Physical Hardware Constraints: NISQ Dynamics and Quantum Error Mitigation}\label{sec:nisq_hardware_qem}
@@ -351,15 +353,17 @@ While Quantum Error Correction (QEC) detects and corrects errors in real time us
 \centering
 \caption{\textbf{Architectural Comparison: Quantum Error Correction (QEC) vs. Error Mitigation (QEM).}}
 \label{tab:qec_vs_qem}
+\begin{adjustbox}{max width=\textwidth}
 \small
-\begin{tabular}{lccc}
+\begin{tabularx}{\textwidth}{>{\bfseries}lXXX}
 \toprule
 \textbf{Error Paradigm} & \textbf{Correction Mechanism} & \textbf{Hardware Overhead} & \textbf{Near-Term Viability} \\
 \midrule
-\textbf{Error Correction (QEC)} & Real-time syndrome measurement & Millions of physical qubits & Future FTQC era \\
-\textbf{Error Mitigation (QEM)} & Classical post-processing of noise & Zero extra qubits; sampling overhead & Viable on NISQ hardware \\
+Error Correction (QEC) & Real-time syndrome measurement & Millions of physical qubits & Future FTQC era \\
+Error Mitigation (QEM) & Classical post-processing of noise & Zero extra qubits; sampling overhead & Viable on NISQ hardware \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
+\end{adjustbox}
 \end{table}
 
 \subsection{Zero-Noise Extrapolation (ZNE): Mathematical Formulation}
@@ -367,9 +371,9 @@ Zero-Noise Extrapolation (ZNE), formulated by Temme et al.~(2017) \cite{temme201
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.90\textwidth, height=0.45\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuito_nisq_plegado_lambda3.png}
+    \includegraphics[width=0.90\textwidth, height=0.45\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuit_nisq_folded_lambda3.png}
     \caption{\textbf{Zero-Noise Extrapolation via Unitary Gate Folding ($\lambda = 3$).} Global circuit folding replaces each unitary block $U$ with $U U^\dagger U$, tripling the physical circuit depth and effective noise while preserving the mathematical identity $U U^\dagger = I$.}
-    \label{fig:circuito_nisq_plegado}
+    \label{fig:circuit_nisq_folded}
 \end{figure}
 
 Noise scaling is implemented via \emph{unitary gate folding}: replacing each gate $U$ with the identity product:
@@ -377,7 +381,7 @@ Noise scaling is implemented via \emph{unitary gate folding}: replacing each gat
 U \longrightarrow U \left( U^\dagger U \right)^n, \quad \lambda = 2n + 1.
 \label{eq:gate_folding_formula}
 \end{equation}
-Because $U^\dagger U = I$, the logical operation is unchanged, but the physical gate count and interaction with the environment are scaled by $\lambda \in \{1, 3, 5, \dots\}$, as depicted in Figure \ref{fig:circuito_nisq_plegado}.
+Because $U^\dagger U = I$, the logical operation is unchanged, but the physical gate count and interaction with the environment are scaled by $\lambda \in \{1, 3, 5, \dots\}$, as depicted in Figure \ref{fig:circuit_nisq_folded}.
 
 The expectation value $E(\lambda)$ as a function of the noise scale $\lambda$ is modeled as a Taylor expansion around $\lambda = 0$:
 \begin{equation}

@@ -69,6 +69,7 @@ The quantitative parameters $\Theta$ for the K2-18b Bayesian network are formali
 \centering
 \caption{\textbf{Conditional Probability Tables (CPTs) for the K2-18b Astrobiological Network.}}
 \label{tab:k218b_cpts}
+\begin{adjustbox}{max width=\textwidth}
 \small
 \begin{tabular}{lllc}
 \toprule
@@ -92,6 +93,7 @@ $X_8$ & Technosignature $\mathrm{CFC}$ & $\{X_3=1\}$ & $1.67 \times 10^{-5}$ ($p
       &                                & $\{X_3=0\}$ & $0.00$ \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 \section{Classical Baseline Implementation: Structuring the Failure Modes}\label{sec:classical_baseline_impl}
@@ -182,7 +184,7 @@ We executed the master QAE circuit on Qiskit Aer's ideal statevector simulator (
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figura_qae_espectro_ideal.png}
+    \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figure_qae_ideal_spectrum.png}
     \caption{\textbf{Ideal QAE Measurement Spectrum for K2-18b Technosignature Inference.} Histogram of measured states on the 5-qubit evaluation register ($n_E = 5$, $M = 32$). The primary peak at $\ket{00000}$ ($y=0$) captures $79.8\%$ of the probability mass, reflecting phase quantization for $\theta_a < \Delta\theta$. The secondary peak at $\ket{10000}$ ($y=16$) corresponds to the complex conjugate Grover eigenvalue $\lambda_- = e^{-2i\theta_a}$.}
     \label{fig:qae_ideal_spectrum}
 \end{figure}
@@ -206,7 +208,7 @@ To determine the optimal configuration for near-term execution, we analyzed the 
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figura_qae_tradeoff_nisq.png}
+    \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figure_qae_nisq_tradeoff.png}
     \caption{\textbf{Resolution vs. Circuit Depth Tradeoff in Canonical QAE.} Phase discretization error $\Delta a$ decays exponentially with evaluation qubits $n_E$ (blue curve, left axis), while transpiled two-qubit CNOT depth grows exponentially as $D \propto 2^{n_E}$ (red curve, right axis). The dashed green line indicates the physical coherence limit ($D \approx 1,000$ CNOTs) of contemporary superconducting QPUs.}
     \label{fig:qae_depth_resolution_tradeoff}
 \end{figure}
@@ -244,7 +246,7 @@ To study noise degradation without exceeding coherence limits, we isolated the f
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figura_nisq_degradacion_espectral.png}
+    \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figure_nisq_spectral_degradation.png}
     \caption{\textbf{NISQ Spectral Degradation under IBM Quantum Noise Model.} Comparison of ideal statevector probability (blue) vs. unmitigated noisy execution (red) across computational basis states. Environmental decoherence ($T_1, T_2$) and CNOT infidelities attenuate the target biomarker probability from $P_{\mathrm{ideal}} = 0.0500$ down to $P_{\mathrm{noisy}} = 0.0382$, flattening the distribution toward a maximally mixed state.}
     \label{fig:nisq_spectral_degradation}
 \end{figure}
@@ -286,7 +288,7 @@ E_{\mathrm{ZNE}} = \gamma_0 E(1) + \gamma_1 E(3) + \gamma_2 E(5) = 1.875(0.03822
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figura_zne_extrapolacion_curva.png}
+    \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figure_zne_extrapolation_curve.png}
     \caption{\textbf{Zero-Noise Extrapolation Curve for Astrobiological Inference.} Measured noisy expectation values at $\lambda \in \{1, 3, 5\}$ (red circles) fitted with a second-order Richardson polynomial (blue curve). Extrapolating backward to $\lambda \to 0$ yields $E_{\mathrm{ZNE}} = 0.04840$ (green star), successfully canceling $86.46\%$ of hardware noise and closely recovering the ideal analytical expectation $E_{\mathrm{ideal}} = 0.05000$ (dashed black line).}
     \label{fig:zne_extrapolation_curve}
 \end{figure}
@@ -308,6 +310,7 @@ Table \ref{tab:zne_experimental_results} summarizes the quantitative mitigation 
 \centering
 \caption{\textbf{Empirical Zero-Noise Extrapolation (ZNE) Benchmark on IBM Quantum Noise Model.}}
 \label{tab:zne_experimental_results}
+\begin{adjustbox}{max width=\textwidth}
 \small
 \begin{tabular}{lcccc}
 \toprule
@@ -321,6 +324,7 @@ Table \ref{tab:zne_experimental_results} summarizes the quantitative mitigation 
 \textbf{Mitigated (Richardson ZNE)} & $\lambda \to 0$ (Extrapolated) & $\mathbf{0.04840}$ & $\mathbf{0.00160}$ & $\mathbf{86.46\%}$ \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 \section{Preemptive Methodological Defense and Tribunal Scope}\label{sec:preemptive_defense_ch4}

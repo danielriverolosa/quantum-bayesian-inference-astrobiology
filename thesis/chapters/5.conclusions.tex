@@ -44,6 +44,7 @@ Table \ref{tab:global_comparative_synthesis} provides a comprehensive synthesis 
 \centering
 \caption{\textbf{Global Comparative Synthesis Across Computational Paradigms in Astrobiological Inference.}}
 \label{tab:global_comparative_synthesis}
+\begin{adjustbox}{max width=\textwidth}
 \small
 \begin{tabular}{lcccc}
 \toprule
@@ -60,6 +61,7 @@ Table \ref{tab:global_comparative_synthesis} provides a comprehensive synthesis 
 \textbf{Implementation Status} & Blocked for $N \ge 30$ & Paralyzed for $p \le 10^{-6}$ & Certified FTQC blueprint & Validated on IBM noise model \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 \subsection{Phase Quantization, Centroid Extraction, and the Depth-Resolution Frontier}
@@ -177,24 +179,26 @@ Table \ref{tab:objectives_fulfillment_matrix} presents the consolidated verifica
 \centering
 \caption{\textbf{Comprehensive Objectives Fulfillment and Verification Matrix.}}
 \label{tab:objectives_fulfillment_matrix}
+\begin{adjustbox}{max width=\textwidth}
 \small
-\begin{tabular}{p{3.8cm}p{4.2cm}p{3.5cm}p{2.5cm}c}
+\begin{tabularx}{\textwidth}{>{\bfseries\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{2.6cm}c}
 \toprule
 \textbf{Thesis Objective} & \textbf{Methodological Target} & \textbf{Codebase Artifact} & \textbf{Validation Metric} & \textbf{Status} \\
 \midrule
-\textbf{Primary Objective} \newline (End-to-End Pipeline) & Hybrid QBN--QAE inference on exoplanet K2-18b with quadratic speedup & \texttt{src/chapter\_4\_quantum/} \newline \texttt{02\_QAE\_Ideal\_Simulation} & $\mathcal{O}(1/M)$ scaling, \newline $M \sim 10^4$ vs $10^8$ & \textbf{Verified} \\
+Primary Objective \newline (End-to-End Pipeline) & Hybrid QBN--QAE inference on exoplanet K2-18b with quadratic speedup & \texttt{src/chapter\_4\_quantum/} \newline \texttt{02\_QAE\_Ideal\_Simulation} & $\mathcal{O}(1/M)$ scaling, \newline $M \sim 10^4$ vs $10^8$ & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 1} \newline (Astrobiological DAG) & 9-node causal DAG translated from JWST K2-18b spectra & \texttt{src/chapter\_2\_classical/} \newline \texttt{01\_Classical\_Limits} & Normalized CPTs, \newline 9 physical nodes & \textbf{Verified} \\
+Sub-Goal 1 \newline (Astrobiological DAG) & 9-node causal DAG translated from JWST K2-18b spectra & \texttt{src/chapter\_2\_classical/} \newline \texttt{01\_Classical\_Limits} & Normalized CPTs, \newline 9 physical nodes & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 2} \newline (17-Qubit Topology) & Register allocation: $n_E = 5$, $n_S = 9$, $n_A = 3$ qubits & \texttt{src/chapter\_4\_quantum/} \newline \texttt{build\_and\_run\_02} & $32$ phase bins, \newline 31 Grover iterates & \textbf{Verified} \\
+Sub-Goal 2 \newline (17-Qubit Topology) & Register allocation: $n_E = 5$, $n_S = 9$, $n_A = 3$ qubits & \texttt{src/chapter\_4\_quantum/} \newline \texttt{build\_and\_run\_02} & $32$ phase bins, \newline 31 Grover iterates & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 3} \newline (Unitary Compilation) & Pure subcircuits without barriers via \texttt{.to\_gate()}, $S_\chi$, $S_0$ & \texttt{src/chapter\_4\_quantum/} \newline \texttt{build\_and\_run\_02} & Invariant 2D rotation, \newline Zero barrier defects & \textbf{Verified} \\
+Sub-Goal 3 \newline (Unitary Compilation) & Pure subcircuits without barriers via \texttt{.to\_gate()}, $S_\chi$, $S_0$ & \texttt{src/chapter\_4\_quantum/} \newline \texttt{build\_and\_run\_02} & Invariant 2D rotation, \newline Zero barrier defects & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 4} \newline (NISQ Noise \& ZNE) & Calibrated IBM noise simulation and ZNE error mitigation via Mitiq & \texttt{src/chapter\_4\_quantum/} \newline \texttt{03\_NISQ\_ZNE\_Mitigation} & $86.46\%$ noise recovery, \newline $\lambda \in \{1, 3, 5\}$ folding & \textbf{Verified} \\
+Sub-Goal 4 \newline (NISQ Noise \& ZNE) & Calibrated IBM noise simulation and ZNE error mitigation via Mitiq & \texttt{src/chapter\_4\_quantum/} \newline \texttt{03\_NISQ\_ZNE\_Mitigation} & $86.46\%$ noise recovery, \newline $\lambda \in \{1, 3, 5\}$ folding & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 5} \newline (Classical Benchmark) & Empirical baseline in \texttt{pgmpy}: JT memory limits and MCMC variance & \texttt{src/chapter\_2\_classical/} \newline \texttt{build\_and\_run\_01} & $91.28\%$ rejection, \newline $\mathrm{RE} \to \infty$ at $p=10^{-6}$ & \textbf{Verified} \\
+Sub-Goal 5 \newline (Classical Benchmark) & Empirical baseline in \texttt{pgmpy}: JT memory limits and MCMC variance & \texttt{src/chapter\_2\_classical/} \newline \texttt{build\_and\_run\_01} & $91.28\%$ rejection, \newline $\mathrm{RE} \to \infty$ at $p=10^{-6}$ & \textbf{Verified} \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
+\end{adjustbox}
 \end{table}
 
 \section{Principal Scientific and Methodological Conclusions}\label{sec:principal_conclusions}

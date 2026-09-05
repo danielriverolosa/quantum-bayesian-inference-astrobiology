@@ -64,7 +64,7 @@ Because the algorithm must compile joint potential tables for every maximal cliq
 \label{eq:jta_treewidth_bound_ch2}
 \end{equation}
 
-\input{figures/2.classical_limits/figura_junction_tree.tex}
+\input{figures/2.classical_limits/figure_junction_tree.tex}
 
 In an exoplanetary atmosphere, dense photochemical cycling renders the network topologically non-sparse. Photochemical reactions link atmospheric species into closed cycles (e.g., the catalytic destruction of methane by hydroxyl radicals, coupled to stellar UV photolysis and volcanic outgassing). During moralization, marrying multiple parents across these feedback loops introduces dense fill-in edges. As network connectivity approaches a complete graph, the treewidth $w$ approaches $N - 1$. 
 
@@ -221,7 +221,7 @@ The observational evidence vector extracted from JWST telemetry was fixed as:
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{figures/2.classical_limits/figura1_panel_diagnostico_clasico.png}
+    \includegraphics[width=0.95\textwidth]{figures/2.classical_limits/figure1_classical_diagnostic_panel.png}
     \caption{\textbf{Classical Diagnostic Panel for K2-18b Astrobiological Inference.} (a) Estimator variance $\mathrm{Var}(\hat{p})$ vs. sample size $M$ over $R=50$ independent replicas, confirming the theoretical $\mathcal{O}(M^{-1})$ slope. (b) Relative Error $\mathrm{RE}$ divergence vs. sample size, demonstrating that for $M \le 10^5$, $\mathrm{RE} > 300\%$ (exceeding the critical uncertainty threshold $\mathrm{RE} = 1.0$), corroborating L'Ecuyer's theorem \eqref{eq:lecuyer_theorem_ch2}. (c) Metropolis-Hastings MCMC trajectory showing the rare-state trap: biomarker DMS ($X_7$) oscillates regularly, while technosignature CFC ($X_8$) remains completely undetected at zero. (d) Autocorrelation function $\rho(k)$ showing persistent serial correlations across successive Markov steps.}
     \label{fig:classical_diagnostic_panel}
 \end{figure}
@@ -237,6 +237,7 @@ The empirical simulation produced the following quantitative findings:
 \centering
 \caption{\textbf{Empirical Monte Carlo Benchmark Across 50 Independent Replicas ($p = 1.0 \times 10^{-6}$).}}
 \label{tab:classical_replica_benchmark}
+\begin{adjustbox}{max width=\textwidth}
 \small
 \begin{tabular}{lccccc}
 \toprule
@@ -249,6 +250,7 @@ $10^6$ & $9.400 \times 10^{-7}$ & $1.000 \times 10^{-12}$ & $9.555 \times 10^{-1
 $10^7$ & $1.010 \times 10^{-6}$ & $1.000 \times 10^{-13}$ & $1.193 \times 10^{-13}$ & $0.35$ & $[9.24 \times 10^{-7}, 1.10 \times 10^{-6}]$ \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 As documented in Table \ref{tab:classical_replica_benchmark} and Figure \ref{fig:classical_diagnostic_panel}(b), for sample sizes $M \le 10^5$, the empirical Relative Error exceeds $300\%$ ($\mathrm{RE} = 3.03$), and the lower bound of the exact Clopper-Pearson confidence interval collapses to zero. At $M = 10^6$, $\mathrm{RE} \approx 0.98 \sim 1.0$, indicating that the standard deviation equals the estimated quantity itself ($100\%$ uncertainty). Achieving an astrobiological tolerance of $\mathrm{RE} \le 0.05$ requires $M \approx 4 \times 10^8$ evaluations, establishing the empirical necessity for an alternative computational architecture.
@@ -263,10 +265,16 @@ Variational Quantum Algorithms (such as VQE and QAOA) deploy parameterized quant
 \notatfm{\textbf{Barren Plateaus:} Gradient variances in random parameterized circuits vanish as $\mathcal{O}(2^{-n})$ \cite{mcclean2018}, rendering variational optimization blind in large spaces.}
 McClean et al.~(2018) proved that for parameterized quantum circuits that form 2-designs over Hilbert spaces, the variance of the cost function gradient vanishes exponentially with the number of qubits $n$:
 \begin{equation}
-\mathrm{Var}_{\boldsymbol{\theta}}\left[\frac{\partial C(\boldsymbol{\theta})}{\partial \theta_\mu}\right] \in \mathcal{O}\left(2^{-n}\right).
-\label{eq:barren_plateau_mcclean}
+\mathrm{Var}_{\boldsymbol{\theta}}\left[ \frac{\partial \langle H \rangle}{\partial \theta_k} \right] \in \mathcal{O}\left( \frac{1}{2^n} \right).
+\label{eq:barren_plateau_variance_decay}
 \end{equation}
 As qubits are added to represent atmospheric trace gases ($n \ge 12$), the gradient signal drops below hardware noise thresholds. The classical optimizer becomes blind, unable to discern the descent direction toward the global minimum. Furthermore, the exoplanetary probability landscape is highly multimodal; gradient-based variational optimizers regularly stagnate in local minima corresponding to false abiotic configurations, failing to deliver the statistical certainty required for biosignature verification.
+
+\subsection{Quantum Approximate Optimization (QAOA) and Continuous Phase Deficits}
+Similarly, the Quantum Approximate Optimization Algorithm (QAOA) is engineered for combinatorial satisfaction problems (e.g., Max-Cut) rather than continuous probability density estimation. Parameterizing an astrobiological network into an Ising spin Hamiltonian requires high-order $k$-local interaction terms ($k \ge 3$) that incur massive gate synthesis overhead when mapped to planar hardware. Moreover, QAOA delivers approximate ground states rather than precise posterior amplitudes, rendering it incapable of resolving ultra-rare technosignature signals.
+
+\subsection{Quantum Walk Inference and Graph Treewidth Constraints}
+Quantum walk algorithms offer polynomial speedups for spatial search on graphs. However, when applied to probabilistic networks, the walk operator must be defined over the moralized chordal graph. The spectral gap $\delta$ of the quantum walk Hamiltonian scales inversely with the graph diameter and treewidth: $\delta \propto 1 / (N \cdot 2^w)$. For cyclic photochemical networks where $w \to N-1$, the quantum speedup collapses, reverting to an intractable exponential runtime.
 
 \subsection{Naive Quantum Sampling Without Amplitude Amplification}
 Another paradigm prepares a uniform quantum superposition over all $2^N$ basis states in an $N$-qubit register via amplitude encoding \cite{low2014}:
@@ -294,7 +302,7 @@ where $M_q = 2^m$ is the number of coherent Grover oracle evaluations.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.88\textwidth]{figures/2.classical_limits/figura2_crossover_cuantico.png}
+    \includegraphics[width=0.88\textwidth]{figures/2.classical_limits/figure2_quantum_crossover.png}
     \caption{\textbf{Quantum Advantage Crossover Point: Classical MCMC vs. Quantum QAE for Rare-Event Inference ($p = 10^{-6}$).} Comparison of the required computational query volume as a function of target precision $\epsilon$. The classical stochastic method scales as $\mathcal{O}(\epsilon^{-2} p^{-1})$, while Quantum Amplitude Estimation scales at the Heisenberg limit $\mathcal{O}(\epsilon^{-1} p^{-1/2})$. The crossover occurs at $\epsilon_{\mathrm{cross}} \approx \frac{\pi}{2} \sqrt{p} \approx 1.57 \times 10^{-3}$, beyond which the quantum pipeline delivers a computational advantage exceeding 5 orders of magnitude.}
     \label{fig:quantum_advantage_crossover}
 \end{figure}

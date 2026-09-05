@@ -98,6 +98,26 @@ reg_C = ClassicalRegister(num_eval_qubits, name='classical_readout')
 master_circuit = QuantumCircuit(reg_E, reg_S, reg_A, reg_C)
 ideal_backend = AerSimulator(method='statevector')
 
+# Helper for dual export to thesis and figures directories
+repo_root = os.path.abspath(os.path.join(os.getcwd(), '..', '..')) if os.path.exists('../../thesis') else (
+            os.path.abspath(os.path.join(os.getcwd(), '..')) if os.path.exists('../thesis') else (
+            os.path.abspath(os.getcwd()) if os.path.exists('thesis') else '.'))
+
+def export_figure(fig, relative_targets, **kwargs):
+    from PIL import Image
+    for rel_path in relative_targets:
+        full_path = os.path.join(repo_root, rel_path)
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+        fig.savefig(full_path, **kwargs)
+        if 'circuit' in rel_path:
+            im = Image.open(full_path)
+            if im.width > 2200 or im.height > 2200:
+                ratio = min(2200 / im.width, 2200 / im.height)
+                new_size = (int(im.width * ratio), int(im.height * ratio))
+                im_resized = im.resize(new_size, Image.Resampling.LANCZOS)
+                im_resized.save(full_path, optimize=True)
+        print(f"✓ Figure saved to: {full_path}")
+
 print("="*65)
 print(" TOPOLOGICAL REGISTER ALLOCATION (Section 4.3.1)")
 print("="*65)
@@ -183,12 +203,13 @@ print("✓ Operator A assembled successfully.")
 print("Generating graphical visualization of Operator A subcircuit...")
 fig_A = qc_A_circuit.draw('mpl', style='iqp')
 plt.title("Operator A Subcircuit (K2-18b Bayesian Network)", fontsize=13, pad=12, fontweight='bold')
-fig_circuit_dir = os.path.join('..', 'figures', 'circuits') if os.path.exists('../figures') else (
-                  os.path.join('figures', 'circuits') if os.path.exists('figures') else '.')
-os.makedirs(fig_circuit_dir, exist_ok=True)
-plt.savefig(os.path.join(fig_circuit_dir, 'circuito_operador_A.png'), dpi=300, bbox_inches='tight')
-plt.show()
-print(f"✓ Diagrama guardado en '{fig_circuit_dir}/circuito_operador_A.png'.")"""
+plt.tight_layout()
+export_figure(fig_A, [
+    os.path.join('figures', 'circuits', 'circuit_operator_A.png'),
+    os.path.join('thesis', 'figures', '3.quantum_bayesian_formalism', 'circuit_operator_A.png'),
+    os.path.join('thesis', 'figures', '4.system_architecture', 'circuit_operator_A.png')
+], dpi=200, bbox_inches='tight')
+plt.show()"""
 
 # -------------------------------------------------------------
 # Celda 6: Markdown - Oráculo y Difusor (4.3.3 - 4.3.4)
@@ -268,9 +289,12 @@ print("Generating graphical visualization of Grover Operator Q architecture...")
 fig_Q = qc_Q_circuit.draw('mpl', style='iqp')
 plt.title("Monolithic Grover Operator Q (-A S0 A^† S_chi)", fontsize=13, pad=12, fontweight='bold')
 plt.tight_layout()
-plt.savefig(os.path.join(fig_circuit_dir, 'circuito_operador_grover.png'), dpi=300, bbox_inches='tight')
-plt.show()
-print(f"✓ Diagrama guardado en '{fig_circuit_dir}/circuito_operador_grover.png'.")"""
+export_figure(fig_Q, [
+    os.path.join('figures', 'circuits', 'circuit_operator_grover.png'),
+    os.path.join('thesis', 'figures', '3.quantum_bayesian_formalism', 'circuit_operator_grover.png'),
+    os.path.join('thesis', 'figures', '4.system_architecture', 'circuit_operator_grover.png')
+], dpi=200, bbox_inches='tight')
+plt.show()"""
 
 # -------------------------------------------------------------
 # Celda 8: Markdown - QPE e IQFT (4.3.5)
@@ -316,9 +340,12 @@ print("Generating high-level graphical visualization of the QAE Master Circuit..
 fig_master = master_circuit.draw('mpl', style='iqp', fold=35)
 plt.title("Complete Canonical QAE Master Circuit (H^⊗nE + C-Q^2^j + IQFT + Measurement)", fontsize=13, pad=12, fontweight='bold')
 plt.tight_layout()
-plt.savefig(os.path.join(fig_circuit_dir, 'circuito_qae_maestro.png'), dpi=300, bbox_inches='tight')
+export_figure(fig_master, [
+    os.path.join('figures', 'circuits', 'circuit_qae_master.png'),
+    os.path.join('thesis', 'figures', '3.quantum_bayesian_formalism', 'circuit_qae_master.png'),
+    os.path.join('thesis', 'figures', '4.system_architecture', 'circuit_qae_master.png')
+], dpi=200, bbox_inches='tight')
 plt.show()
-print(f"✓ Diagrama guardado en '{fig_circuit_dir}/circuito_qae_maestro.png'.")
 
 # Transpilation
 print("\nTranspiling master circuit for AerSimulator (native gate decomposition)...")
@@ -395,9 +422,9 @@ print("="*80)
 
 fig, ax = plt.subplots(figsize=(10, 5))
 bars = ax.bar(x_labels, frequencies, color='darkcyan', edgecolor='black', alpha=0.85, width=0.5)
-ax.set_title(f'Espectro de Fases QAE en Registro de Evaluación ($n_E = {num_eval_qubits}$ qubits)', fontsize=14, fontweight='bold')
-ax.set_xlabel('Estado Base del Registro de Evaluación $|y\\rangle$ (Decimal)', fontsize=12)
-ax.set_ylabel('Frecuencia de Medición (%)', fontsize=12)
+ax.set_title(f'QAE Phase Spectrum on Evaluation Register ($n_E = {num_eval_qubits}$ qubits)', fontsize=14, fontweight='bold')
+ax.set_xlabel(r'Evaluation Register Computational Basis State $|y\rangle$ (Decimal)', fontsize=12)
+ax.set_ylabel('Measurement Frequency (%)', fontsize=12)
 ax.set_ylim(0, 100)
 ax.grid(axis='y', linestyle='--', alpha=0.4)
 
@@ -409,13 +436,12 @@ for bar in bars:
                 textcoords="offset points",
                 ha='center', va='bottom', fontsize=10, fontweight='bold')
 
-fig_results_dir = os.path.join('..', 'figures', 'results') if os.path.exists('../figures') else (
-                  os.path.join('figures', 'results') if os.path.exists('figures') else '.')
-os.makedirs(fig_results_dir, exist_ok=True)
 plt.tight_layout()
-plt.savefig(os.path.join(fig_results_dir, 'figura_qae_espectro_ideal.png'), dpi=300)
-plt.show()
-print(f"✓ Espectro de fases guardado en '{fig_results_dir}/figura_qae_espectro_ideal.png'.")"""
+export_figure(fig, [
+    os.path.join('figures', 'results', 'figure_qae_ideal_spectrum.png'),
+    os.path.join('thesis', 'figures', '4.system_architecture', 'figure_qae_ideal_spectrum.png')
+], dpi=300)
+plt.show()"""
 
 # -------------------------------------------------------------
 # Celda 14: Markdown - Estudio de Resolución vs Profundidad (4.3.9)
@@ -452,21 +478,21 @@ approx_circuit_depth = grover_iterations * 1415
 fig, ax1 = plt.subplots(figsize=(10, 6))
 
 color_res = 'tab:blue'
-ax1.set_xlabel('Número de Qubits de Evaluación ($n_E$)', fontsize=12)
-ax1.set_ylabel(r'Resolución Angular de Fase $\Delta \theta$ (rad)', color=color_res, fontsize=12)
-line1 = ax1.plot(n_E_range, angular_resolution, color=color_res, marker='o', lw=2.5, label=r'Resolución $\Delta \theta$')
+ax1.set_xlabel(r'Number of Evaluation Qubits ($n_E$)', fontsize=12)
+ax1.set_ylabel(r'Phase Angular Resolution $\Delta \theta$ (rad)', color=color_res, fontsize=12)
+line1 = ax1.plot(n_E_range, angular_resolution, color=color_res, marker='o', lw=2.5, label=r'Phase Resolution $\Delta \theta$')
 ax1.tick_params(axis='y', labelcolor=color_res)
 ax1.set_yscale('log')
 ax1.grid(True, which="both", ls="--", alpha=0.3)
 
 ax2 = ax1.twinx()
 color_depth = 'tab:red'
-ax2.set_ylabel('Profundidad Estimada del Circuito (Puertas)', color=color_depth, fontsize=12)
-line2 = ax2.plot(n_E_range, approx_circuit_depth, color=color_depth, marker='s', lw=2.5, linestyle='--', label='Profundidad del Circuito')
+ax2.set_ylabel('Estimated Circuit Depth (Gates)', color=color_depth, fontsize=12)
+line2 = ax2.plot(n_E_range, approx_circuit_depth, color=color_depth, marker='s', lw=2.5, linestyle='--', label='Circuit Depth')
 ax2.tick_params(axis='y', labelcolor=color_depth)
 ax2.set_yscale('log')
 
-ax2.axhline(y=1000, color='darkgreen', linestyle=':', lw=2, label='Límite de Coherencia Hardware NISQ (~1.000 puertas)')
+ax2.axhline(y=1000, color='darkgreen', linestyle=':', lw=2, label='NISQ Hardware Coherence Threshold (~1,000 gates)')
 
 lines = line1 + line2 + [ax2.get_lines()[-1]]
 labels = [l.get_label() for l in lines]
@@ -474,10 +500,11 @@ ax1.legend(lines, labels, loc='center right', frameon=True, fontsize=10)
 
 plt.title('Canonical QAE Theoretical Trade-off: Phase Resolution vs. Quantum Depth', fontsize=13, fontweight='bold')
 plt.tight_layout()
-plt.savefig(os.path.join(fig_results_dir, 'figura_qae_tradeoff_nisq.png'), dpi=300)
-plt.show()
-
-print(f"✓ Gráfica del trade-off NISQ guardada en '{fig_results_dir}/figura_qae_tradeoff_nisq.png'.")"""
+export_figure(fig, [
+    os.path.join('figures', 'results', 'figure_qae_nisq_tradeoff.png'),
+    os.path.join('thesis', 'figures', '4.system_architecture', 'figure_qae_nisq_tradeoff.png')
+], dpi=300)
+plt.show()"""
 
 # -------------------------------------------------------------
 # Celda 16: Markdown - Conclusiones Sección 4.3
@@ -508,8 +535,7 @@ nb.cells = [
     nbformat.v4.new_markdown_cell(c16_md)
 ]
 
-repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-output_filename = os.path.join(repo_root, "notebooks", "02_QAE_Ideal_Simulation.ipynb")
+output_filename = os.path.join(os.path.dirname(__file__), "02_QAE_Ideal_Simulation.ipynb")
 
 print(f"Ejecutando celdas en Python puro con renderizado mpl para {output_filename}...")
 exec_namespace = {}

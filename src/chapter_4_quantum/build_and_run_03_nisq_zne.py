@@ -113,6 +113,26 @@ nisq_noise_model.add_all_qubit_readout_error(readout_err)
 noisy_backend = AerSimulator(noise_model=nisq_noise_model)
 ideal_backend = AerSimulator(method='statevector')
 
+# Helper for dual export to thesis and figures directories
+repo_root = os.path.abspath(os.path.join(os.getcwd(), '..', '..')) if os.path.exists('../../thesis') else (
+            os.path.abspath(os.path.join(os.getcwd(), '..')) if os.path.exists('../thesis') else (
+            os.path.abspath(os.getcwd()) if os.path.exists('thesis') else '.'))
+
+def export_figure(fig, relative_targets, **kwargs):
+    from PIL import Image
+    for rel_path in relative_targets:
+        full_path = os.path.join(repo_root, rel_path)
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+        fig.savefig(full_path, **kwargs)
+        if 'circuit' in rel_path:
+            im = Image.open(full_path)
+            if im.width > 2200 or im.height > 2200:
+                ratio = min(2200 / im.width, 2200 / im.height)
+                new_size = (int(im.width * ratio), int(im.height * ratio))
+                im_resized = im.resize(new_size, Image.Resampling.LANCZOS)
+                im_resized.save(full_path, optimize=True)
+        print(f"✓ Figure saved to: {full_path}")
+
 print("="*65)
 print(" CONFIGURED NISQ NOISE MODEL (IBM Quantum Parameters)")
 print("="*65)
@@ -204,12 +224,12 @@ print("="*65)
 # Graphical visualization of the inference circuit
 print("\nGenerating graphical diagram of the base inference circuit...")
 fig_base = qc_base.draw('mpl')
-fig_circuit_dir = os.path.join('..', 'figures', 'circuits') if os.path.exists('../figures') else (
-                  os.path.join('figures', 'circuits') if os.path.exists('figures') else '.')
-os.makedirs(fig_circuit_dir, exist_ok=True)
-plt.savefig(os.path.join(fig_circuit_dir, 'circuito_nisq_base.png'), dpi=300, bbox_inches='tight')
-plt.show()
-print(f"✓ Diagrama guardado en '{fig_circuit_dir}/circuito_nisq_base.png'.")"""
+plt.tight_layout()
+export_figure(fig_base, [
+    os.path.join('figures', 'circuits', 'circuit_nisq_base.png'),
+    os.path.join('thesis', 'figures', '4.system_architecture', 'circuit_nisq_base.png')
+], dpi=200, bbox_inches='tight')
+plt.show()"""
 
 # -------------------------------------------------------------
 # Celda 6: Markdown - Sección 4.4.3: Degradación por Ruido
@@ -320,11 +340,13 @@ print("✓ Native Global Circuit Folding and Richardson Extrapolation engine rea
 print("\nGenerating globally folded circuit diagram (lambda = 3)...")
 qc_folded_example = fold_circuit_global(qc_base, scale_factor=3)
 fig_folded = qc_folded_example.draw('mpl')
-fig_folded.suptitle("Circuito Plegado Globalmente (ZNE: Factor de Escala $\\lambda = 3$)", fontsize=11, fontweight='bold', y=0.98)
-plt.savefig(os.path.join(fig_circuit_dir, 'circuito_nisq_plegado_lambda3.png'), dpi=300, bbox_inches='tight')
-plt.show()
-print(f"✓ Profundidad base: {qc_base.depth()} -> Profundidad plegada (lambda=3): {qc_folded_example.depth()}")
-print(f"✓ Diagrama guardado en '{fig_circuit_dir}/circuito_nisq_plegado_lambda3.png'.")"""
+fig_folded.suptitle(r"Globally Folded Quantum Circuit (ZNE: Scale Factor $\lambda = 3$)", fontsize=11, fontweight='bold', y=0.98)
+export_figure(fig_folded, [
+    os.path.join('figures', 'circuits', 'circuit_nisq_folded_lambda3.png'),
+    os.path.join('thesis', 'figures', '3.quantum_bayesian_formalism', 'circuit_nisq_folded_lambda3.png'),
+    os.path.join('thesis', 'figures', '4.system_architecture', 'circuit_nisq_folded_lambda3.png')
+], dpi=200, bbox_inches='tight')
+plt.show()"""
 
 # -------------------------------------------------------------
 # Cell 10: Code - ZNE Experiment and Metrics
@@ -392,18 +414,18 @@ c12_code = r"""# ===============================================================
 # =====================================================================
 fig1, ax1 = plt.subplots(figsize=(9, 5))
 
-categories = ['|0> (Ausente)', '|1> (Biomarcador K2-18b)']
+categories = [r'$|0\rangle$ (Absent)', r'$|1\rangle$ (Biomarker K2-18b)']
 x_pos = np.arange(len(categories))
 bar_width = 0.35
 
 ideal_vals = [1.0 - p_ideal, p_ideal]
 noisy_vals = [1.0 - p_noisy, p_noisy]
 
-rects1 = ax1.bar(x_pos - bar_width/2, ideal_vals, bar_width, label='Simulación Ideal (Sin Ruido)', color='navy', alpha=0.85)
-rects2 = ax1.bar(x_pos + bar_width/2, noisy_vals, bar_width, label='Hardware NISQ (Modelo IBM Cairo)', color='crimson', alpha=0.8)
+rects1 = ax1.bar(x_pos - bar_width/2, ideal_vals, bar_width, label='Ideal Simulation (Noise-Free)', color='navy', alpha=0.85)
+rects2 = ax1.bar(x_pos + bar_width/2, noisy_vals, bar_width, label='NISQ Hardware (IBM Cairo Model)', color='crimson', alpha=0.8)
 
-ax1.set_title('Degradación Espectral por Ruido Térmico y Despolarización (K2-18b)', fontsize=13, fontweight='bold')
-ax1.set_ylabel('Probabilidad de Ocurrencia', fontsize=12)
+ax1.set_title('Spectral Degradation under Thermal Relaxation and Depolarization (K2-18b)', fontsize=13, fontweight='bold')
+ax1.set_ylabel('Probability of Occurrence', fontsize=12)
 ax1.set_xticks(x_pos)
 ax1.set_xticklabels(categories, fontsize=11)
 ax1.set_ylim(0, 1.1)
@@ -419,11 +441,11 @@ for rect in rects2:
     ax1.annotate(f'{h:.3f}', xy=(rect.get_x() + rect.get_width()/2, h),
                  xytext=(0, 3), textcoords="offset points", ha='center', va='bottom', fontsize=10, fontweight='bold')
 
-fig_results_dir = os.path.join('..', 'figures', 'results') if os.path.exists('../figures') else (
-                  os.path.join('figures', 'results') if os.path.exists('figures') else '.')
-os.makedirs(fig_results_dir, exist_ok=True)
 plt.tight_layout()
-plt.savefig(os.path.join(fig_results_dir, 'figura_nisq_degradacion_espectral.png'), dpi=300)
+export_figure(fig1, [
+    os.path.join('figures', 'results', 'figure_nisq_spectral_degradation.png'),
+    os.path.join('thesis', 'figures', '4.system_architecture', 'figure_nisq_spectral_degradation.png')
+], dpi=300)
 plt.show()
 
 # =====================================================================
@@ -436,38 +458,39 @@ lambda_dense = np.linspace(0, 5.5, 200)
 poly_fit_dense = np.polyval(coeffs_poly, lambda_dense)
 
 # Richardson fitting curve
-ax2.plot(lambda_dense, poly_fit_dense, 'k--', lw=2.2, label='Ajuste Polinómico de Richardson (Grado 2)')
+ax2.plot(lambda_dense, poly_fit_dense, 'k--', lw=2.2, label='Richardson Polynomial Fit (Degree 2)')
 
 # Measurement points with amplified noise (circuit folding)
-ax2.scatter(scale_factors, zne_measured_probs, color='crimson', s=90, zorder=5, label='Circuitos Plegados Medidos ($\lambda = 1, 3, 5$)')
+ax2.scatter(scale_factors, zne_measured_probs, color='crimson', s=90, zorder=5, label=r'Folded Circuit Measurements ($\lambda = 1, 3, 5$)')
 
 # Extrapolated point at lambda = 0
-ax2.scatter([0], [p_zne_mitigated], color='forestgreen', s=130, marker='*', zorder=6, label=f'Estimador Mitigado ZNE ($\lambda=0$): {p_zne_mitigated:.4f}')
+ax2.scatter([0], [p_zne_mitigated], color='forestgreen', s=130, marker='*', zorder=6, label=f'ZNE Mitigated Estimator ($\lambda=0$): {p_zne_mitigated:.4f}')
 
 # Ideal reference value (Ground Truth)
-ax2.axhline(y=p_ideal, color='navy', linestyle='-', lw=2, label=f'Valor Ideal Ground Truth: {p_ideal:.4f}')
+ax2.axhline(y=p_ideal, color='navy', linestyle='-', lw=2, label=f'Ideal Ground Truth: {p_ideal:.4f}')
 
 # Unmitigated error band
-ax2.axhspan(p_noisy, p_ideal, color='red', alpha=0.1, label='Incertidumbre de Ruido No Mitigada')
+ax2.axhspan(p_noisy, p_ideal, color='red', alpha=0.1, label='Unmitigated Noise Uncertainty')
 
-ax2.set_title('Extrapolación de Ruido Cero (ZNE) en Inferencia de K2-18b', fontsize=14, fontweight='bold')
-ax2.set_xlabel('Factor de Escala de Ruido ($\lambda$)', fontsize=12)
-ax2.set_ylabel('Probabilidad Inferida P(Biomarcador = 1)', fontsize=12)
+ax2.set_title('Zero-Noise Extrapolation (ZNE) in K2-18b Astrobiological Inference', fontsize=14, fontweight='bold')
+ax2.set_xlabel(r'Noise Scale Factor ($\lambda$)', fontsize=12)
+ax2.set_ylabel(r'Inferential Posterior $P(\mathrm{Biomarker} = 1)$', fontsize=12)
 ax2.set_xlim(-0.3, 5.8)
 ax2.grid(True, linestyle='--', alpha=0.35)
 ax2.legend(frameon=True, fontsize=10, loc='lower left')
 
 # Explanatory annotation of the gain
-ax2.annotate(f'Recuperación ZNE:\n{gain_percentage:.1f}% de error eliminado',
+ax2.annotate(f'ZNE Error Cancellation:\n{gain_percentage:.1f}% Error Removed',
              xy=(0, p_zne_mitigated), xytext=(0.8, p_zne_mitigated - 0.04),
              arrowprops=dict(arrowstyle="->", color='darkgreen', lw=1.5),
              fontsize=11, bbox=dict(boxstyle="round,pad=0.3", fc="lightgreen", alpha=0.35))
 
 plt.tight_layout()
-plt.savefig(os.path.join(fig_results_dir, 'figura_zne_extrapolacion_curva.png'), dpi=300)
-plt.show()
-
-print(f"✓ Figuras guardadas con éxito en '{fig_results_dir}'.")"""
+export_figure(fig2, [
+    os.path.join('figures', 'results', 'figure_zne_extrapolation_curve.png'),
+    os.path.join('thesis', 'figures', '4.system_architecture', 'figure_zne_extrapolation_curve.png')
+], dpi=300)
+plt.show()"""
 
 # -------------------------------------------------------------
 # Celda 13: Markdown - Sección 4.4.6: Conclusiones
@@ -498,8 +521,7 @@ nb.cells = [
     nbformat.v4.new_markdown_cell(c13_md)
 ]
 
-repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-output_filename = os.path.join(repo_root, "notebooks", "03_NISQ_ZNE_Mitigation.ipynb")
+output_filename = os.path.join(os.path.dirname(__file__), "03_NISQ_ZNE_Mitigation.ipynb")
 
 print(f"Ejecutando celdas en Python puro y capturando salidas para {output_filename}...")
 exec_namespace = {}

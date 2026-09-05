@@ -723,7 +723,7 @@ export_dirs = [
 
 for d in export_dirs:
     os.makedirs(d, exist_ok=True)
-    plt.savefig(os.path.join(d, 'figura1_panel_diagnostico_clasico.png'), dpi=300)
+    plt.savefig(os.path.join(d, 'figure1_classical_diagnostic_panel.png'), dpi=300)
 
 plt.show()
 
@@ -762,7 +762,7 @@ ax2.annotate('Quadratic Quantum Speedup\n(Advantage > 5 orders of magnitude)',
 plt.tight_layout()
 
 for d in export_dirs:
-    plt.savefig(os.path.join(d, 'figura2_crossover_cuantico.png'), dpi=300)
+    plt.savefig(os.path.join(d, 'figure2_quantum_crossover.png'), dpi=300)
 
 plt.show()
 
