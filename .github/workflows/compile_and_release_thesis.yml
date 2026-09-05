@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Compile All Thesis Documents (Digital, Print, and Cover)
-        uses: xu-cheng/latex-action@v3
+        uses: xu-cheng/latex-action@v4
         with:
           root_file: |
             main_digital.tex
