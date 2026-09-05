@@ -37,11 +37,22 @@ Nevertheless, detecting a technosignature presents a profound statistical challe
 \notatfm{\textbf{Target Archetype:} K2-18b exemplifies the challenge of high observational uncertainty and tentative trace species (e.g., DMS) near detection thresholds.}
 This inferential complexity is epitomized by recent JWST observations of the sub-Neptune exoplanet K2-18b, situated in the habitable zone of an M2.5 dwarf star \cite{madhusudhan2023}. Spectroscopic retrieval using the NIRISS and NIRSpec instruments identified carbon-bearing molecules, specifically methane ($\mathrm{CH}_4$) and carbon dioxide ($\mathrm{CO}_2$), alongside a depleted abundance of ammonia ($\mathrm{NH}_3$). This atmospheric composition is consistent with theoretical models of a Hycean world---a planet possessing a massive liquid water ocean underlying a hydrogen-rich envelope. Crucially, the retrieval models indicated tentative, low-significance evidence ($\sim 1\sigma$--$2\sigma$) of dimethyl sulfide ($\mathrm{CH}_3\mathrm{SCH}_3$, DMS), an organosulfur compound produced almost exclusively by marine phytoplankton on Earth.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/1.introduction/espectro_k218b.png}
+    \caption{\textbf{Transmission Spectrum of Exoplanet K2-18b (JWST NIRISS \& NIRSpec).} The observational data reveals prominent absorption features of carbon-bearing molecules ($\mathrm{CH}_4$ and $\mathrm{CO}_2$) while showing a depleted abundance of $\mathrm{H}_2\mathrm{O}$ and $\mathrm{NH}_3$. These spectral lines form the empirical baseline evidence for the astrobiological Bayesian inference model. Image credit: NASA/ESA/CSA/STScI.}
+    \label{fig:k218b_spectrum}
+\end{figure}
+
 However, the astronomical community actively debates the veracity and interpretation of this signal. The signal-to-noise ratio is insufficient to rule out photochemical degeneracies, overlapping hydrocarbon features, or systematic instrument artifacts. K2-18b thus represents the ideal archetype for advanced probabilistic inference: an astronomical target characterized by coupled causal variables, competing geochemical and biological hypotheses, and high epistemic uncertainty near detection thresholds.
 
 \section{Computational Problem Statement: Classical Bottlenecks in Astrobiological Inference}\label{sec:computational_problem}
 
-To model these intricate dependencies, astrobiologists formalize planetary systems as Bayesian Networks (BNs)---Directed Acyclic Graphs (DAGs) wherein nodes represent discrete or discretized physical parameters and directed edges quantify causal or photochemical conditional dependencies \cite{nielsen2010}. While Bayesian Networks offer a rigorous framework for causal reasoning, evaluating them on classical computing architectures encounters two mathematically insurmountable bottlenecks: the treewidth explosion of exact inference and the asymptotic sample variance divergence of stochastic approximation.
+To model these intricate dependencies, astrobiologists formalize planetary systems as Bayesian Networks (BNs)---Directed Acyclic Graphs (DAGs) wherein nodes represent discrete or discretized physical parameters and directed edges quantify causal or photochemical conditional dependencies \cite{nielsen2010}.
+
+\input{figures/1.introduction/figura1_dag_k218b.tex}
+
+While Bayesian Networks offer a rigorous framework for causal reasoning, evaluating them on classical computing architectures encounters two mathematically insurmountable bottlenecks: the treewidth explosion of exact inference and the asymptotic sample variance divergence of stochastic approximation.
 
 \subsection{The Treewidth Bottleneck in Exact Classical Inference}
 Let a planetary atmosphere be modeled as a Bayesian Network $\mathcal{B} = (\mathcal{G}, \Theta)$, where $\mathcal{G} = (V, E)$ is a DAG with $N = |V|$ random variables $X = \{X_1, X_2, \dots, X_N\}$, and $\Theta$ denotes the set of Conditional Probability Tables (CPTs) parameterizing each node given its direct parents:

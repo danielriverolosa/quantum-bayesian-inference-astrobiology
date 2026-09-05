@@ -64,6 +64,8 @@ Because the algorithm must compile joint potential tables for every maximal cliq
 \label{eq:jta_treewidth_bound_ch2}
 \end{equation}
 
+\input{figures/2.classical_limits/figura_junction_tree.tex}
+
 In an exoplanetary atmosphere, dense photochemical cycling renders the network topologically non-sparse. Photochemical reactions link atmospheric species into closed cycles (e.g., the catalytic destruction of methane by hydroxyl radicals, coupled to stellar UV photolysis and volcanic outgassing). During moralization, marrying multiple parents across these feedback loops introduces dense fill-in edges. As network connectivity approaches a complete graph, the treewidth $w$ approaches $N - 1$. 
 
 Under this condition, the memory requirement scales as $\mathcal{O}(d^N)$, precipitating a catastrophic spatial failure. For a realistic photochemical network with $N = 50$ species, compiling the Junction Tree demands memory on the order of exabytes. This combinatorial wall is an inescapable consequence of complexity theory: Cooper (1990) established by polynomial reduction from 3-SAT that exact probabilistic inference in Bayesian belief networks is NP-hard \cite{cooper1990}.

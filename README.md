@@ -1,4 +1,4 @@
-[![Download full thesis](https://img.shields.io/badge/Download%20full%20thesis-2EA44F?style=for-the-badge&logo=github)](https://github.com/danielriverolosa/tfm/releases/tag/latest)
+[![Download full thesis](https://img.shields.io/badge/Download%20full%20thesis-2EA44F?style=for-the-badge&logo=github)](https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/releases/tag/latest)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg?style=for-the-badge&logo=python)](https://www.python.org/)
 [![Qiskit 1.0+](https://img.shields.io/badge/Qiskit-1.0+-6929C4.svg?style=for-the-badge&logo=qiskit)](https://qiskit.org/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0)
@@ -59,8 +59,8 @@ It is strongly recommended to use a clean virtual environment (conda or venv) wi
 
 ```bash
 # Clone the repository
-git clone https://github.com/danielriverolosa/tfm.git
-cd tfm
+git clone https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology.git
+cd quantum-bayesian-inference-astrobiology
 
 # Create and activate conda environment
 conda create -n tfm_qae python=3.11 -y
