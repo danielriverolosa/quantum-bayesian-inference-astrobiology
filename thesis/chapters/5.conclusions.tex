@@ -181,23 +181,24 @@ Table \ref{tab:objectives_fulfillment_matrix} presents the consolidated verifica
 \label{tab:objectives_fulfillment_matrix}
 \begin{adjustbox}{max width=\textwidth}
 \small
-\begin{tabularx}{\textwidth}{>{\bfseries\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{2.6cm}c}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{3.0cm} c}
 \toprule
 \textbf{Thesis Objective} & \textbf{Methodological Target} & \textbf{Codebase Artifact} & \textbf{Validation Metric} & \textbf{Status} \\
 \midrule
-Primary Objective \newline (End-to-End Pipeline) & Hybrid QBN--QAE inference on exoplanet K2-18b with quadratic speedup & \texttt{src/chapter\_4\_quantum/} \newline \texttt{02\_QAE\_Ideal\_Simulation} & $\mathcal{O}(1/M)$ scaling, \newline $M \sim 10^4$ vs $10^8$ & \textbf{Verified} \\
+\textbf{Primary Objective} \newline {\scriptsize (End-to-End Pipeline)} & Hybrid QBN--QAE inference on exoplanet K2-18b with quadratic speedup & \texttt{02\_QAE\_Ideal\_Simulation} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & $\mathcal{O}(1/M)$ Heisenberg scaling ($M \sim 10^4$ vs $10^8$) & \textbf{Verified} \\
 \midrule
-Sub-Goal 1 \newline (Astrobiological DAG) & 9-node causal DAG translated from JWST K2-18b spectra & \texttt{src/chapter\_2\_classical/} \newline \texttt{01\_Classical\_Limits} & Normalized CPTs, \newline 9 physical nodes & \textbf{Verified} \\
+\textbf{Sub-Goal 1} \newline {\scriptsize (Astrobiological DAG)} & 9-node causal DAG translated from JWST K2-18b transmission spectra & \texttt{01\_Classical\_Limits} \newline {\scriptsize \texttt{src/chapter\_2\_classical/}} & Normalized CPTs, \newline 9 physical nodes & \textbf{Verified} \\
 \midrule
-Sub-Goal 2 \newline (17-Qubit Topology) & Register allocation: $n_E = 5$, $n_S = 9$, $n_A = 3$ qubits & \texttt{src/chapter\_4\_quantum/} \newline \texttt{build\_and\_run\_02} & $32$ phase bins, \newline 31 Grover iterates & \textbf{Verified} \\
+\textbf{Sub-Goal 2} \newline {\scriptsize (17-Qubit Topology)} & Unified register allocation: $n_E = 5$, $n_S = 9$, $n_A = 3$ qubits & \texttt{build\_and\_run\_02} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & $32$ phase bins, \newline 31 Grover iterates & \textbf{Verified} \\
 \midrule
-Sub-Goal 3 \newline (Unitary Compilation) & Pure subcircuits without barriers via \texttt{.to\_gate()}, $S_\chi$, $S_0$ & \texttt{src/chapter\_4\_quantum/} \newline \texttt{build\_and\_run\_02} & Invariant 2D rotation, \newline Zero barrier defects & \textbf{Verified} \\
+\textbf{Sub-Goal 3} \newline {\scriptsize (Unitary Compilation)} & Pure unitary compilation without barriers via \texttt{.to\_gate()}, $S_\chi$, $S_0$ & \texttt{build\_and\_run\_02} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & Invariant 2D rotation, \newline Zero barrier defects & \textbf{Verified} \\
 \midrule
-Sub-Goal 4 \newline (NISQ Noise \& ZNE) & Calibrated IBM noise simulation and ZNE error mitigation via Mitiq & \texttt{src/chapter\_4\_quantum/} \newline \texttt{03\_NISQ\_ZNE\_Mitigation} & $86.46\%$ noise recovery, \newline $\lambda \in \{1, 3, 5\}$ folding & \textbf{Verified} \\
+\textbf{Sub-Goal 4} \newline {\scriptsize (NISQ Noise \& ZNE)} & Calibrated IBM noise simulation and ZNE error mitigation via Mitiq & \texttt{03\_NISQ\_ZNE\_Mitigation} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & $86.46\%$ noise recovery, \newline $\lambda \in \{1, 3, 5\}$ folding & \textbf{Verified} \\
 \midrule
-Sub-Goal 5 \newline (Classical Benchmark) & Empirical baseline in \texttt{pgmpy}: JT memory limits and MCMC variance & \texttt{src/chapter\_2\_classical/} \newline \texttt{build\_and\_run\_01} & $91.28\%$ rejection, \newline $\mathrm{RE} \to \infty$ at $p=10^{-6}$ & \textbf{Verified} \\
+\textbf{Sub-Goal 5} \newline {\scriptsize (Classical Benchmark)} & Empirical baseline in \texttt{pgmpy}: JT memory limits and MCMC variance & \texttt{build\_and\_run\_01} \newline {\scriptsize \texttt{src/chapter\_2\_classical/}} & $91.28\%$ rejection, \newline $\mathrm{RE} \to \infty$ at $p=10^{-6}$ & \textbf{Verified} \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{adjustbox}
 \end{table}
 
