@@ -39,10 +39,10 @@ cell1_md = """# 01. Límites Computacionales Clásicos en Inferencia Astrobioló
 Este notebook constituye el **benchmark clásico de referencia** del Trabajo Fin de Máster. Su propósito es demostrar cuantitativa y empíricamente las limitaciones insuperables de los métodos estocásticos clásicos —específicamente el muestreo de **Monte Carlo estándar (Rejection Sampling)** y las cadenas de **Markov Chain Monte Carlo (MCMC, algoritmo Metropolis-Hastings)**— al evaluar anomalías astrobiológicas de probabilidad infinitesimal en el exoplaneta **K2-18b**.
 
 En particular, se ilustra:
-1. **El Teorema de L'Ecuyer et al. (2010):** La divergencia asintótica del Error Relativo ($RE \\to \\infty$) cuando la probabilidad del estado objetivo decrece hacia cero ($P < 10^{-6}$, correspondiente a una tecnofirma industrial de Clorofluorocarburos, CFCs).
+1. **El Teorema de L'Ecuyer et al. (2010):** La divergencia asintótica del Relative Error ($RE \\to \\infty$) cuando la probabilidad del estado objetivo decrece hacia cero ($P < 10^{-6}$, correspondiente a una tecnofirma industrial de Clorofluorocarburos, CFCs).
 2. **La Barrera Asintótica Clásica $\\mathcal{O}(M^{-1/2})$:** La tasa de convergencia que impone una penalización cuadrática en el tiempo de cómputo (complejidad $\\mathcal{O}(\\epsilon^{-2})$) para ganar cada orden de magnitud en precisión.
 3. **El Atrapamiento en Modos Dominantes (*Rare-State Trap*) en MCMC:** La correlación serial temporal y el colapso del tamaño efectivo de muestra ($N_{\\text{eff}}$), donde la cadena de Markov requiere millones de iteraciones antes de visitar por primera vez la anomalía.
-4. **Punto de Inflexión de Ventaja Cuántica (*Quantum Advantage Crossover*):** Comparativa frente a la Estimación de Amplitud Cuántica (QAE), cuyo límite de Heisenberg $\\mathcal{O}(M_q^{-1})$ reduce la complejidad temporal a $\\mathcal{O}(\\epsilon^{-1})$, justificando la transición cuántica desarrollada en la Sección 4.3."""
+4. **Quantum Advantage Crossover (*Quantum Advantage Crossover*):** Comparativa frente a la Estimación de Amplitud Cuántica (QAE), cuyo límite de Heisenberg $\\mathcal{O}(M_q^{-1})$ reduce la complejidad temporal a $\\mathcal{O}(\\epsilon^{-1})$, justificando la transición cuántica desarrollada en la Sección 4.3."""
 
 # -------------------------------------------------------------
 # Celda 2: Markdown - Sección 1: Marco Teórico
@@ -68,13 +68,13 @@ Sus propiedades estadísticas fundamentales son:
 $$\\sigma(\\hat{p}_M) = \\sqrt{\\text{Var}(\\hat{p}_M)} = \\sqrt{\\frac{p(1-p)}{M}} \\approx \\frac{\\sqrt{p}}{\\sqrt{M}} = \\mathcal{O}(M^{-1/2})$$
 
 #### Formulación de L'Ecuyer et al. (2010) sobre Simulación de Eventos Raros
-En astrobiología observacional, evaluar la fiabilidad de un biomarcador no depende del error absoluto $\\sigma(\\hat{p}_M)$, sino del **Error Relativo** ($RE$, *Relative Error* o coeficiente de variación):
+En astrobiología observacional, evaluar la fiabilidad de un biomarcador no depende del error absoluto $\\sigma(\\hat{p}_M)$, sino del **Relative Error** ($RE$, *Relative Error* o coeficiente de variación):
 $$RE(\\hat{p}_M) \\equiv \\frac{\\sigma(\\hat{p}_M)}{\\mathbb{E}[\\hat{p}_M]} = \\frac{\\sqrt{\\frac{p(1-p)}{M}}}{p} = \\sqrt{\\frac{1-p}{M \\cdot p}}$$
 
 Cuando el evento analizado es raro ($p \\ll 1$), la aproximación asintótica es:
 $$RE(\\hat{p}_M) \\approx \\frac{1}{\\sqrt{M \\cdot p}}$$
 
-> **Teorema de L'Ecuyer (Divergencia del Error Relativo):**  
+> **Teorema de L'Ecuyer (Divergencia del Relative Error):**  
 > Para cualquier tamaño muestral finito $M$, si $p \\to 0$, entonces:
 > $$\\lim_{p \\to 0} RE(\\hat{p}_M) = \\lim_{p \\to 0} \\frac{1}{\\sqrt{M \\cdot p}} = \\infty$$
 > Para garantizar que el error relativo no supere un umbral de incertidumbre admisible $\\epsilon_{\\text{rel}}$ (e.g., $\\epsilon_{\\text{rel}} = 0.05$, correspondiente a un intervalo de confianza estrecho del 5%), el número de evaluaciones clásicas $M$ debe satisfacer:
@@ -89,7 +89,7 @@ $$RE(\\hat{p}_M) \\approx \\frac{1}{\\sqrt{M \\cdot p}}$$
   Para $p = 10^{-6}$, el número de consultas al oráculo cuántico se reduce a $M_q \\sim 10^3$, obteniendo una **aceleración cuadrática estricta** ($\\sqrt{M_{\\text{clásico}}}$)."""
 
 # -------------------------------------------------------------
-# Celda 3: Código - Configuración de Entorno
+# Cell 3: Code - Environment Configuration
 # -------------------------------------------------------------
 cell3_code = r"""import os
 import time
@@ -112,8 +112,8 @@ plt.rcParams.update({
     'figure.dpi': 150
 })
 
-print("✓ Entorno clásico inicializado con éxito.")
-print(f"✓ NumPy versión: {np.__version__} | SciPy versión: {stats.__name__}")"""
+print("✓ Classical environment initialized successfully.")
+print(f"✓ NumPy version: {np.__version__} | SciPy versión: {stats.__name__}")"""
 
 # -------------------------------------------------------------
 # Celda 4: Markdown - Sección 2: Topología Red Bayesiana
@@ -133,7 +133,7 @@ Para garantizar una comparativa rigurosa con la arquitectura cuántica desarroll
 9. $X_8$ (**Techno_CFC**): Detección de tecnomarcador industrial de clorofluorocarburos. Anomalía ultrarrara condicionada fuertemente a una biosfera compleja desarrollada ($X_3 = 1$), con probabilidad a priori $p_{\\text{CFC}} = 1.0 \\times 10^{-6}$."""
 
 # -------------------------------------------------------------
-# Celda 5: Código - Red Bayesiana y Muestreador Conjunto
+# Cell 5: Code - Bayesian Network and Joint Sampler
 # -------------------------------------------------------------
 cell5_code = r"""class K218bBayesianNetwork:
     """ + '"""' + r"""
@@ -148,9 +148,9 @@ cell5_code = r"""class K218bBayesianNetwork:
         self.num_nodes = len(self.node_names)
         self.cfc_rare_prob = cfc_rare_prob
 
-        # Priors basados en observaciones JWST y literatura astrobiológica (Madhusudhan et al. 2023)
-        self.p_x0 = 0.75  # K2-18 es una enana roja M2.5V
-        self.p_x1 = 0.20  # Órbita templada de 33 días en zona habitable
+        # Priors based on JWST observations and astrobiological literature (Madhusudhan et al. 2023)
+        self.p_x0 = 0.75  # K2-18 is an M2.5V red dwarf
+        self.p_x1 = 0.20  # Temperate 33-day orbit in habitable zone
 
     def sample_joint(self, n_samples: int) -> np.ndarray:
         """ + '"""' + r"""
@@ -159,35 +159,35 @@ cell5_code = r"""class K218bBayesianNetwork:
         """ + '"""' + r"""
         X = np.zeros((n_samples, self.num_nodes), dtype=np.int8)
 
-        # Nodos raíz
+        # Root nodes
         X[:, 0] = np.random.rand(n_samples) < self.p_x0
         X[:, 1] = np.random.rand(n_samples) < self.p_x1
 
-        # X2: Condición Hycean (requiere estrella M y zona templada)
+        # X2: Hycean Condition (requires M star and temperate zone)
         p_x2 = np.where((X[:, 0] == 1) & (X[:, 1] == 1), 0.85, 0.05)
         X[:, 2] = np.random.rand(n_samples) < p_x2
 
-        # X3: Océano biológico (dependiente de condición Hycean)
+        # X3: Biological ocean (dependent on Hycean condition)
         p_x3 = np.where(X[:, 2] == 1, 0.40, 0.01)
         X[:, 3] = np.random.rand(n_samples) < p_x3
 
-        # X4: Metano CH4 (abundante en atmósferas reductoras)
+        # X4: Methane CH4 (abundant in reducing atmospheres)
         p_x4 = np.where(X[:, 2] == 1, 0.90, 0.15)
         X[:, 4] = np.random.rand(n_samples) < p_x4
 
-        # X5: Dióxido de carbono CO2 (presente en sub-Neptunos templados)
+        # X5: Carbon dioxide CO2 (present in temperate sub-Neptunes)
         p_x5 = np.where(X[:, 2] == 1, 0.80, 0.20)
         X[:, 5] = np.random.rand(n_samples) < p_x5
 
-        # X6: Vapor de agua H2O
+        # X6: Water vapor H2O
         p_x6 = np.where(X[:, 1] == 1, 0.70, 0.10)
         X[:, 6] = np.random.rand(n_samples) < p_x6
 
-        # X7: Biofirma DMS (condicionada a biosfera marina activa X3=1)
+        # X7: DMS biosignature (conditioned on active marine biosphere X3=1)
         p_x7 = np.where(X[:, 3] == 1, 0.05, 0.0001)
         X[:, 7] = np.random.rand(n_samples) < p_x7
 
-        # X8: Tecnofirma industrial CFC (anomalía ultrarrara, condicionada a biosfera activa X3=1)
+        # X8: Industrial CFC technosignature (ultra-rare anomaly, conditioned on active biosphere X3=1)
         p_x8 = np.where(X[:, 3] == 1, self.cfc_rare_prob / 0.06, 0.0)
         X[:, 8] = np.random.rand(n_samples) < p_x8
 
@@ -230,7 +230,7 @@ cell5_code = r"""class K218bBayesianNetwork:
 bn = K218bBayesianNetwork(cfc_rare_prob=1e-6)
 test_samples = bn.sample_joint(100_000)
 
-print("Distribución marginal a priori simulada (100.000 realizaciones conjuntas):")
+print("Simulated prior marginal distribution (100,000 joint realizations):")
 for idx, name in enumerate(bn.node_names):
     p_est = np.mean(test_samples[:, idx])
     print(f"  [{idx}] {name:<18}: {p_est:.6f}")"""
@@ -247,7 +247,7 @@ El algoritmo de muestreo por rechazo genera configuraciones conjuntas aleatorias
 A continuación se demuestra cómo la tasa de aceptación $P(\\mathbf{e})$ colapsa, exacerbando de forma catastrófica la dificultad de observar la tecnofirma $X_8 = 1$."""
 
 # -------------------------------------------------------------
-# Celda 7: Código - Rejection Sampling
+# Cell 7: Code - Rejection Sampling
 # -------------------------------------------------------------
 cell7_code = r"""def rejection_sampling_inference(bn: K218bBayesianNetwork, evidence: dict, n_total_samples: int):
     t0 = time.time()
@@ -285,14 +285,14 @@ jwst_evidence = {1: 1, 4: 1, 5: 1}
 res_rej = rejection_sampling_inference(bn, jwst_evidence, n_total_samples=2_000_000)
 
 print("="*70)
-print(" Inferencia por Muestreo de Rechazo (Evidencia Espectroscópica JWST)")
+print(" Rejection Sampling Inference (JWST Spectroscopic Evidence)")
 print("="*70)
-print(f" Muestras totales generadas : {res_rej['generated']:,}")
-print(f" Muestras consistentes (E)  : {res_rej['accepted']:,} ({res_rej['acceptance_rate']*100:.2f}%)")
-print(f" Muestras descartadas       : {res_rej['generated'] - res_rej['accepted']:,} ({(1.0-res_rej['acceptance_rate'])*100:.2f}%)")
-print(f" Detecciones de CFC (X8=1)  : {res_rej['cfc_hits']}")
-print(f" P(CFC | E) estimada        : {res_rej['p_cond_cfc']:.8f}")
-print(f" Tiempo de cómputo CPU      : {res_rej['elapsed_time']:.4f} segundos")
+print(f" Total generated samples : {res_rej['generated']:,}")
+print(f" Consistent samples (E)  : {res_rej['accepted']:,} ({res_rej['acceptance_rate']*100:.2f}%)")
+print(f" Discarded samples       : {res_rej['generated'] - res_rej['accepted']:,} ({(1.0-res_rej['acceptance_rate'])*100:.2f}%)")
+print(f" CFC detections (X8=1)  : {res_rej['cfc_hits']}")
+print(f" Estimated P(CFC | E)        : {res_rej['p_cond_cfc']:.8f}")
+print(f" CPU computation time      : {res_rej['elapsed_time']:.4f} seconds")
 print("="*70)"""
 
 # -------------------------------------------------------------
@@ -319,7 +319,7 @@ Cuando la anomalía $X_8 = 1$ tiene una probabilidad condicional infinitesimal (
 Por tanto, cadenas estándar de $10^4$ o $10^5$ iteraciones **nunca visitan la tecnofirma**, arrojando una estimación espuria $\\hat{p} = 0$ con falsa certeza o varianza infinita."""
 
 # -------------------------------------------------------------
-# Celda 9: Código - Metropolis-Hastings MCMC
+# Cell 9: Code - Metropolis-Hastings MCMC
 # -------------------------------------------------------------
 cell9_code = r"""def run_metropolis_hastings(bn: K218bBayesianNetwork, evidence: dict, n_steps: int, burn_in: int = 2000):
     free_nodes = [i for i in range(bn.num_nodes) if i not in evidence]
@@ -379,13 +379,13 @@ cfc_hits_mcmc = int(np.sum(chain[:, 8]))
 dms_hits_mcmc = int(np.sum(chain[:, 7]))
 
 print("="*70)
-print(f" Diagnóstico MCMC Metropolis-Hastings ({n_mcmc:,} pasos de simulación)")
+print(f" MCMC Metropolis-Hastings Diagnostics ({n_mcmc:,} simulation steps)")
 print("="*70)
-print(f" Tasa de aceptación global : {acc_rate*100:.2f}%")
-print(f" Tiempo de muestreo CPU     : {elapsed_mcmc:.4f} s")
-print(f" Visitas Biomarcador DMS   : {dms_hits_mcmc:,} (P_est = {dms_hits_mcmc/n_mcmc:.5f})")
-print(f" Visitas Tecnofirma CFC    : {cfc_hits_mcmc:,} (P_est = {cfc_hits_mcmc/n_mcmc:.8f})")
-print(f" Fenómeno 'Rare-State Trap': {'ANOMALÍA NO DETECTADA (Atrapado en modo p=0)' if cfc_hits_mcmc == 0 else 'Detectada'}")
+print(f" Global acceptance rate : {acc_rate*100:.2f}%")
+print(f" CPU sampling time     : {elapsed_mcmc:.4f} s")
+print(f" DMS Biomarker visits   : {dms_hits_mcmc:,} (P_est = {dms_hits_mcmc/n_mcmc:.5f})")
+print(f" CFC Technosignature visits    : {cfc_hits_mcmc:,} (P_est = {cfc_hits_mcmc/n_mcmc:.8f})")
+print(f" Rare-State Trap Phenomenon: {'ANOMALY NOT DETECTED (Trapped in p=0 mode)' if cfc_hits_mcmc == 0 else 'Detected'}")
 print("="*70)"""
 
 # -------------------------------------------------------------
@@ -399,12 +399,12 @@ Para cuantificar con rigor estadístico la varianza empírica real y contrastarl
 1. **Media Muestral:** $\\bar{p}_M = \\frac{1}{R} \\sum_{r=1}^R \\hat{p}_{r, M}$
 2. **Varianza Empírica Insesgada:** $s^2_M = \\frac{1}{R-1} \\sum_{r=1}^R (\\hat{p}_{r, M} - \\bar{p}_M)^2$
 3. **Varianza Teórica:** $\\text{Var}_{\\text{teo}}(M) = \\frac{p(1-p)}{M}$
-4. **Error Relativo Empírico:** $RE_{\\text{emp}}(M) = \\frac{s_M}{p}$
+4. **Relative Error Empírico:** $RE_{\\text{emp}}(M) = \\frac{s_M}{p}$
 5. **Intervalos de Confianza Exactos de Clopper-Pearson (95%):**  
    Demostrando analíticamente cómo para $M < 10^6$ el límite inferior del intervalo colapsa en 0, privando al modelo de significación estadística."""
 
 # -------------------------------------------------------------
-# Celda 11: Código - Benchmark Réplicas Monte Carlo
+# Cell 11: Code - Monte Carlo Replicas Benchmark
 # -------------------------------------------------------------
 cell11_code = r"""target_p_cfc = 1e-6
 sample_sizes = [10**3, 10**4, 10**5, 10**6, 10**7]
@@ -413,9 +413,9 @@ n_replications = 50
 benchmark_results = []
 
 print("="*95)
-print(f" BENCHMARK EMPÍRICO DE MONTE CARLO: {n_replications} RÉPLICAS INDEPENDIENTES (p = {target_p_cfc})")
+print(f" EMPIRICAL MONTE CARLO BENCHMARK: {n_replications} INDEPENDENT REPLICAS (p = {target_p_cfc})")
 print("="*95)
-print(f"{'M (Muestras)':<12} | {'Est. Media':<12} | {'Var. Teórica':<14} | {'Var. Empírica':<14} | {'RE Empírico':<12} | {'Tiempo (s)':<10}")
+print(f"{'M (Samples)':<12} | {'Mean Est.':<12} | {'Theoretical Var.':<14} | {'Empirical Var.':<14} | {'Empirical RE':<12} | {'Time (s)':<10}")
 print("-" * 95)
 
 for M in sample_sizes:
@@ -452,8 +452,8 @@ for M in sample_sizes:
     print(f"{M:<12} | {mean_est:<12.3e} | {teo_var:<14.3e} | {emp_var:<14.3e} | {re_emp:<12.2f} | {t_exec:<10.4f}")
 
 print("="*95)
-print("Interpretación de L'Ecuyer: Para M <= 10^5, el Error Relativo supera el 300% (RE > 3.0),")
-print("confirmando que el estimador clásico es incapaz de acotar la incertidumbre sin un coste muestral inviable.")"""
+print("L'Ecuyer Interpretation: For M <= 10^5, the Relative Error exceeds 300% (RE > 3.0),")
+print("confirming the classical estimator is unable to bound uncertainty without an unviable sample cost.")"""
 
 # -------------------------------------------------------------
 # Celda 12: Markdown - Sección 6: Visualizaciones Científicas
@@ -461,26 +461,26 @@ print("confirmando que el estimador clásico es incapaz de acotar la incertidumb
 cell12_md = """## 6. Visualizaciones Científicas: Diagnóstico de Límites y Crossover Cuántico
 
 A continuación se generan dos figuras de calidad de publicación para la memoria del TFM:
-1. **Figura 1: Panel Diagnóstico Clásico 2x2:**
-   - **(a) Varianza del Estimador vs. $M$:** Demuestra el ajuste exacto a la pendiente asintótica $\\mathcal{O}(M^{-1})$.
-   - **(b) Error Relativo vs. $M$ (Teorema de L'Ecuyer):** Muestra el colapso del estimador cuando $M < 1/p$, donde la incertidumbre relativa supera ampliamente el 100%.
-   - **(c) Traza Temporal de MCMC (Metropolis-Hastings):** Evidencia visual del fenómeno *rare-state trap* (el biomarcador común oscila con regularidad, mientras la tecnofirma permanece en cero).
-   - **(d) Función de Autocorrelación:** Ilustra la correlación serial de la cadena de Markov.
-2. **Figura 2: Proyección del Punto de Inflexión de Ventaja Cuántica (*Quantum Advantage Crossover*):**
+1. **Figura 1: Classical Diagnostic Panel 2x2:**
+   - **(a) Estimator Variance vs. $M$:** Demuestra el ajuste exacto a la pendiente asintótica $\\mathcal{O}(M^{-1})$.
+   - **(b) Relative Error vs. $M$ (Teorema de L'Ecuyer):** Muestra el colapso del estimador cuando $M < 1/p$, donde la incertidumbre relativa supera ampliamente el 100%.
+   - **(c) MCMC Time Trace (Metropolis-Hastings):** Evidencia visual del fenómeno *rare-state trap* (el biomarcador común oscila con regularidad, mientras la tecnofirma permanece en cero).
+   - **(d) Autocorrelation Function:** Ilustra la correlación serial de la cadena de Markov.
+2. **Figura 2: Proyección del Quantum Advantage Crossover (*Quantum Advantage Crossover*):**
    - Número de evaluaciones de modelo requeridas en función del error objetivo $\\epsilon$:
      - Clásico (Monte Carlo / MCMC): $N_{\\text{eval}} = \\mathcal{O}(\\epsilon^{-2} p^{-1})$.
      - Cuántico (QAE - Límite de Heisenberg): $N_{\\text{eval}} = \\mathcal{O}(\\epsilon^{-1} p^{-1/2})$.
    - Muestra la divergencia de más de 5 órdenes de magnitud en favor del cómputo cuántico."""
 
 # -------------------------------------------------------------
-# Celda 13: Código - Renderizado de Figuras (Limpio y robusto)
+# Cell 13: Code - Figure Rendering (Clean and robust)
 # -------------------------------------------------------------
 cell13_code = r"""# =====================================================================
-# FIGURA 1: PANEL DIAGNÓSTICO CLÁSICO 2x2 (ESTILO PUBLICACIÓN)
+# FIGURE 1: CLASSICAL 2x2 DIAGNOSTIC PANEL (PUBLICATION STYLE)
 # =====================================================================
 fig, axs = plt.subplots(2, 2, figsize=(14, 10))
 
-# Subplot (a): Varianza vs M
+# Subplot (a): Variance vs M
 M_vals = [r["M"] for r in benchmark_results]
 emp_vars = [r["emp_var"] for r in benchmark_results]
 teo_vars = [r["teo_var"] for r in benchmark_results]
@@ -489,28 +489,28 @@ axs[0, 0].plot(M_vals, teo_vars, 'k--', label=r'Teórica: $p(1-p)/M \quad [\math
 axs[0, 0].scatter(M_vals, emp_vars, color='crimson', s=70, zorder=5, label=f'Empírica ({n_replications} réplicas)')
 axs[0, 0].set_xscale('log')
 axs[0, 0].set_yscale('log')
-axs[0, 0].set_title('(a) Varianza del Estimador vs. Tamaño Muestral M', fontweight='bold')
+axs[0, 0].set_title('(a) Estimator Variance vs. Tamaño Muestral M', fontweight='bold')
 axs[0, 0].set_xlabel('Número de Muestras Clásicas (M)')
 axs[0, 0].set_ylabel(r'Varianza $\mathrm{Var}(\hat{p})$')
 axs[0, 0].axhline(y=1e-14, color='royalblue', linestyle=':', label='Límite de Precisión Inadmisible (1e-14)')
 axs[0, 0].legend(frameon=True)
 
-# Subplot (b): Error Relativo vs M (L'Ecuyer)
+# Subplot (b): Relative Error vs M (L'Ecuyer)
 re_emp_vals = [r["re_emp"] for r in benchmark_results]
 re_teo_vals = [r["re_teo"] for r in benchmark_results]
 
 axs[0, 1].plot(M_vals, re_teo_vals, 'k--', label=r"Teoría L'Ecuyer: $1/\sqrt{M \cdot p}$", lw=2)
-axs[0, 1].scatter(M_vals, re_emp_vals, color='darkorange', s=70, zorder=5, label='RE Empírico')
+axs[0, 1].scatter(M_vals, re_emp_vals, color='darkorange', s=70, zorder=5, label='Empirical RE')
 axs[0, 1].axhline(y=1.0, color='red', linestyle='-', lw=1.5, label='Incertidumbre Crítica 100% (RE=1.0)')
 axs[0, 1].axhline(y=0.05, color='green', linestyle=':', lw=1.5, label='Tolerancia Astrobiológica (RE=0.05)')
 axs[0, 1].set_xscale('log')
 axs[0, 1].set_yscale('log')
-axs[0, 1].set_title("(b) Divergencia del Error Relativo (L'Ecuyer et al. 2010)", fontweight='bold')
+axs[0, 1].set_title("(b) Divergencia del Relative Error (L'Ecuyer et al. 2010)", fontweight='bold')
 axs[0, 1].set_xlabel('Número de Muestras Clásicas (M)')
-axs[0, 1].set_ylabel(r'Error Relativo $RE = \sigma / \mathbb{E}[\hat{p}]$')
+axs[0, 1].set_ylabel(r'Relative Error $RE = \sigma / \mathbb{E}[\hat{p}]$')
 axs[0, 1].legend(frameon=True)
 
-# Subplot (c): Traza MCMC (Rare-State Trap)
+# Subplot (c): MCMC Trace (Rare-State Trap)
 window = min(2000, len(chain))
 steps = np.arange(window)
 axs[1, 0].plot(steps, chain[:window, 7], color='royalblue', alpha=0.8, label='Biomarcador DMS (X7)')
@@ -522,7 +522,7 @@ axs[1, 0].set_yticks([0, 1])
 axs[1, 0].set_yticklabels(['Ausente (0)', 'Detectado (1)'])
 axs[1, 0].legend(frameon=True, loc='upper right')
 
-# Subplot (d): Función de Autocorrelación
+# Subplot (d): Autocorrelation Function
 lags = 40
 autocorr_dms = compute_autocorrelation(chain[:, 7], max_lag=lags)
 axs[1, 1].bar(np.arange(lags), autocorr_dms, color='teal', alpha=0.7, width=0.6, label='Autocorrelación DMS')
@@ -542,7 +542,7 @@ plt.savefig(os.path.join(fig_dir, 'figura1_panel_diagnostico_clasico.png'), dpi=
 plt.show()
 
 # =====================================================================
-# FIGURA 2: PUNTO DE INFLEXIÓN DE VENTAJA CUÁNTICA (CROSSOVER POINT)
+# FIGURE 2: QUANTUM ADVANTAGE CROSSOVER POINT
 # =====================================================================
 fig2, ax2 = plt.subplots(figsize=(10, 6))
 
@@ -562,7 +562,7 @@ ax2.set_xscale('log')
 ax2.set_yscale('log')
 ax2.invert_xaxis()
 
-ax2.set_title('Punto de Inflexión de Ventaja Cuántica: MCMC vs. QAE para CFC en K2-18b', fontsize=14, fontweight='bold')
+ax2.set_title('Quantum Advantage Crossover: MCMC vs. QAE para CFC en K2-18b', fontsize=14, fontweight='bold')
 ax2.set_xlabel(r'Error de Precisión Deseado ($\epsilon$) $\leftarrow$ [Mayor Precisión]', fontsize=12)
 ax2.set_ylabel('Consultas de Verosimilitud / Operaciones Requeridas', fontsize=12)
 ax2.grid(True, which="both", ls="-", alpha=0.25)
@@ -596,7 +596,7 @@ Los experimentos computacionales y formales ejecutados en este notebook demuestr
    - Para alcanzar un error relativo admisible del $5\\%$ ($\\epsilon_{\\text{rel}} = 0.05$), el método clásico exige $M \\approx 4 \\times 10^8$ evaluaciones atmosféricas.
    - En contraste, la Estimación de Amplitud Cuántica (QAE) implementada en el **Entregable 02 (Sección 4.3)** reduce la complejidad asintótica a $\\mathcal{O}(\\epsilon^{-1} p^{-1/2})$, requiriendo únicamente $\\sim 10^3$ aplicaciones del operador unitario de Grover. Esto demuestra empíricamente la **ventaja de convergencia cuántica** en astrobiología perseguida como objetivo central de este Trabajo Fin de Máster."""
 
-# Ensamblaje del notebook
+# Notebook assembly
 nb.cells = [
     nbformat.v4.new_markdown_cell(cell1_md),
     nbformat.v4.new_markdown_cell(cell2_md),

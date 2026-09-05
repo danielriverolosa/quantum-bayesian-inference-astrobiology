@@ -76,7 +76,7 @@ Al medir el registro $E$ en la base computacional, se obtiene un entero $\\tilde
 $$\\tilde{\\theta} = \\frac{\\pi \\tilde{y}}{2^{n_E}}, \\quad \\hat{a} = \\sin^2(\\tilde{\\theta})$$"""
 
 # -------------------------------------------------------------
-# Celda 3: Código - Asignación Topológica (4.3.1)
+# Cell 3: Code - Topological Allocation (4.3.1)
 # -------------------------------------------------------------
 c3_code = r"""import os
 import numpy as np
@@ -85,10 +85,10 @@ from qiskit_aer import AerSimulator
 from qiskit.circuit.library import QFT, RYGate
 import matplotlib.pyplot as plt
 
-# 1. Asignación Topológica de Registros Cuánticos (Sección 4.3.1)
-num_state_qubits = 9       # n_S = 9 qubits para la Red Bayesiana de K2-18b
-num_eval_qubits = 5        # n_E = 5 qubits de evaluación para resolución QPE (2^5 = 32 niveles)
-num_ancilla_qubits = 3     # n_A = 3 qubits ancilla para descomposición y phase kickback
+# 1. Topological Allocation of Quantum Registers (Section 4.3.1)
+num_state_qubits = 9       # n_S = 9 qubits for K2-18b Bayesian Network
+num_eval_qubits = 5        # n_E = 5 evaluation qubits for QPE resolution (2^5 = 32 levels)
+num_ancilla_qubits = 3     # n_A = 3 ancilla qubits for decomposition and phase kickback
 
 reg_S = QuantumRegister(num_state_qubits, name='state_K218b')
 reg_E = QuantumRegister(num_eval_qubits, name='eval_QPE')
@@ -99,7 +99,7 @@ master_circuit = QuantumCircuit(reg_E, reg_S, reg_A, reg_C)
 ideal_backend = AerSimulator(method='statevector')
 
 print("="*65)
-print(" ASIGNACIÓN TOPOLÓGICA DE REGISTROS (Sección 4.3.1)")
+print(" TOPOLOGICAL REGISTER ALLOCATION (Section 4.3.1)")
 print("="*65)
 print(f" Registro de Estado (S)   : {reg_S.size} qubits (Variables de K2-18b)")
 print(f" Registro de Evaluación (E): {reg_E.size} qubits (Resolución QPE: {2**reg_E.size} niveles)")
@@ -124,7 +124,7 @@ El operador $\\mathcal{A}$ sintetiza la red bayesiana de K2-18b en amplitudes de
 > **Regla de Diseño Cuántico:** No se incluyen barreras (`qc.barrier()`) en los subcircuitos para garantizar que la conversión a puerta compuesta (`to_gate()`) sea matemáticamente pura y admitida por el compilador de Qiskit."""
 
 # -------------------------------------------------------------
-# Celda 5: Código - Funciones y Visualización del Operador A
+# Cell 5: Code - Operator A Functions and Visualization
 # -------------------------------------------------------------
 c5_code = r"""def apply_root_nodes(qc, reg_S):
     """ + '"""Aplica rotaciones Ry sobre los nodos raíz (priors marginales)."""' + r"""
@@ -177,12 +177,12 @@ def build_A_operator(num_state_qubits, ancilla_reg):
     return A_gate, qc_A
 
 A_gate, qc_A_circuit = build_A_operator(num_state_qubits, reg_A)
-print("✓ Operador A ensamblado con éxito.")
+print("✓ Operator A assembled successfully.")
 
-# Visualización Gráfica del Subcircuito del Operador A
-print("Generando visualización gráfica del subcircuito del Operador A...")
+# Graphical Visualization of Operator A Subcircuit
+print("Generating graphical visualization of Operator A subcircuit...")
 fig_A = qc_A_circuit.draw('mpl', style='iqp')
-plt.title("Subcircuito del Operador A (Red Bayesiana de K2-18b)", fontsize=13, pad=12, fontweight='bold')
+plt.title("Operator A Subcircuit (K2-18b Bayesian Network)", fontsize=13, pad=12, fontweight='bold')
 fig_circuit_dir = os.path.join('..', 'figures', 'circuits') if os.path.exists('../figures') else (
                   os.path.join('figures', 'circuits') if os.path.exists('figures') else '.')
 os.makedirs(fig_circuit_dir, exist_ok=True)
@@ -209,7 +209,7 @@ Ensamblado con el oráculo y el operador $\\mathcal{A}$, se sintetiza el operado
 $$\\mathcal{Q} = -\\mathcal{A} S_0 \\mathcal{A}^\\dagger S_\\chi$$"""
 
 # -------------------------------------------------------------
-# Celda 7: Código - Oráculo, Difusor y Visualización de Grover Q
+# Cell 7: Code - Oracle, Diffuser and Grover Q Visualization
 # -------------------------------------------------------------
 c7_code = r"""def synthesize_quantum_oracle(target_qubits, num_state_qubits, ancilla_reg):
     """ + '"""Sintetiza el oráculo cuántico S_chi de inversión de fase."""' + r"""
@@ -234,12 +234,12 @@ def build_grover_operator(A_gate, oracle_gate, num_state_qubits, ancilla_reg):
     state_qubits = list(range(num_state_qubits))
     ancillas = list(range(num_state_qubits, num_state_qubits + len(ancilla_reg)))
     
-    # 1. Oráculo S_chi
+    # 1. Oracle S_chi
     qc_Q.append(oracle_gate, state_qubits + ancillas)
-    # 2. Deshacer A: A^dagger
+    # 2. Undo A: A^dagger
     qc_Q.append(A_gate.inverse(), state_qubits + ancillas)
     
-    # 3. Difusor S0
+    # 3. Diffuser S0
     qc_Q.x(state_qubits)
     kickback_qubit = ancillas[-1]
     qc_Q.x(kickback_qubit)
@@ -252,7 +252,7 @@ def build_grover_operator(A_gate, oracle_gate, num_state_qubits, ancilla_reg):
     qc_Q.x(kickback_qubit)
     qc_Q.x(state_qubits)
     
-    # 4. Reaplicar A
+    # 4. Reapply A
     qc_Q.append(A_gate, state_qubits + ancillas)
     
     Q_gate = qc_Q.to_gate()
@@ -261,12 +261,12 @@ def build_grover_operator(A_gate, oracle_gate, num_state_qubits, ancilla_reg):
 
 oracle_gate, qc_oracle = synthesize_quantum_oracle([8], num_state_qubits, reg_A)
 Q_gate, qc_Q_circuit = build_grover_operator(A_gate, oracle_gate, num_state_qubits, reg_A)
-print("✓ Oráculo y Operador de Grover construidos.")
+print("✓ Oracle and Grover Operator constructed.")
 
-# Visualización Gráfica del Operador de Grover Q
-print("Generando visualización gráfica de la arquitectura del Operador de Grover Q...")
+# Graphical Visualization of the Grover Operator Q
+print("Generating graphical visualization of Grover Operator Q architecture...")
 fig_Q = qc_Q_circuit.draw('mpl', style='iqp')
-plt.title("Operador de Grover Monolítico Q (-A S0 A^† S_chi)", fontsize=13, pad=12, fontweight='bold')
+plt.title("Monolithic Grover Operator Q (-A S0 A^† S_chi)", fontsize=13, pad=12, fontweight='bold')
 plt.tight_layout()
 plt.savefig(os.path.join(fig_circuit_dir, 'circuito_operador_grover.png'), dpi=300, bbox_inches='tight')
 plt.show()
@@ -287,7 +287,7 @@ El circuito maestro conecta los tres registros cuánticos:
 4. **Medición:** Se leen los qubits de `reg_E` en el registro clásico `reg_C`."""
 
 # -------------------------------------------------------------
-# Celda 9: Código - Ensamblado, Transpilación y Visualización QAE Maestro
+# Cell 9: Code - Master QAE Assembly, Transpilation and Visualization
 # -------------------------------------------------------------
 c9_code = r"""def synthesize_full_qae(qc, Q_gate, eval_reg, state_reg, ancilla_reg, class_reg):
     """ + '"""Ensambla el circuito QAE completo con cascada controlada e IQFT."""' + r"""
@@ -311,17 +311,17 @@ c9_code = r"""def synthesize_full_qae(qc, Q_gate, eval_reg, state_reg, ancilla_r
 synthesize_full_qae(master_circuit, Q_gate, reg_E, reg_S, reg_A, reg_C)
 print(f"✓ Circuito maestro ensamblado. Profundidad abstracta: {master_circuit.depth()}")
 
-# Visualización Gráfica del Circuito Maestro QAE
-print("Generando visualización gráfica de alto nivel del Circuito Maestro QAE...")
+# Graphical Visualization of the Master QAE Circuit
+print("Generating high-level graphical visualization of the QAE Master Circuit...")
 fig_master = master_circuit.draw('mpl', style='iqp', fold=35)
-plt.title("Circuito Maestro QAE Canónico Completo (H^⊗nE + C-Q^2^j + IQFT + Medición)", fontsize=13, pad=12, fontweight='bold')
+plt.title("Complete Canonical QAE Master Circuit (H^⊗nE + C-Q^2^j + IQFT + Measurement)", fontsize=13, pad=12, fontweight='bold')
 plt.tight_layout()
 plt.savefig(os.path.join(fig_circuit_dir, 'circuito_qae_maestro.png'), dpi=300, bbox_inches='tight')
 plt.show()
 print(f"✓ Diagrama guardado en '{fig_circuit_dir}/circuito_qae_maestro.png'.")
 
-# Transpilación
-print("\nTranspilando circuito maestro para AerSimulator (descomposición en puertas nativas)...")
+# Transpilation
+print("\nTranspiling master circuit for AerSimulator (native gate decomposition)...")
 compiled_circuit = transpile(master_circuit, ideal_backend, optimization_level=1)
 print(f"✓ Profundidad del circuito compilado : {compiled_circuit.depth():,}")
 print(f"✓ Total de puertas básicas compiladas: {compiled_circuit.size():,}")"""
@@ -335,7 +335,7 @@ Se ejecuta la simulación con **2048 disparos (shots)** utilizando el método `s
 La salida genera la distribución espectral sobre los $2^{n_E} = 32$ posibles estados base del registro de evaluación `reg_E`."""
 
 # -------------------------------------------------------------
-# Celda 11: Código - Ejecución Simulación (4.3.7)
+# Cell 11: Code - Simulation Execution (4.3.7)
 # -------------------------------------------------------------
 c11_code = r"""shots = 2048
 print(f"Ejecutando simulación cuántica con {shots} shots...")
@@ -346,7 +346,7 @@ counts = result.get_counts(compiled_circuit)
 sorted_counts = sorted(counts.items(), key=lambda item: item[1], reverse=True)
 
 print("="*65)
-print(" RESULTADOS DE MEDICIÓN DEL REGISTRO DE EVALUACIÓN")
+print(" EVALUATION REGISTER MEASUREMENT RESULTS")
 print("="*65)
 print(f"{'Bitstring':<12} | {'Decimal y':<10} | {'Disparos (Shots)':<18} | {'Frecuencia (%)':<15}")
 print("-" * 65)
@@ -371,7 +371,7 @@ En QAE ideal, la distribución de mediciones exhibe **dos picos simétricos conj
 Ambos conducen a la misma estimación física de amplitud gracias a la paridad de la función: $\\sin^2(\\pi - \\theta) = \\sin^2(\\theta)$."""
 
 # -------------------------------------------------------------
-# Celda 13: Código - Espectro y Visualización
+# Cell 13: Code - Spectrum and Visualization
 # -------------------------------------------------------------
 c13_code = r"""print("="*80)
 print(f" TABLA ESPECTRAL QAE: EXTRACCIÓN DE PROBABILIDAD (n_E = {num_eval_qubits})")
@@ -442,7 +442,7 @@ $$\\text{Profundidad Estimada} \\approx (2^{n_E} - 1) \\times 1.200 \\text{ puer
 Esta conclusión matemática justifica la necesidad de explorar variantes modernas que eliminen la IQFT (como **Iterative QAE - IQAE**), tal y como se discute en las futuras líneas de trabajo."""
 
 # -------------------------------------------------------------
-# Celda 15: Código - Gráfica Trade-off Resolución vs Profundidad
+# Cell 15: Code - Resolution vs Depth Trade-off Graph
 # -------------------------------------------------------------
 c15_code = r"""n_E_range = np.arange(3, 11)
 angular_resolution = np.pi / (2 ** n_E_range)
@@ -472,7 +472,7 @@ lines = line1 + line2 + [ax2.get_lines()[-1]]
 labels = [l.get_label() for l in lines]
 ax1.legend(lines, labels, loc='center right', frameon=True, fontsize=10)
 
-plt.title('Compromiso Teórico QAE Canónico: Resolución de Fase vs. Profundidad Cuántica', fontsize=13, fontweight='bold')
+plt.title('Canonical QAE Theoretical Trade-off: Phase Resolution vs. Quantum Depth', fontsize=13, fontweight='bold')
 plt.tight_layout()
 plt.savefig(os.path.join(fig_results_dir, 'figura_qae_tradeoff_nisq.png'), dpi=300)
 plt.show()
@@ -488,7 +488,7 @@ c16_md = """## 8. Conclusiones del Entregable 02 para la Memoria del TFM
 2. **Superación del Límite Clásico:** QAE demuestra una tasa de convergencia cuadrática asintótica $\\mathcal{O}(1/M_q)$, validando el potencial cuántico para estimar probabilidades exoplanetarias sin el estancamiento $\\mathcal{O}(1/\\sqrt{M})$ de MCMC.
 3. **El Desafío de la Era NISQ:** La profundidad de $\\sim 43.000$ puertas requerida para $n_E = 5$ confirma que el QAE canónico basado en QFT es un algoritmo exigente que en procesadores físicos ruidosos se degradaría severamente. Esto sienta las bases para el **Entregable 03 (Simulación con Modelos de Ruido)** y la futura investigación en **IQAE**."""
 
-# Ensamblar todas las celdas
+# Assemble all cells
 nb.cells = [
     nbformat.v4.new_markdown_cell(c1_md),
     nbformat.v4.new_markdown_cell(c2_md),

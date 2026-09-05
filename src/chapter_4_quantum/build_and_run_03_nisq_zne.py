@@ -66,7 +66,7 @@ En procesadores cuánticos superconductores basados en transmones (como los chip
 Durante la dispersión reflectométrica de la cavidad de lectura, el ruido térmico puede invertir el bit clásico medido: asimetría en las probabilidades de error $P(0|1) \\approx 1.5\\%$ y $P(1|0) \\approx 1.0\\%$."""
 
 # -------------------------------------------------------------
-# Celda 3: Código - Configuración de Ruido NISQ
+# Cell 3: Code - NISQ Noise Configuration
 # -------------------------------------------------------------
 c3_code = r"""import os
 import warnings
@@ -77,19 +77,19 @@ from qiskit_aer import AerSimulator
 from qiskit_aer.noise import NoiseModel, thermal_relaxation_error, depolarizing_error, ReadoutError
 import matplotlib.pyplot as plt
 
-# 1. Parámetros físicos calibrados según métricas de procesadores IBM Quantum (Sección 4.4.1)
-t1 = 150e-6        # T1 = 150 microsegundos
-t2 = 120e-6        # T2 = 120 microsegundos
-time_u = 35e-9     # Duración de puerta de 1-qubit: 35 ns
-time_cx = 300e-9   # Duración de puerta CNOT de 2-qubits: 300 ns
+# 1. Physical parameters calibrated according to IBM Quantum processor metrics (Section 4.4.1)
+t1 = 150e-6        # T1 = 150 microseconds
+t2 = 120e-6        # T2 = 120 microseconds
+time_u = 35e-9     # 1-qubit gate duration: 35 ns
+time_cx = 300e-9   # 2-qubit CNOT gate duration: 300 ns
 
-prob_dep_1q = 0.0008  # Tasa de despolarización de 1-qubit (0.08%)
-prob_dep_2q = 0.0120  # Tasa de despolarización de 2-qubits (1.20%)
+prob_dep_1q = 0.0008  # 1-qubit depolarization rate (0.08%)
+prob_dep_2q = 0.0120  # 2-qubit depolarization rate (1.20%)
 
-prob_ro_01 = 0.015    # P(leer 1 | estado es 0)
-prob_ro_10 = 0.010    # P(leer 0 | estado es 1)
+prob_ro_01 = 0.015    # P(read 1 | state is 0)
+prob_ro_10 = 0.010    # P(read 0 | state is 1)
 
-# 2. Canales termodinámicos y de despolarización
+# 2. Thermodynamic and depolarization channels
 thermal_u = thermal_relaxation_error(t1, t2, time_u)
 thermal_cx = thermal_relaxation_error(t1, t2, time_cx).expand(
              thermal_relaxation_error(t1, t2, time_cx))
@@ -100,11 +100,11 @@ depol_cx = depolarizing_error(prob_dep_2q, 2)
 error_u = thermal_u.compose(depol_u)
 error_cx = thermal_cx.compose(depol_cx)
 
-# Error de lectura (Readout / Measurement)
+# Readout Error
 readout_err = ReadoutError([[1.0 - prob_ro_01, prob_ro_01],
                             [prob_ro_10, 1.0 - prob_ro_10]])
 
-# 3. Construcción del NoiseModel completo
+# 3. Construction of the complete NoiseModel
 nisq_noise_model = NoiseModel()
 nisq_noise_model.add_all_qubit_quantum_error(error_u, ['u1', 'u2', 'u3', 'h', 'ry', 'x', 'z', 'rz', 'sx'])
 nisq_noise_model.add_all_qubit_quantum_error(error_cx, ['cx', 'cz'])
@@ -114,14 +114,14 @@ noisy_backend = AerSimulator(noise_model=nisq_noise_model)
 ideal_backend = AerSimulator(method='statevector')
 
 print("="*65)
-print(" MODELO DE RUIDO NISQ CONFIGURADO (Parámetros IBM Quantum)")
+print(" CONFIGURED NISQ NOISE MODEL (IBM Quantum Parameters)")
 print("="*65)
 print(f" Tiempo de relajación longitudinal T1 : {t1*1e6:.1f} us")
 print(f" Tiempo de desfasamiento transversal T2: {t2*1e6:.1f} us")
 print(f" Duración de puertas (1Q / 2Q)        : {time_u*1e9:.0f} ns / {time_cx*1e9:.0f} ns")
 print(f" Tasa de despolarización CNOT         : {prob_dep_2q*100:.2f}%")
 print(f" Error medio de lectura (Readout)     : {(prob_ro_01+prob_ro_10)/2*100:.2f}%")
-print(" Backend NISQ ruidoso listo para ejecución.")
+print(" Noisy NISQ backend ready for execution.")
 print("="*65)"""
 
 # -------------------------------------------------------------
@@ -142,7 +142,7 @@ Por consiguiente, para evaluar con rigor experimental el impacto del ruido y la 
 3. **Inyección y Amplificación de Grover ($\\mathcal{Q}$):** Aplicación de una iteración completa del operador $\\mathcal{Q} = -\\mathcal{A} S_0 \\mathcal{A}^\\dagger S_\\chi$, optimizado en una profundidad accesible ($\sim 80 - 150$ puertas) dentro de la frontera operativa del hardware NISQ actual."""
 
 # -------------------------------------------------------------
-# Celda 5: Código - Circuito Inferencia K2-18b y Ejecución Ideal
+# Cell 5: Code - K2-18b Inference Circuit and Ideal Execution
 # -------------------------------------------------------------
 c5_code = r"""def build_k218b_inference_kernel():
     """ + '"""Construye el núcleo de inferencia bayesiana de K2-18b con operador de Grover."""' + r"""
@@ -150,32 +150,32 @@ c5_code = r"""def build_k218b_inference_kernel():
     cr = ClassicalRegister(1, name='c_readout')
     qc = QuantumCircuit(qr, cr)
 
-    # 1. Operador A: Inferencia Bayesiana de K2-18b
-    # Nodo 0 (Estrella M, P=0.75) y Nodo 1 (Zona Habitable, P=0.20)
+    # 1. Operator A: K2-18b Bayesian Inference
+    # Node 0 (M Star, P=0.75) and Node 1 (Habitable Zone, P=0.20)
     qc.ry(2.0 * np.arcsin(np.sqrt(0.75)), qr[0])
     qc.ry(2.0 * np.arcsin(np.sqrt(0.20)), qr[1])
 
-    # Nodo 2 (Hycean): CNOT condicionada a Estrella y Zona Habitable
+    # Node 2 (Hycean): CNOT conditioned on Star and Habitable Zone
     qc.ccx(qr[0], qr[1], qr[2])
 
-    # Nodo 3 (Biomarcador): Activado por condición Hycean con rotación probabilística
+    # Node 3 (Biomarker): Activated by Hycean condition with probabilistic rotation
     qc.cry(2.0 * np.arcsin(np.sqrt(0.40)), qr[2], qr[3])
 
-    # 2. Oráculo S_chi: Marca el estado de biomarcador detectado en q3 usando ancilla q4
+    # 2. Oracle S_chi: Marks the detected biomarker state in q3 using ancilla q4
     qc.x(qr[4])
     qc.h(qr[4])
     qc.cx(qr[3], qr[4])  # Phase kickback (-1)
     qc.h(qr[4])
     qc.x(qr[4])
 
-    # 3. Difusor S_0: Reflexión sobre el estado cero
+    # 3. Diffuser S_0: Reflection about the zero state
     qc.x([qr[0], qr[1], qr[2], qr[3]])
     qc.h(qr[3])
     qc.mcx([qr[0], qr[1], qr[2]], qr[3])
     qc.h(qr[3])
     qc.x([qr[0], qr[1], qr[2], qr[3]])
 
-    # Medición del estado del biomarcador
+    # Measurement of the biomarker state
     qc.measure(qr[3], cr[0])
     return qc
 
@@ -186,13 +186,13 @@ shots_eval = 8192
 job_ideal = ideal_backend.run(compiled_ideal, shots=shots_eval)
 counts_ideal = job_ideal.result().get_counts()
 
-# Probabilidad ideal de detectar el biomarcador (estado '1')
+# Ideal probability of detecting the biomarker (state '1')
 p_ideal = counts_ideal.get('1', 0) / shots_eval
-# Valor esperado del observable Pauli Z: <Z> = P(0) - P(1)
+# Expected value of Pauli Z observable: <Z> = P(0) - P(1)
 exp_val_ideal = (counts_ideal.get('0', 0) - counts_ideal.get('1', 0)) / shots_eval
 
 print("="*65)
-print(" LÍNEA BASE IDEAL (GROUND TRUTH SIN RUIDO)")
+print(" IDEAL BASELINE (GROUND TRUTH WITHOUT NOISE)")
 print("="*65)
 print(f" Profundidad lógica del circuito     : {compiled_ideal.depth()} puertas")
 print(f" Total de operaciones elementales    : {compiled_ideal.size()} puertas")
@@ -201,8 +201,8 @@ print(f" Probabilidad Ideal P(Biomarcador=1) : {p_ideal:.6f} ({p_ideal*100:.2f}%
 print(f" Valor Esperado Ideal <Z>            : {exp_val_ideal:.6f}")
 print("="*65)
 
-# Visualización gráfica del circuito de inferencia
-print("\nGenerando diagrama gráfico del circuito base de inferencia...")
+# Graphical visualization of the inference circuit
+print("\nGenerating graphical diagram of the base inference circuit...")
 fig_base = qc_base.draw('mpl')
 fig_circuit_dir = os.path.join('..', 'figures', 'circuits') if os.path.exists('../figures') else (
                   os.path.join('figures', 'circuits') if os.path.exists('figures') else '.')
@@ -224,7 +224,7 @@ $$\\langle Z \\rangle_{\\text{ruidoso}} \\approx \\langle Z \\rangle_{\\text{ide
 A medida que la coherencia se degrada, el registro tiende hacia la distribución maximalmente mezclada $\\rho \\to \\frac{I}{2}$, provocando que la probabilidad estimada se distorsione y pierda significación física."""
 
 # -------------------------------------------------------------
-# Celda 7: Código - Ejecución Ruidosa No Mitigada
+# Cell 7: Code - Unmitigated Noisy Execution
 # -------------------------------------------------------------
 c7_code = r"""compiled_noisy = transpile(qc_base, noisy_backend, optimization_level=1)
 
@@ -238,13 +238,13 @@ abs_error_unmitigated = abs(p_noisy - p_ideal)
 rel_error_unmitigated = (abs_error_unmitigated / p_ideal) * 100.0
 
 print("="*65)
-print(" EJECUCIÓN RUIDOSA NISQ (SIN MITIGACIÓN)")
+print(" NOISY NISQ EXECUTION (WITHOUT MITIGATION)")
 print("="*65)
 print(f" Cuentas Ruidosas (8192 shots)        : {counts_noisy}")
 print(f" Probabilidad Ruidosa P(Biomarcador=1): {p_noisy:.6f} ({p_noisy*100:.2f}%)")
 print(f" Valor Esperado Ruidoso <Z>           : {exp_val_noisy:.6f}")
 print(f" Desviación Absoluta (|P_ruido - P_id|): {abs_error_unmitigated:.6f}")
-print(f" Error Relativo Inducido por Ruido    : {rel_error_unmitigated:.2f}%")
+print(f" Relative Error Inducido por Ruido    : {rel_error_unmitigated:.2f}%")
 print("="*65)"""
 
 # -------------------------------------------------------------
@@ -270,7 +270,7 @@ $$\\hat{E}_{\\text{ZNE}} = \\lim_{\\lambda \\to 0} E(\\lambda) = E_0$$
 que se resuelve de forma unívoca mediante la inversión del sistema de Vandermonde asociado a los factores de escala."""
 
 # -------------------------------------------------------------
-# Celda 9: Código - Motor ZNE Nativo y Plegado
+# Cell 9: Code - Native ZNE Engine and Folding
 # -------------------------------------------------------------
 c9_code = r"""def fold_circuit_global(circuit: QuantumCircuit, scale_factor: int) -> QuantumCircuit:
     """ + '"""Ejecuta el plegado unitario global U -> U (U^dagger U)^k donde scale_factor = 1 + 2k."""' + r"""
@@ -278,7 +278,7 @@ c9_code = r"""def fold_circuit_global(circuit: QuantumCircuit, scale_factor: int
         return circuit.copy()
     
     k = (scale_factor - 1) // 2
-    # Separar compuertas unitarias de las mediciones finales
+    # Separate unitary gates from final measurements
     qc_unitary = QuantumCircuit(*circuit.qregs)
     meas_instructions = []
     
@@ -291,7 +291,7 @@ c9_code = r"""def fold_circuit_global(circuit: QuantumCircuit, scale_factor: int
         else:
             qc_unitary.append(op, qargs, cargs)
             
-    # Construir el circuito plegado
+    # Build the folded circuit
     qc_folded = QuantumCircuit(*circuit.qregs, *circuit.cregs)
     qc_folded.compose(qc_unitary, inplace=True)
     
@@ -300,7 +300,7 @@ c9_code = r"""def fold_circuit_global(circuit: QuantumCircuit, scale_factor: int
         qc_folded.compose(inv_unitary, inplace=True)
         qc_folded.compose(qc_unitary, inplace=True)
         
-    # Reincorporar mediciones
+    # Reincorporate measurements
     for op, qargs, cargs in meas_instructions:
         qc_folded.append(op, qargs, cargs)
         
@@ -310,14 +310,14 @@ def richardson_extrapolation(scales, values):
     """ + '"""Calcula el valor extrapolado a lambda -> 0 mediante ajuste polinómico de Richardson."""' + r"""
     deg = len(scales) - 1
     coeffs = np.polyfit(scales, values, deg=deg)
-    # El valor extrapolado en lambda = 0 es el término independiente (último coeficiente)
+    # The extrapolated value at lambda = 0 is the independent term (last coefficient)
     zero_noise_val = float(coeffs[-1])
     return zero_noise_val, coeffs
 
-print("✓ Motor nativo de Global Circuit Folding y Extrapolación de Richardson listo.")
+print("✓ Native Global Circuit Folding and Richardson Extrapolation engine ready.")
 
-# Visualización gráfica de la técnica de Plegado Unitario Global (lambda = 3: U U† U)
-print("\nGenerando diagrama del circuito plegado globalmente (lambda = 3)...")
+# Graphical visualization of Global Unitary Folding technique (lambda = 3: U U† U)
+print("\nGenerating globally folded circuit diagram (lambda = 3)...")
 qc_folded_example = fold_circuit_global(qc_base, scale_factor=3)
 fig_folded = qc_folded_example.draw('mpl')
 fig_folded.suptitle("Circuito Plegado Globalmente (ZNE: Factor de Escala $\\lambda = 3$)", fontsize=11, fontweight='bold', y=0.98)
@@ -327,25 +327,25 @@ print(f"✓ Profundidad base: {qc_base.depth()} -> Profundidad plegada (lambda=3
 print(f"✓ Diagrama guardado en '{fig_circuit_dir}/circuito_nisq_plegado_lambda3.png'.")"""
 
 # -------------------------------------------------------------
-# Celda 10: Código - Experimento ZNE y Métricas
+# Cell 10: Code - ZNE Experiment and Metrics
 # -------------------------------------------------------------
-c10_code = r"""# Escala de factores de amplificación de ruido ZNE
+c10_code = r"""# ZNE noise amplification factor scale
 scale_factors = [1, 3, 5]
 zne_measured_probs = []
 zne_measured_expvals = []
 circuit_depths = []
 
 print("="*75)
-print(" EXPERIMENTO ZNE: PLEGADO UNITARIO GLOBAL Y EXTRAPOLACIÓN")
+print(" ZNE EXPERIMENT: GLOBAL UNITARY FOLDING AND EXTRAPOLATION")
 print("="*75)
 
 for scale in scale_factors:
-    # 1. Plegar circuito
+    # 1. Fold circuit
     qc_folded = fold_circuit_global(qc_base, scale)
     compiled_folded = transpile(qc_folded, noisy_backend, optimization_level=1)
     circuit_depths.append(compiled_folded.depth())
     
-    # 2. Ejecutar con ruido amplificado
+    # 2. Execute with amplified noise
     job = noisy_backend.run(compiled_folded, shots=shots_eval)
     counts = job.result().get_counts()
     
@@ -357,11 +357,11 @@ for scale in scale_factors:
     
     print(f" Factor de Escala lambda = {scale} | Profundidad: {compiled_folded.depth():<3} puertas | P(Bio=1): {p_scale:.5f} | <Z>: {expval_scale:.5f}")
 
-# 3. Extrapolación analítica de Richardson a lambda -> 0
+# 3. Analytical Richardson extrapolation to lambda -> 0
 p_zne_mitigated, coeffs_poly = richardson_extrapolation(scale_factors, zne_measured_probs)
 expval_zne_mitigated, _ = richardson_extrapolation(scale_factors, zne_measured_expvals)
 
-# Métricas de reducción de error
+# Error reduction metrics
 error_unmitigated = abs(p_noisy - p_ideal)
 error_mitigated = abs(p_zne_mitigated - p_ideal)
 gain_percentage = ((error_unmitigated - error_mitigated) / error_unmitigated) * 100.0
@@ -379,16 +379,16 @@ print("="*75)"""
 c11_md = """## 5. Sección 4.4.5: Visualizaciones Científicas de Degradación y Mitigación ZNE
 
 A continuación se generan dos figuras de calidad de publicación:
-1. **Figura 1: Degradación Espectral NISQ (Ideal vs. Ruidoso):**  
+1. **Figura 1: NISQ Spectral Degradation (Ideal vs. Ruidoso):**  
    Demuestra cómo el ruido térmico y despolarizante atúa sobre las probabilidades de los estados base, incrementando la entropía y atenuando la señal astrobiológica nítida.
-2. **Figura 2: Curva de Extrapolación de Ruido Cero (Protocolo ZNE):**  
+2. **Figura 2: Zero-Noise Extrapolation Curve (Protocolo ZNE):**  
    Ilustra los puntos de muestreo experimentales a diferentes factores de plegado ($\\lambda = 1, 3, 5$), la curva polinómica de ajuste de Richardson y la extrapolación al límite $\\lambda = 0$, contrastándola con el valor teórico ideal."""
 
 # -------------------------------------------------------------
-# Celda 12: Código - Renderizado de Figuras
+# Cell 12: Code - Figure Rendering
 # -------------------------------------------------------------
 c12_code = r"""# =====================================================================
-# FIGURA 1: DEGRADACIÓN ESPECTRAL (IDEAL VS. RUIDOSO NISQ)
+# FIGURE 1: SPECTRAL DEGRADATION (IDEAL VS. NOISY NISQ)
 # =====================================================================
 fig1, ax1 = plt.subplots(figsize=(9, 5))
 
@@ -427,27 +427,27 @@ plt.savefig(os.path.join(fig_results_dir, 'figura_nisq_degradacion_espectral.png
 plt.show()
 
 # =====================================================================
-# FIGURA 2: CURVA DE EXTRAPOLACIÓN ZNE (ZERO-NOISE EXTRAPOLATION)
+# FIGURE 2: ZNE EXTRAPOLATION CURVE
 # =====================================================================
 fig2, ax2 = plt.subplots(figsize=(10, 6))
 
-# Dominio continuo de extrapolación hacia lambda = 0
+# Continuous extrapolation domain towards lambda = 0
 lambda_dense = np.linspace(0, 5.5, 200)
 poly_fit_dense = np.polyval(coeffs_poly, lambda_dense)
 
-# Curva de ajuste de Richardson
+# Richardson fitting curve
 ax2.plot(lambda_dense, poly_fit_dense, 'k--', lw=2.2, label='Ajuste Polinómico de Richardson (Grado 2)')
 
-# Puntos de medición con ruido amplificado (plegado de circuito)
+# Measurement points with amplified noise (circuit folding)
 ax2.scatter(scale_factors, zne_measured_probs, color='crimson', s=90, zorder=5, label='Circuitos Plegados Medidos ($\lambda = 1, 3, 5$)')
 
-# Punto extrapolado en lambda = 0
+# Extrapolated point at lambda = 0
 ax2.scatter([0], [p_zne_mitigated], color='forestgreen', s=130, marker='*', zorder=6, label=f'Estimador Mitigado ZNE ($\lambda=0$): {p_zne_mitigated:.4f}')
 
-# Valor ideal de referencia (Ground Truth)
+# Ideal reference value (Ground Truth)
 ax2.axhline(y=p_ideal, color='navy', linestyle='-', lw=2, label=f'Valor Ideal Ground Truth: {p_ideal:.4f}')
 
-# Banda de error no mitigado
+# Unmitigated error band
 ax2.axhspan(p_noisy, p_ideal, color='red', alpha=0.1, label='Incertidumbre de Ruido No Mitigada')
 
 ax2.set_title('Extrapolación de Ruido Cero (ZNE) en Inferencia de K2-18b', fontsize=14, fontweight='bold')
@@ -457,7 +457,7 @@ ax2.set_xlim(-0.3, 5.8)
 ax2.grid(True, linestyle='--', alpha=0.35)
 ax2.legend(frameon=True, fontsize=10, loc='lower left')
 
-# Anotación explicativa de la ganancia
+# Explanatory annotation of the gain
 ax2.annotate(f'Recuperación ZNE:\n{gain_percentage:.1f}% de error eliminado',
              xy=(0, p_zne_mitigated), xytext=(0.8, p_zne_mitigated - 0.04),
              arrowprops=dict(arrowstyle="->", color='darkgreen', lw=1.5),
@@ -481,7 +481,7 @@ c13_md = """## 6. Sección 4.4.6: Conclusiones para la Memoria del TFM
    - **Entregable 02:** Demuestra la ventaja cuántica teórica alcanzando la convergencia cuadrática $\mathcal{O}(1/M)$ mediante QAE ideal.
    - **Entregable 03:** Demuestra la viabilidad práctica de ejecutar inferencia cuántica en procesadores ruidosos actuales mediante técnicas de mitigación de errores algorítmicas sin requerir tolerancia a fallos (FTQC)."""
 
-# Ensamblado del notebook
+# Notebook assembly
 nb.cells = [
     nbformat.v4.new_markdown_cell(c1_md),
     nbformat.v4.new_markdown_cell(c2_md),
