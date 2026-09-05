@@ -1,0 +1,14 @@
+# Core Quantum Computing Libraries
+qiskit>=1.0.0
+qiskit-aer>=0.14.0
+mitiq>=0.30.0
+
+# Classical Probabilistic & Scientific Computing
+numpy>=1.24.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+pgmpy>=0.1.23
+
+# Interactive & Research Environments
+jupyter>=1.0.0
+ipykernel>=6.20.0

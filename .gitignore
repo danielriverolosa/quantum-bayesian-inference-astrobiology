@@ -1,0 +1,90 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[codz]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Jupyter & Data Science caches
+.ipynb_checkpoints/
+.matplotlib/
+.qiskit/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# LaTeX compilation artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.snippet.tmp
+*.nav
+*.snm
+*.vrb
+*.ptc
+*.xdv
+*.upa
+*.upb
+*.ent
+_minted*
+*.pyg
+
+# Build PDFs inside source directory (keep thesis_pdf/ tracked)
+thesis/*.pdf
+
+# Cache and scratch directories
+cache/
+scratch/
+debugging/
+tmp/
+
+# Private internal preparation, tribunal notes and AI assistant instructions
+docs/
+.agents/
+GEMINI.md
