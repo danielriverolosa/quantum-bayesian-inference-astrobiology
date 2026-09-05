@@ -25,7 +25,7 @@ The topological layout is organized across three hierarchical causal tiers:
         \item $X_4 \in \{0, 1\}$: Atmospheric methane absorption at $1.4\,\mu\mathrm{m}$, $2.3\,\mu\mathrm{m}$, and $3.3\,\mu\mathrm{m}$ ($X_4 = 1$ denotes $>5\sigma$ spectral absorption).
         \item $X_5 \in \{0, 1\}$: Atmospheric carbon dioxide absorption at $2.7\,\mu\mathrm{m}$ and $4.3\,\mu\mathrm{m}$ ($X_5 = 1$ denotes $\sim 3\sigma$ spectral absorption).
         \item $X_6 \in \{0, 1\}$: Tropospheric water vapor absorption at $1.4\,\mu\mathrm{m}$ ($X_6 = 1$ denotes detected absorption).
-        \item $X_7 \in \{0, 1\}$: Volatile organosulfur biosignature (dimethyl sulfide, $\mathrm{DMS}$, $\mathrm{C}_2\mathrm{H}_6\mathrm{S}$).
+        \item $X_7 \in \{0, 1\}$: Tentative volatile organosulfur biosignature candidate (dimethyl sulfide, $\mathrm{DMS}$, $\mathrm{C}_2\mathrm{H}_6\mathrm{S}$).
         \item $X_8 \in \{0, 1\}$: Industrial synthetic halocarbon technosignature (Freon-12, $\mathrm{CF}_2\mathrm{Cl}_2$).
     \end{itemize}
 \end{enumerate}
@@ -175,7 +175,7 @@ $1$ & $0.9500$ & $0.0500$ \\
 \bottomrule
 \end{tabular}
 \end{table}
-\textbf{Biogeochemical Rationale:} Dimethyl sulfide ($\mathrm{CH}_3\mathrm{SCH}_3$) is produced on Earth by marine organisms through the enzymatic cleavage of dimethylsulfoniopropionate (DMSP). In an active marine biosphere ($X_3=1$), DMS can accumulate to detectable levels ($P = 0.05$). In the absence of biology ($X_3=0$), abiotic photochemical synthesis pathways are exceedingly inefficient, yielding an infinitesimal false-positive rate of $10^{-4}$ ($0.01\%$).
+\textbf{Biogeochemical Rationale:} Dimethyl sulfide ($\mathrm{CH}_3\mathrm{SCH}_3$) is produced on Earth by marine organisms through the enzymatic cleavage of dimethylsulfoniopropionate (DMSP). In an active marine biosphere ($X_3=1$), DMS can accumulate to detectable levels ($P = 0.05$). In the absence of biology ($X_3=0$), abiotic photochemical synthesis pathways are exceedingly inefficient, yielding an infinitesimal false-positive rate of $10^{-4}$ ($0.01\%$). While tentatively reported in K2-18b by Madhusudhan et al.~\cite{madhusudhan2023}, this feature remains subject to ongoing debate in the astrobiological community and requires confirmation through future high-precision spectroscopic passes.
 
 \subsection{Node $X_8$: Industrial Chlorofluorocarbon ($\mathrm{CFC}$) Technosignature}
 \begin{table}[htbp]
@@ -219,3 +219,6 @@ P(X_7 = 1 \mid \mathbf{e}) &= \frac{P(X_7 = 1, \mathbf{e})}{P(\mathbf{e})} = \ma
 P(X_8 = 1 \mid \mathbf{e}) &= \frac{P(X_8 = 1, \mathbf{e})}{P(\mathbf{e})} = \mathbf{5.130310 \times 10^{-6}}.
 \end{align}
 These exact analytical values represent the ground-truth benchmark evaluated in Chapter \ref{chap:classical_limits} and Chapter \ref{chap:system_architecture}.
+
+\subsection{Methodological Invariance of Algorithmic Complexity}\label{subsec:app_algorithmic_invariance}
+It is essential to emphasize that the foundational conclusions of this thesis—specifically, the exponential spatial compression $\mathcal{O}(N)$ achieved via Amplitude Encoding and the quadratic Heisenberg speedup $\mathcal{O}(1/M)$ demonstrated by QAE—are intrinsic mathematical properties of the quantum circuit topology and unitary reflection dynamics. While the numerical probabilities defined in Tables \ref{tab:cpt_x0}--\ref{tab:cpt_x8} reflect physically grounded astrophysical and photochemical priors for K2-18b, the algorithmic speedups and variance stabilization over classical MCMC are strictly invariant to the specific scalar entries of the CPTs, holding universally for any sparse causal Bayesian network.
