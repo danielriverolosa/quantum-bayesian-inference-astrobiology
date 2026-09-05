@@ -25,7 +25,7 @@ The central computational objective of astrobiological characterization is the e
     \begin{equation}
     \mathrm{RE}(\hat{p}_M) = \sqrt{\frac{1-p}{M \cdot p}} \xrightarrow{p \to 0} \infty.
     \end{equation}
-    When conditioning on real JWST evidence, $91.28\%$ of generated states were rejected. For the ultra-rare industrial technosignature ($p = 10^{-6}$), MCMC recorded zero detections across $100,000$ steps due to Kac's recurrence trap ($\mathbb{E}[\tau_{\mathrm{return}}] \approx 10^6$ steps), producing unscientific false-negative certainty. Achieving a $5\%$ error tolerance classically requires $M \ge 4 \times 10^8$ planetary simulations, creating an intractable temporal barrier.
+    When conditioning on real JWST evidence, $90.42\%$ of generated states were rejected. For the ultra-rare industrial technosignature ($p = 10^{-6}$), MCMC recorded zero detections across $100,000$ steps due to Kac's recurrence trap ($\mathbb{E}[\tau_{\mathrm{return}}] \approx 10^6$ steps), producing unscientific false-negative certainty. Achieving a $5\%$ error tolerance classically requires $M \ge 4 \times 10^8$ planetary simulations, creating an intractable temporal barrier.
     
     \item \textbf{The Canonical Quantum Horizon (FTQC Blueprint):} By mapping the joint probability distribution into complex probability amplitudes via Amplitude Encoding \cite{low2014}, Quantum Bayesian Networks achieve an exponential spatial compression, storing $2^N$ configurations in an $N$-qubit register ($\mathcal{O}(N)$ scaling). Furthermore, because astrobiological DAGs have bounded in-degrees ($k_{\max} \le 3$), state preparation avoids unitary synthesis blowup, scaling strictly as $\mathcal{O}(N \cdot 2^{k_{\max}})$. 
     
@@ -69,7 +69,7 @@ Table \ref{tab:global_comparative_synthesis} provides a comprehensive synthesis 
 \notatfm{\textbf{Quantization Dynamics:} Finite evaluation registers divide phase into discrete steps $\Delta\theta = \pi/2^{n_E}$, concentrating probability onto boundary basis states.}
 A critical analytical finding of Chapter \ref{chap:system_architecture} is the phenomenon of \emph{Phase Quantization} observed during ideal statevector simulation. With $n_E = 5$ precision qubits, the evaluation register discretizes the phase circle $[0, \pi)$ into $M = 32$ bins of width $\Delta\theta = \pi/32 \approx 0.0982\,\mathrm{rad}$. Because the geometric phase angle of an ultra-rare technosignature ($a = 10^{-6}$) is $\theta_a = \arcsin(\sqrt{10^{-6}}) \approx 0.0010\,\mathrm{rad}$, it falls strictly within the sub-resolution interval $[0, \Delta\theta)$.
 
-Under finite-shot execution ($N_{\mathrm{shots}} = 2,048$), this induces the measurement distribution depicted in Figure \ref{fig:qae_ideal_spectrum}: $79.8\%$ of shots concentrate in $\ket{00000}$ ($y=0$), while $20.2\%$ appear at the complex conjugate Grover eigenvalue $\ket{10000}$ ($y=16$). This distribution closely tracks the analytical lower bound established by Brassard et al.~(2002) \cite{brassard2002}:
+Under finite-shot execution ($N_{\mathrm{shots}} = 2,048$), this induces the measurement distribution depicted in Figure \ref{fig:qae_ideal_spectrum}: $80.22\%$ of shots concentrate in $\ket{00000}$ ($y=0$), while $19.78\%$ appear at the complex conjugate Grover eigenvalue $\ket{10000}$ ($y=16$). This distribution closely tracks the analytical lower bound established by Brassard et al.~(2002) \cite{brassard2002}:
 \begin{equation}
 P(\ket{0}^{\otimes n_E}) \ge \frac{8}{\pi^2} \approx 81.1\%.
 \end{equation}
@@ -131,7 +131,7 @@ The five secondary methodological objectives established in Section \ref{sec:the
 \subsubsection{Sub-Goal 1: Astrobiological DAG Modeling and Prior Translation}
 \begin{itemize}
     \item \textbf{Target:} Formulate a topologically sound 9-node causal Bayesian Network representing the atmosphere of the habitable-zone sub-Neptune K2-18b. Translate spectroscopic priors extracted from JWST observations \cite{madhusudhan2023} into mathematically normalized Conditional Probability Tables (CPTs).
-    \item \textbf{Implementation \& Evidence:} Realized in Section \ref{sec:k218b_framework} and implemented classically via \texttt{pgmpy} in \texttt{src/chapter\_2\_classical/01\_Classical\_Limits\_K218b.ipynb}. The DAG models nine distinct physical and biophysical variables: Stellar Type ($S$), Stellar UV Activity ($U$), Planetary Metallicity ($Z$), Habitable Zone Orbit ($H$), Atmospheric Water Ocean ($O$), Carbon Chemistry ($\mathrm{CH}_4/\mathrm{CO}_2$), Volatile Biosignature ($\mathrm{DMS}$), False-Positive Volcanic Baseline ($V$), and Industrial Technosignature ($T$). Marginal priors were mapped to rotation angles $\theta = 2 \arccos(\sqrt{p})$, ensuring exact statevector normalization $\sum_i |c_i|^2 = 1$.
+    \item \textbf{Implementation \& Evidence:} Realized in Section \ref{sec:k218b_framework} and implemented classically via \texttt{pgmpy} in \texttt{src/chapter\_2\_classical/01\_Classical\_Limits\_K218b.ipynb}. The DAG models nine distinct physical and biophysical variables: Stellar M-Dwarf ($X_0$), Orbital Habitable Zone ($X_1$), Hycean Planetary Regime ($X_2$), Active Marine Biosphere ($X_3$), Spectroscopic $\mathrm{CH}_4$ ($X_4$), Spectroscopic $\mathrm{CO}_2$ ($X_5$), Spectroscopic $\mathrm{H}_2\mathrm{O}$ ($X_6$), Biogenic $\mathrm{DMS}$ ($X_7$), and Industrial $\mathrm{CFC}$ Technosignature ($X_8$). Marginal priors were mapped to rotation angles $\theta = 2 \arcsin(\sqrt{p})$, ensuring exact statevector normalization $\sum_i |c_i|^2 = 1$.
     \item \textbf{Status:} \textbf{Fully Achieved.}
 \end{itemize}
 
@@ -166,7 +166,7 @@ The five secondary methodological objectives established in Section \ref{sec:the
     \item \textbf{Target:} Construct a rigorous classical benchmark suite using \texttt{pgmpy}, NumPy, and SciPy to execute exact Junction Tree inference and stochastic MCMC Gibbs sampling on the K2-18b network. Empirically quantify the memory limits, convergence rates, and relative error divergence of the classical baseline against the quantum QAE implementation.
     \item \textbf{Implementation \& Evidence:} Realized in Section \ref{sec:empirical_classical_benchmark} and supported by \texttt{src/chapter\_2\_classical/build\_and\_run\_01\_classical.py}. The benchmark demonstrated that:
     \begin{enumerate}
-        \item When conditioning on real JWST evidence, classical Rejection Sampling rejected $91.28\%$ of drawn planetary samples, rendering posterior estimation computationally wasteful.
+        \item When conditioning on real JWST evidence, classical Rejection Sampling rejected $90.42\%$ of drawn planetary samples, rendering posterior estimation computationally wasteful.
         \item For ultra-rare technosignatures ($p = 10^{-6}$), MCMC Gibbs sampling yielded zero positive samples across $100,000$ steps due to Kac's recurrence trap ($\mathbb{E}[\tau] \approx 10^6$ steps), producing unscientific false-negative certainty.
         \item The exact Junction Tree algorithm confirmed exponential spatial blowup $\mathcal{O}(N \cdot d^{w+1})$ as network treewidth grew, establishing the mathematical crossover point $\epsilon_{\mathrm{cross}} \approx 1.57 \times 10^{-3}$ where QAE provides definitive asymptotic superiority.
     \end{enumerate}
@@ -181,22 +181,22 @@ Table \ref{tab:objectives_fulfillment_matrix} presents the consolidated verifica
 \label{tab:objectives_fulfillment_matrix}
 \begin{adjustbox}{max width=\textwidth}
 \small
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{>{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{4.8cm} >{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{3.0cm} c}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.7cm} >{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{3.8cm} >{\raggedright\arraybackslash}p{3.2cm} c}
 \toprule
 \textbf{Thesis Objective} & \textbf{Methodological Target} & \textbf{Codebase Artifact} & \textbf{Validation Metric} & \textbf{Status} \\
 \midrule
-\textbf{Primary Objective} \newline {\scriptsize (End-to-End Pipeline)} & Hybrid QBN--QAE inference on exoplanet K2-18b with quadratic speedup & \texttt{02\_QAE\_Ideal\_Simulation} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & $\mathcal{O}(1/M)$ Heisenberg scaling ($M \sim 10^4$ vs $10^8$) & \textbf{Verified} \\
+\textbf{Primary Objective} \newline {\scriptsize (End-to-End Pipeline)} & Hybrid QBN--QAE inference on exoplanet K2-18b with quadratic speedup & {\footnotesize \texttt{02\_QAE\_Ideal\_}} \newline {\footnotesize \texttt{Simulation.ipynb}} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & $\mathcal{O}(1/M)$ Heisenberg \newline scaling ($M \sim 10^4$ vs $10^8$) & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 1} \newline {\scriptsize (Astrobiological DAG)} & 9-node causal DAG translated from JWST K2-18b transmission spectra & \texttt{01\_Classical\_Limits} \newline {\scriptsize \texttt{src/chapter\_2\_classical/}} & Normalized CPTs, \newline 9 physical nodes & \textbf{Verified} \\
+\textbf{Sub-Goal 1} \newline {\scriptsize (Astrobiological DAG)} & 9-node causal DAG translated from JWST K2-18b transmission spectra & {\footnotesize \texttt{01\_Classical\_Limits\_}} \newline {\footnotesize \texttt{K218b.ipynb}} \newline {\scriptsize \texttt{src/chapter\_2\_classical/}} & Normalized CPTs, \newline 9 physical nodes & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 2} \newline {\scriptsize (17-Qubit Topology)} & Unified register allocation: $n_E = 5$, $n_S = 9$, $n_A = 3$ qubits & \texttt{build\_and\_run\_02} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & $32$ phase bins, \newline 31 Grover iterates & \textbf{Verified} \\
+\textbf{Sub-Goal 2} \newline {\scriptsize (17-Qubit Topology)} & Unified register allocation: $n_E = 5$, $n_S = 9$, $n_A = 3$ qubits & {\footnotesize \texttt{build\_and\_run\_02\_}} \newline {\footnotesize \texttt{qae\_ideal.py}} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & $32$ phase bins, \newline 31 Grover iterates & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 3} \newline {\scriptsize (Unitary Compilation)} & Pure unitary compilation without barriers via \texttt{.to\_gate()}, $S_\chi$, $S_0$ & \texttt{build\_and\_run\_02} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & Invariant 2D rotation, \newline Zero barrier defects & \textbf{Verified} \\
+\textbf{Sub-Goal 3} \newline {\scriptsize (Unitary Compilation)} & Pure unitary compilation without barriers via \texttt{.to\_gate()}, $S_\chi$, $S_0$ & {\footnotesize \texttt{build\_and\_run\_02\_}} \newline {\footnotesize \texttt{qae\_ideal.py}} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & Invariant 2D rotation, \newline Zero barrier defects & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 4} \newline {\scriptsize (NISQ Noise \& ZNE)} & Calibrated IBM noise simulation and ZNE error mitigation via Mitiq & \texttt{03\_NISQ\_ZNE\_Mitigation} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & $86.44\%$ noise recovery, \newline $\lambda \in \{1, 3, 5\}$ folding & \textbf{Verified} \\
+\textbf{Sub-Goal 4} \newline {\scriptsize (NISQ Noise \& ZNE)} & Calibrated IBM noise simulation and ZNE error mitigation via Mitiq & {\footnotesize \texttt{03\_NISQ\_ZNE\_}} \newline {\footnotesize \texttt{Mitigation.ipynb}} \newline {\scriptsize \texttt{src/chapter\_4\_quantum/}} & $86.44\%$ noise recovery, \newline $\lambda \in \{1, 3, 5\}$ folding & \textbf{Verified} \\
 \midrule
-\textbf{Sub-Goal 5} \newline {\scriptsize (Classical Benchmark)} & Empirical baseline in \texttt{pgmpy}: JT memory limits and MCMC variance & \texttt{build\_and\_run\_01} \newline {\scriptsize \texttt{src/chapter\_2\_classical/}} & $90.42\%$ rejection, \newline $\mathrm{RE} \to \infty$ at $p=10^{-6}$ & \textbf{Verified} \\
+\textbf{Sub-Goal 5} \newline {\scriptsize (Classical Benchmark)} & Empirical baseline in \texttt{pgmpy}: JT memory limits and MCMC variance & {\footnotesize \texttt{build\_and\_run\_01\_}} \newline {\footnotesize \texttt{classical.py}} \newline {\scriptsize \texttt{src/chapter\_2\_classical/}} & $90.42\%$ rejection, \newline $\mathrm{RE} \to \infty$ at $p=10^{-6}$ & \textbf{Verified} \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -303,7 +303,7 @@ State-of-the-art exoplanetary atmospheric retrieval tools such as \texttt{petitR
 We envision an automated bidirectional software interface:
 \begin{enumerate}
     \item \textbf{Continuous Ingestion \& Adaptive Discretization:} The wrapper ingests continuous posterior chains produced by \texttt{petitRADTRANS}, computing optimal partition boundaries via entropy-maximizing discretization. This minimizes information loss while mapping continuous marginals into discrete Bayesian network states (e.g., classifying $\log X_{\mathrm{CH}_4}$ into low, nominal, or hyper-abundant regimes).
-    \item \textbf{Unitary Parameter Injection:} The discretized marginals are translated dynamically into rotation angles $\theta = 2 \arccos(\sqrt{p})$, re-parameterizing the state preparation circuit $\mathcal{A}(\mathbf{e})$ without manual re-compilation.
+    \item \textbf{Unitary Parameter Injection:} The discretized marginals are translated dynamically into rotation angles $\theta = 2 \arcsin(\sqrt{p})$, re-parameterizing the state preparation circuit $\mathcal{A}(\mathbf{e})$ without manual re-compilation.
     \item \textbf{Quantum Causal Arbitration:} The QBN executes QAE/IQAE to evaluate high-level hypothesis competition (e.g., verifying whether an observed $\mathrm{CO}_2$--$\mathrm{CH}_4$ ratio constitutes statistically significant evidence of a habitable ocean biosphere versus an abiotic volcanic photochemical state).
 \end{enumerate}
 This integrated pipeline will provide observational astrophysicists with an end-to-end characterization toolkit tailored for upcoming space missions, including the Habitable Worlds Observatory (HWO) and the European Extremely Large Telescope (ELT).
