@@ -1,0 +1,161 @@
+{
+  "metadata": {
+    "title": "Astrobiological Bayesian Network Prior Parameters for K2-18b",
+    "author": "Daniel Rivero Losa",
+    "supervisor": "Roberto Campos Ortiz",
+    "institution": "Universidad Antonio de Nebrija — Escuela Politécnica Superior",
+    "master_program": "Máster Universitario en Computación Cuántica",
+    "academic_year": "2025/2026",
+    "target_exoplanet": "K2-18b (EPIC 201912552 b)",
+    "thesis_reference": "Appendix A (thesis/chapters/6.appendix_cpts.tex) & Table 4.1"
+  },
+  "graph_topology": {
+    "num_nodes": 9,
+    "variable_names": [
+      "X0_Stellar_M",
+      "X1_Orbit_HZ",
+      "X2_Hycean",
+      "X3_Bio_Ocean",
+      "X4_CH4",
+      "X5_CO2",
+      "X6_H2O",
+      "X7_DMS",
+      "X8_CFC"
+    ],
+    "directed_edges": [
+      ["X0_Stellar_M", "X2_Hycean"],
+      ["X1_Orbit_HZ", "X2_Hycean"],
+      ["X1_Orbit_HZ", "X6_H2O"],
+      ["X2_Hycean", "X3_Bio_Ocean"],
+      ["X2_Hycean", "X4_CH4"],
+      ["X2_Hycean", "X5_CO2"],
+      ["X3_Bio_Ocean", "X7_DMS"],
+      ["X3_Bio_Ocean", "X8_CFC"]
+    ]
+  },
+  "conditional_probability_tables": {
+    "X0_Stellar_M": {
+      "description": "Host Star Classification: Active M2.5V dwarf star",
+      "parents": [],
+      "cardinality": 2,
+      "state_names": {"0": "Non-M-Dwarf", "1": "Active M-Dwarf"},
+      "probabilities": {
+        "P(X0=0)": 0.25,
+        "P(X0=1)": 0.75
+      },
+      "astrophysical_justification": "K2-18 is an established M2.5V dwarf (M_* = 0.495 M_sun, T_eff = 3457 K) with high prior certainty (Benneke et al. 2019)."
+    },
+    "X1_Orbit_HZ": {
+      "description": "Orbital Habitable Zone: Semi-major axis a = 0.1429 AU within conservative liquid water zone",
+      "parents": [],
+      "cardinality": 2,
+      "state_names": {"0": "Non-Habitable Orbit", "1": "Habitable Zone Orbit"},
+      "probabilities": {
+        "P(X1=0)": 0.80,
+        "P(X1=1)": 0.20
+      },
+      "astrophysical_justification": "Insolation S = 1368 W/m^2 (comparable to Earth's flux), placing the orbit in the conservative liquid water zone."
+    },
+    "X2_Hycean": {
+      "description": "Planetary Structural Regime: Hycean sub-Neptune (massive H2 envelope over global ocean mantle)",
+      "parents": ["X0_Stellar_M", "X1_Orbit_HZ"],
+      "cardinality": 2,
+      "state_names": {"0": "Rocky/Gas Giant Regime", "1": "Hycean Regime"},
+      "table": [
+        {"parents": {"X0": 0, "X1": 0}, "P(X2=0)": 0.95, "P(X2=1)": 0.05},
+        {"parents": {"X0": 0, "X1": 1}, "P(X2=0)": 0.95, "P(X2=1)": 0.05},
+        {"parents": {"X0": 1, "X1": 0}, "P(X2=0)": 0.95, "P(X2=1)": 0.05},
+        {"parents": {"X0": 1, "X1": 1}, "P(X2=0)": 0.15, "P(X2=1)": 0.85}
+      ],
+      "astrophysical_justification": "Bulk density rho = 2.67 g/cm^3 matches hydrogen-rich mantle solutions under moderate stellar irradiation (Madhusudhan et al. 2023)."
+    },
+    "X3_Bio_Ocean": {
+      "description": "Marine Biosphere: Ocean mantle sustaining active geochemical and biological recycling",
+      "parents": ["X2_Hycean"],
+      "cardinality": 2,
+      "state_names": {"0": "Abiotic Ocean", "1": "Active Marine Biosphere"},
+      "table": [
+        {"parents": {"X2": 0}, "P(X3=0)": 0.99, "P(X3=1)": 0.01},
+        {"parents": {"X2": 1}, "P(X3=0)": 0.60, "P(X3=1)": 0.40}
+      ],
+      "astrophysical_justification": "Habitable Hycean conditions permit metabolic marine biospheres with substantial probability."
+    },
+    "X4_CH4": {
+      "description": "Atmospheric Methane: Significant spectroscopic absorption (>5 sigma detection)",
+      "parents": ["X2_Hycean"],
+      "cardinality": 2,
+      "state_names": {"0": "No CH4 Feature", "1": "Detected CH4 Absorption"},
+      "table": [
+        {"parents": {"X2": 0}, "P(X4=0)": 0.85, "P(X4=1)": 0.15},
+        {"parents": {"X2": 1}, "P(X4=0)": 0.10, "P(X4=1)": 0.90}
+      ],
+      "astrophysical_justification": "JWST NIRSpec/NIRISS confirmed CH4 at 1.4, 2.3, and 3.3 um with >5 sigma confidence (Madhusudhan et al. 2023)."
+    },
+    "X5_CO2": {
+      "description": "Atmospheric Carbon Dioxide: Spectral absorption at 2.7 and 4.3 um (~3 sigma detection)",
+      "parents": ["X2_Hycean"],
+      "cardinality": 2,
+      "state_names": {"0": "No CO2 Feature", "1": "Detected CO2 Absorption"},
+      "table": [
+        {"parents": {"X2": 0}, "P(X5=0)": 0.80, "P(X5=1)": 0.20},
+        {"parents": {"X2": 1}, "P(X5=0)": 0.20, "P(X5=1)": 0.80}
+      ],
+      "astrophysical_justification": "CO2 detected by JWST at ~3 sigma; photochemical byproduct of atmospheric CO/CO2 chemistry."
+    },
+    "X6_H2O": {
+      "description": "Tropospheric Water Vapor: Absorption at 1.4 um",
+      "parents": ["X1_Orbit_HZ"],
+      "cardinality": 2,
+      "state_names": {"0": "No H2O Feature", "1": "Detected H2O Absorption"},
+      "table": [
+        {"parents": {"X1": 0}, "P(X6=0)": 0.90, "P(X6=1)": 0.10},
+        {"parents": {"X1": 1}, "P(X6=0)": 0.30, "P(X6=1)": 0.70}
+      ],
+      "astrophysical_justification": "Hubble WFC3 and JWST data constrain tropospheric water vapor presence in the habitable zone (Benneke et al. 2019)."
+    },
+    "X7_DMS": {
+      "description": "Volatile Organosulfur Biosignature: Dimethyl sulfide (CH3SCH3)",
+      "parents": ["X3_Bio_Ocean"],
+      "cardinality": 2,
+      "state_names": {"0": "No DMS", "1": "Detected DMS Biosignature"},
+      "table": [
+        {"parents": {"X3": 0}, "P(X7=0)": 0.9999, "P(X7=1)": 0.0001},
+        {"parents": {"X3": 1}, "P(X7=0)": 0.9500, "P(X7=1)": 0.0500}
+      ],
+      "astrophysical_justification": "DMS on Earth is biogenic; abiotic false positives are constrained to 10^-4."
+    },
+    "X8_CFC": {
+      "description": "Synthetic Halocarbon Technosignature: Chlorofluorocarbon (Freon-12, CF2Cl2)",
+      "parents": ["X3_Bio_Ocean"],
+      "cardinality": 2,
+      "state_names": {"0": "No CFCs", "1": "Detected Industrial CFC"},
+      "table": [
+        {"parents": {"X3": 0}, "P(X8=0)": 1.00000000, "P(X8=1)": 0.00000000},
+        {"parents": {"X3": 1}, "P(X8=0)": 0.99998689, "P(X8=1)": 0.00001310616}
+      ],
+      "astrophysical_justification": "Zero abiotic production pathways exist for CFC-12. Prior calibrated to enforce marginal prior P(X8=1) = 1.0e-6 (Lin et al. 2014, Haqq-Misra et al. 2022)."
+    }
+  },
+  "exact_analytical_marginals": {
+    "P(X0=1)": 0.750000,
+    "P(X1=1)": 0.200000,
+    "P(X2=1)": 0.170000,
+    "P(X3=1)": 0.076300,
+    "P(X4=1)": 0.277500,
+    "P(X5=1)": 0.302000,
+    "P(X6=1)": 0.220000,
+    "P(X7=1)": 0.003907,
+    "P(X8=1)": 0.000001
+  },
+  "jwst_evidence_posteriors": {
+    "evidence_vector": {
+      "X4_CH4": 1,
+      "X5_CO2": 1,
+      "X6_H2O": 1
+    },
+    "P(evidence)": 0.095804,
+    "rejection_rate": 0.904196,
+    "P(X7_DMS=1 | evidence)": 0.019630,
+    "P(X8_CFC=1 | evidence)": 0.000005130310
+  }
+}

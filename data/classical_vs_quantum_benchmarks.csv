@@ -1,0 +1,13 @@
+method_category,algorithm,sample_budget_or_shots,circuit_depth,target_node,ground_truth,estimated_value,relative_error_pct,complexity_class,key_observation
+Classical_Exact,Junction_Tree_VE,Deterministic,NA,P(e)_Evidence,0.095804,0.095804,0.0000,O(N*d^(w+1)),Treewidth w=2 tractable on small graphs but memory blows up on dense photochemical networks
+Classical_Exact,Junction_Tree_VE,Deterministic,NA,P(X7_DMS|e),0.019630,0.019630,0.0000,O(N*d^(w+1)),Exact probability extraction via clique potential triangulation
+Classical_Exact,Junction_Tree_VE,Deterministic,NA,P(X8_CFC|e),0.0000051303,0.0000051303,0.0000,O(N*d^(w+1)),Analytical rare-event ground truth
+Classical_Stochastic,Rejection_Sampling,2000000,NA,P(e)_Acceptance,0.095804,0.095803,0.0010,O(1/sqrt(M)),191606 accepted samples (90.42% rejection rate)
+Classical_Stochastic,Rejection_Sampling,2000000,NA,P(X8_CFC|e),0.0000051303,0.0000052191,95.1200,O(1/sqrt(M*p)),Severe L'Ecuyer variance divergence (only 1 hit across 2M trials)
+Classical_Stochastic,Metropolis_Hastings_MCMC,100000,NA,P(X7_DMS|e),0.019630,0.019260,1.8849,O(1/sqrt(M)),1926 visits to DMS state with 24.47% proposal acceptance rate
+Classical_Stochastic,Metropolis_Hastings_MCMC,100000,NA,P(X8_CFC|e),0.0000051303,0.0000000000,100.0000,O(1/sqrt(M)),Kac recurrence trap (E[tau] ~ 10^6 steps; 0 hits recorded)
+Quantum_Ideal,Canonical_QAE_17Q,2048,43874,Phase_Centroid,0.001000,0.001042,4.2000,O(1/M),Fourier concentration at |00000> (80.22%) and |10000> (19.78%)
+Quantum_NISQ_Raw,Abbreviated_Kernel_L1,1024,39,Expectation_Biomarker,0.062988,0.149414,137.2100,O(1)_Physical,Thermal dephasing and 1.20% CNOT error cause heavy false-positive bias
+Quantum_NISQ_Folded,Abbreviated_Kernel_L3,1024,118,Expectation_Biomarker,0.062988,0.263672,318.6100,O(1)_Physical,Controlled noise amplification via unitary inversion (69 CNOTs)
+Quantum_NISQ_Folded,Abbreviated_Kernel_L5,1024,197,Expectation_Biomarker,0.062988,0.331055,425.5800,O(1)_Physical,Controlled noise amplification via unitary inversion (115 CNOTs)
+Quantum_NISQ_ZNE,ZNE_Richardson_Mitigated,3072,197,Expectation_Biomarker,0.062988,0.074707,18.6051,O(1)_Physical,86.44% physical hardware error canceled via 2nd-order Richardson extrapolation
