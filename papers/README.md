@@ -50,6 +50,8 @@ This directory contains the archival open-access PDFs, pre-prints, and reference
   Blanchet, J. H., Glynn, P. W., L'Ecuyer, P., Sandmann, W., & Tuffin, B. (2007/2010). *Asymptotic robustness of estimators in rare-event simulation*. ACM Transactions on Modeling and Computer Simulation (TOMACS), 20(1), Article 6.
 * **`mackay2003_information_theory_inference_learning_algorithms.pdf`**  
   MacKay, D. J. C. (2003). *Information Theory, Inference and Learning Algorithms*. Cambridge University Press. [Inference Open Access](http://www.inference.org.uk/itprnn/book.pdf).
+* **`pearl1986_fusion_propagation_structuring_belief_networks.pdf`**  
+  Pearl, J. (1986). *Fusion, propagation, and structuring in belief networks*. Artificial Intelligence, 29(3), 241–288. [UCLA Cognitive Systems Lab R-42](https://ftp.cs.ucla.edu/pub/stat_ser/r42-reprint.pdf).
 
 ---
 
