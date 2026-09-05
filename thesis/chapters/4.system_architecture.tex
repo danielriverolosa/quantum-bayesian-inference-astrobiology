@@ -63,7 +63,7 @@ P(X_8 = 1 \mid X_3 = 1) = \frac{p_{\mathrm{CFC}}}{P(X_3=1)} = \frac{1.0 \times 1
 This formulation forces the model into the extreme rarity regime ($p \approx 10^{-6}$), creating the exact stress test where classical MCMC fails due to L'Ecuyer's variance divergence.
 
 \subsection{Formalization of Conditional Probability Tables (CPTs)}
-The quantitative parameters $\Theta$ for the K2-18b Bayesian network are formalized in Table \ref{tab:k218b_cpts}.
+The quantitative parameters $\Theta$ for the K2-18b Bayesian network are formalized in Table \ref{tab:k218b_cpts} (see Appendix \ref{app:complete_cpts} for the exhaustive combinatorial CPT derivations, analytical marginals, and astrophysical justifications).
 
 \begin{table}[htbp]
 \centering
@@ -219,7 +219,7 @@ As shown in Figure \ref{fig:qae_depth_resolution_tradeoff}, increasing $n_E$ fro
     \item $n_E = 4 \implies 15$ Grover iterations $\implies D_{\mathrm{CNOT}} \approx 20,400$ gates.
     \item $n_E = 5 \implies 31$ Grover iterations $\implies D_{\mathrm{CNOT}} \approx 42,100$ gates.
 \end{itemize}
-Because current superconducting QPUs lose coherence after $\sim 1,000$ two-qubit gates, full canonical QAE serves as an asymptotic fault-tolerant blueprint (FTQC). For near-term NISQ deployment, circuit depths must be mitigated through algorithmic error mitigation.
+Because current superconducting QPUs lose coherence after $\sim 1,000$ two-qubit gates, full canonical QAE serves as an asymptotic fault-tolerant blueprint (FTQC). For near-term NISQ deployment, circuit depths must be mitigated through algorithmic error mitigation (see Appendix \ref{app:transpilation_profiles} for the exact empirical transpilation dumps, gate breakdowns, and ZNE scaling profiles).
 
 \section{Hardware Noise Injection and Zero-Noise Extrapolation (ZNE)}\label{sec:hardware_noise_zne}
 
