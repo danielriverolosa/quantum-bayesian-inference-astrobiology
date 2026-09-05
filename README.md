@@ -51,11 +51,30 @@ This work establishes an end-to-end **Quantum Bayesian Network (QBN)** architect
 
 ```mermaid
 flowchart LR
-    OBS["1. JWST Telemetry<br/>(K2-18b Spectra)"] --> DAG["2. 9-Node DAG<br/>{X₀ ... X₈}"]
-    DAG --> AE["3. Amplitude Encoding<br/>Operator 𝒜: |0⟩ → |Ψ⟩"]
-    AE --> Q["4. Grover Iterate 𝒬<br/>-𝒜 S₀ 𝒜† S_χ"]
-    Q --> QPE["5. 5-Qubit QPE<br/>+ Inverse QFT"]
-    QPE --> READ["6. Quantum Readout<br/>& ZNE Mitigation"]
+    subgraph S1["1. Astrophysical Observation"]
+        OBS["JWST Transmission Spectra<br/>(K2-18b: CH₄, CO₂, H₂O)"]
+    end
+
+    subgraph S2["2. Probabilistic Modeling"]
+        DAG["9-Node Astrobiological DAG<br/>{X₀ ... X₈} (Priors & CPTs)"]
+    end
+
+    subgraph S3["3. Unitary Quantum Encoding"]
+        AE["Amplitude Encoding<br/>Operator 𝒜: |0⟩ → |Ψ⟩"]
+        Q["Grover Iterate 𝒬<br/>-𝒜 S₀ 𝒜† S_χ"]
+    end
+
+    subgraph S4["4. Quantum Estimation & Readout"]
+        QPE["5-Qubit Phase Estimation<br/>+ Inverse QFT (IQFT†)"]
+        MEAS["Projective Readout<br/>Centroid & Variance"]
+    end
+
+    subgraph S5["5. NISQ Error Mitigation"]
+        ZNE["Zero-Noise Extrapolation<br/>Unitary Folding (λ ∈ {1,3,5})<br/>Richardson Extrapolation"]
+    end
+
+    OBS --> DAG --> AE --> Q --> QPE --> MEAS
+    Q -.-> ZNE -.-> MEAS
 ```
 
 </div>
