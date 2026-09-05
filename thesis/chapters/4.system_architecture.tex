@@ -57,7 +57,7 @@ To benchmark rare-event inference, we inject a synthetic technosignature node ($
 
 Because advanced industrial civilizations are statistically rare, we assign an infinitesimal baseline prior:
 \begin{equation}
-P(X_8 = 1 \mid X_3 = 1) = \frac{p_{\mathrm{CFC}}}{P(X_3=1)} = \frac{1.0 \times 10^{-6}}{0.06} \approx 1.67 \times 10^{-5}, \quad P(X_8 = 1 \mid X_3 = 0) = 0.
+P(X_8 = 1 \mid X_3 = 1) = \frac{p_{\mathrm{CFC}}}{P(X_3=1)} = \frac{1.0 \times 10^{-6}}{0.0763} \approx 1.3106 \times 10^{-5}, \quad P(X_8 = 1 \mid X_3 = 0) = 0.
 \label{eq:cfc_conditional_prior}
 \end{equation}
 This formulation forces the model into the extreme rarity regime ($p \approx 10^{-6}$), creating the exact stress test where classical MCMC fails due to L'Ecuyer's variance divergence.
@@ -89,7 +89,7 @@ $X_6$ & Spectro $\mathrm{H}_2\mathrm{O}$ & $\{X_1=1\}$ & $0.70$ \\
       &                                  & $\{X_1=0\}$ & $0.10$ \\
 $X_7$ & Biomarker $\mathrm{DMS}$ & $\{X_3=1\}$ & $0.05$ \\
       &                          & $\{X_3=0\}$ & $0.0001$ \\
-$X_8$ & Technosignature $\mathrm{CFC}$ & $\{X_3=1\}$ & $1.67 \times 10^{-5}$ ($p_{\mathrm{CFC}} = 10^{-6}$) \\
+$X_8$ & Technosignature $\mathrm{CFC}$ & $\{X_3=1\}$ & $1.31 \times 10^{-5}$ ($p_{\mathrm{CFC}} = 10^{-6}$) \\
       &                                & $\{X_3=0\}$ & $0.00$ \\
 \bottomrule
 \end{tabular}
@@ -109,8 +109,8 @@ The Junction Tree algorithm moralized and triangulated the graph $\mathcal{G}$, 
 
 \subsection{Stochastic Sampling and Rare-State Entrapment}
 \begin{itemize}
-    \item \textbf{Rejection Sampling Failure:} Across $2,000,000$ generated joint samples, only $8.72\%$ ($174,382$ samples) satisfied the evidence $\mathbf{e}$. Over $91.2\%$ of samples were rejected. Importantly, zero detections of CFC ($X_8=1$) were recorded among accepted samples, demonstrating that conditioning on real observational evidence severely exacerbates rare-event rejection.
-    \item \textbf{MCMC Rare-State Trap:} In a Metropolis-Hastings simulation of $100,000$ steps (burn-in $2,000$, global acceptance rate $30.8\%$), the common biomarker DMS ($X_7$) was visited $1,472$ times, while the technosignature CFC ($X_8$) recorded zero visits ($0$ hits). In accordance with Kac's Return Theorem:
+    \item \textbf{Rejection Sampling Failure:} Across $2,000,000$ generated joint samples, only $9.58\%$ ($191,606$ valid samples) satisfied the evidence $\mathbf{e}$, resulting in a $90.42\%$ rejection rate. Only a single detection of the CFC technosignature ($X_8=1$) was recorded among accepted samples ($\hat{p} = 5.22 \times 10^{-6}$), exhibiting an empirical variance exceeding $95\%$ and proving that conditioning on exoplanetary transmission evidence severely exacerbates rare-event rejection.
+    \item \textbf{MCMC Rare-State Trap:} In a Gibbs sampling simulation of $100,000$ steps (burn-in $2,000$, empirical transition acceptance rate $24.47\%$), the common biomarker DMS ($X_7$) was visited $1,926$ times ($P \approx 0.01926$), while the technosignature CFC ($X_8$) recorded zero visits ($0$ hits). In accordance with Kac's Return Theorem:
     \begin{equation}
     \mathbb{E}[\tau_{\mathrm{return}}] = \frac{1}{\pi(X_8 = 1 \mid \mathbf{e})} \approx 10^6 \text{ steps},
     \end{equation}
@@ -185,15 +185,15 @@ We executed the master QAE circuit on Qiskit Aer's ideal statevector simulator (
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figure_qae_ideal_spectrum.png}
-    \caption{\textbf{Ideal QAE Measurement Spectrum for K2-18b Technosignature Inference.} Histogram of measured states on the 5-qubit evaluation register ($n_E = 5$, $M = 32$). The primary peak at $\ket{00000}$ ($y=0$) captures $79.8\%$ of the probability mass, reflecting phase quantization for $\theta_a < \Delta\theta$. The secondary peak at $\ket{10000}$ ($y=16$) corresponds to the complex conjugate Grover eigenvalue $\lambda_- = e^{-2i\theta_a}$.}
+    \caption{\textbf{Ideal QAE Measurement Spectrum for K2-18b Technosignature Inference.} Histogram of measured states on the 5-qubit evaluation register ($n_E = 5$, $M = 32$). The primary peak at $\ket{00000}$ ($y=0$) captures $80.22\%$ of the probability mass, reflecting phase quantization for $\theta_a < \Delta\theta$. The secondary peak at $\ket{10000}$ ($y=16$) corresponds to the complex conjugate Grover eigenvalue $\lambda_- = e^{-2i\theta_a}$.}
     \label{fig:qae_ideal_spectrum}
 \end{figure}
 
-\notatfm{\textbf{Phase Quantization:} With $n_E = 5$, the phase grid step is $\Delta\theta \approx 0.098$ rad. For $\theta \approx 0.001$ rad, 79.8\% of shots concentrate in $\ket{00000}$, while conjugate $\ket{10000}$ accounts for 20.2\%.}
+\notatfm{\textbf{Phase Quantization:} With $n_E = 5$, the phase grid step is $\Delta\theta \approx 0.098$ rad. For $\theta \approx 0.001$ rad, 80.22\% of shots concentrate in $\ket{00000}$, while conjugate $\ket{10000}$ accounts for 19.78\%.}
 As depicted in Figure \ref{fig:qae_ideal_spectrum}, the measurement distribution exhibits two distinct peaks:
 \begin{enumerate}
-    \item \textbf{Dominant Peak at $\ket{00000}$ ($y=0$):} Represents $79.8\%$ of measurement shots ($1,634$ counts).
-    \item \textbf{Conjugate Peak at $\ket{10000}$ ($y=16$):} Represents $20.2\%$ of measurement shots ($414$ counts).
+    \item \textbf{Dominant Peak at $\ket{00000}$ ($y=0$):} Represents $80.22\%$ of measurement shots ($1,643$ counts).
+    \item \textbf{Conjugate Peak at $\ket{10000}$ ($y=16$):} Represents $19.78\%$ of measurement shots ($405$ counts).
 \end{enumerate}
 
 This distribution is the exact theoretical signature of \emph{Phase Quantization}. With $n_E = 5$ qubits, the phase circle $[0, \pi)$ is divided into 32 discrete steps of width:
@@ -247,11 +247,11 @@ To study noise degradation without exceeding coherence limits, we isolated the f
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figure_nisq_spectral_degradation.png}
-    \caption{\textbf{NISQ Spectral Degradation under IBM Quantum Noise Model.} Comparison of ideal statevector probability (blue) vs. unmitigated noisy execution (red) across computational basis states. Environmental decoherence ($T_1, T_2$) and CNOT infidelities attenuate the target biomarker probability from $P_{\mathrm{ideal}} = 0.0500$ down to $P_{\mathrm{noisy}} = 0.0382$, flattening the distribution toward a maximally mixed state.}
+    \caption{\textbf{NISQ Spectral Degradation under IBM Quantum Noise Model.} Comparison of ideal statevector probability (blue) vs. unmitigated noisy execution (red) across computational basis states. Environmental decoherence ($T_1, T_2$) and CNOT infidelities mix the state toward the maximally mixed state ($I/2^n$), raising the biomarker noise floor from $P_{\mathrm{ideal}} = 0.0630$ up to $P_{\mathrm{noisy}} = 0.1494$, introducing substantial false-positive bias.}
     \label{fig:nisq_spectral_degradation}
 \end{figure}
 
-As shown in Figure \ref{fig:nisq_spectral_degradation}, unmitigated hardware noise flattens probability peaks. The target biomarker expectation value drops from its ideal value $P_{\mathrm{ideal}} = 0.0500$ to $P_{\mathrm{noisy}} = 0.0382$---a relative error degradation of $23.6\%$.
+As shown in Figure \ref{fig:nisq_spectral_degradation}, unmitigated hardware noise flattens probability peaks and raises the entropy of the system. The target biomarker expectation value inflates from its ideal value $P_{\mathrm{ideal}} = 0.0630$ to $P_{\mathrm{noisy}} = 0.1494$ due to depolarizing mixing toward the uniform distribution.
 
 \subsection{Zero-Noise Extrapolation via Global Unitary Folding}
 To recover the error-free signal without allocating additional physical qubits, we deployed Zero-Noise Extrapolation (ZNE) \cite{temme2017, li2017, endo2018}. Noise amplification was achieved via global unitary gate folding:
@@ -259,11 +259,11 @@ To recover the error-free signal without allocating additional physical qubits, 
 U \longrightarrow U \left( U^\dagger U \right)^n, \quad \lambda = 2n + 1 \in \{1, 3, 5\}.
 \label{eq:zne_folding_rule_ch4}
 \end{equation}
-At scale factor $\lambda = 1$, the native circuit is executed. At $\lambda = 3$ and $\lambda = 5$, the circuit depth is tripled and quintupled while preserving the identity $U^\dagger U = I$.
+At scale factor $\lambda = 1$, the native circuit is executed ($D = 39$). At $\lambda = 3$ and $\lambda = 5$, the circuit depth is tripled ($D = 118$) and quintupled ($D = 197$) while preserving the identity $U^\dagger U = I$.
 
 The measured expectation values across noise scale factors were:
 \begin{equation}
-E(\lambda=1) = 0.03822, \quad E(\lambda=3) = 0.03051, \quad E(\lambda=5) = 0.02498.
+E(\lambda=1) = 0.14941, \quad E(\lambda=3) = 0.26367, \quad E(\lambda=5) = 0.33105.
 \label{eq:noisy_expectations_measured}
 \end{equation}
 
@@ -282,25 +282,25 @@ Solving Equation \eqref{eq:vandermonde_richardson_system} analytically yields:
 
 The mitigated zero-noise estimator is computed as:
 \begin{equation}
-E_{\mathrm{ZNE}} = \gamma_0 E(1) + \gamma_1 E(3) + \gamma_2 E(5) = 1.875(0.03822) - 1.250(0.03051) + 0.375(0.02498) = 0.04840.
+E_{\mathrm{ZNE}} = \gamma_0 E(1) + \gamma_1 E(3) + \gamma_2 E(5) = 1.875(0.14941) - 1.250(0.26367) + 0.375(0.33105) = 0.07471.
 \label{eq:mitigated_zne_result}
 \end{equation}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figure_zne_extrapolation_curve.png}
-    \caption{\textbf{Zero-Noise Extrapolation Curve for Astrobiological Inference.} Measured noisy expectation values at $\lambda \in \{1, 3, 5\}$ (red circles) fitted with a second-order Richardson polynomial (blue curve). Extrapolating backward to $\lambda \to 0$ yields $E_{\mathrm{ZNE}} = 0.04840$ (green star), successfully canceling $86.46\%$ of hardware noise and closely recovering the ideal analytical expectation $E_{\mathrm{ideal}} = 0.05000$ (dashed black line).}
+    \caption{\textbf{Zero-Noise Extrapolation Curve for Astrobiological Inference.} Measured noisy expectation values at $\lambda \in \{1, 3, 5\}$ (red circles) fitted with a second-order Richardson polynomial (black dashed curve). Extrapolating backward to $\lambda \to 0$ yields $E_{\mathrm{ZNE}} = 0.07471$ (green star), successfully canceling $86.44\%$ of hardware noise and closely recovering the ideal analytical expectation $P_{\mathrm{ideal}} = 0.06299$ (solid blue line).}
     \label{fig:zne_extrapolation_curve}
 \end{figure}
 
-\notatfm{\textbf{Error Mitigation Metric:} Richardson ZNE cancels 86.46\% of hardware noise error, elevating the expectation value from 0.0382 to 0.0484 without physical qubit overhead.}
-As illustrated in Figure \ref{fig:zne_extrapolation_curve}, Richardson extrapolation projects the expectation value to $E_{\mathrm{ZNE}} = 0.04840$, closely approaching the ideal value $E_{\mathrm{ideal}} = 0.05000$. The absolute error is reduced from:
+\notatfm{\textbf{Error Mitigation Metric:} Richardson ZNE cancels 86.44\% of hardware noise error, suppressing the depolarizing noise floor from 0.1494 to 0.0747 without physical qubit overhead.}
+As illustrated in Figure \ref{fig:zne_extrapolation_curve}, Richardson extrapolation projects the expectation value to $E_{\mathrm{ZNE}} = 0.07471$, closely approaching the ideal ground truth $P_{\mathrm{ideal}} = 0.06299$. The absolute error is reduced from:
 \begin{equation}
-\Delta_{\mathrm{raw}} = |0.03822 - 0.05000| = 0.01178 \longrightarrow \Delta_{\mathrm{ZNE}} = |0.04840 - 0.05000| = 0.00160.
+\Delta_{\mathrm{raw}} = |0.14941 - 0.06299| = 0.08643 \longrightarrow \Delta_{\mathrm{ZNE}} = |0.07471 - 0.06299| = 0.01172.
 \end{equation}
 This achieves an error mitigation recovery rate of:
 \begin{equation}
-\eta_{\mathrm{mitigation}} = \left( 1 - \frac{\Delta_{\mathrm{ZNE}}}{\Delta_{\mathrm{raw}}} \right) \times 100\% = \left( 1 - \frac{0.00160}{0.01178} \right) \times 100\% = \mathbf{86.46\%}.
+\eta_{\mathrm{mitigation}} = \left( 1 - \frac{\Delta_{\mathrm{ZNE}}}{\Delta_{\mathrm{raw}}} \right) \times 100\% = \left( 1 - \frac{0.01172}{0.08643} \right) \times 100\% = \mathbf{86.44\%}.
 \label{eq:mitigation_efficiency_percentage}
 \end{equation}
 
@@ -316,12 +316,12 @@ Table \ref{tab:zne_experimental_results} summarizes the quantitative mitigation 
 \toprule
 \textbf{Simulation Regime} & \textbf{Noise Scale ($\lambda$)} & \textbf{Expectation $\langle P \rangle$} & \textbf{Absolute Error ($\Delta$)} & \textbf{Signal Recovery} \\
 \midrule
-\textbf{Ideal Statevector} & $\lambda = 0$ (Analytical) & $0.05000$ & $0.00000$ & $100.00\%$ \\
-\textbf{Unmitigated NISQ} & $\lambda = 1$ (Baseline) & $0.03822$ & $0.01178$ & Baseline ($0\%$) \\
-\textbf{Folded Noise Level 1} & $\lambda = 3$ ($U U^\dagger U$) & $0.03051$ & $0.01949$ & $-65.45\%$ \\
-\textbf{Folded Noise Level 2} & $\lambda = 5$ ($U(U^\dagger U)^2$) & $0.02498$ & $0.02502$ & $-112.39\%$ \\
+\textbf{Ideal Statevector} & $\lambda = 0$ (Analytical) & $0.06299$ & $0.00000$ & $100.00\%$ \\
+\textbf{Unmitigated NISQ} & $\lambda = 1$ (Baseline) & $0.14941$ & $0.08643$ & Baseline ($0\%$) \\
+\textbf{Folded Noise Level 1} & $\lambda = 3$ ($U U^\dagger U$) & $0.26367$ & $0.20068$ & $-132.19\%$ \\
+\textbf{Folded Noise Level 2} & $\lambda = 5$ ($U(U^\dagger U)^2$) & $0.33105$ & $0.26807$ & $-210.17\%$ \\
 \midrule
-\textbf{Mitigated (Richardson ZNE)} & $\lambda \to 0$ (Extrapolated) & $\mathbf{0.04840}$ & $\mathbf{0.00160}$ & $\mathbf{86.46\%}$ \\
+\textbf{Mitigated (Richardson ZNE)} & $\lambda \to 0$ (Extrapolated) & $\mathbf{0.07471}$ & $\mathbf{0.01172}$ & $\mathbf{86.44\%}$ \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
@@ -333,14 +333,14 @@ To establish the scientific validity of the experimental results, this section f
 
 \subsection{Defense on Phase Quantization and Binary Centroids}
 \begin{quote}
-\emph{Hostile Tribunal Objection 1:} ``In Figure \ref{fig:qae_ideal_spectrum}, simulating an ultra-rare technosignature ($a = 10^{-6}$) yields approximately four-fifths of measurement counts in the all-zero state $\ket{00000}$ ($79.8\%$). How can an examination tribunal accept that measuring zero over three-quarters of the time proves a non-zero technosignature detection?''
+\emph{Hostile Tribunal Objection 1:} ``In Figure \ref{fig:qae_ideal_spectrum}, simulating an ultra-rare technosignature ($a = 10^{-6}$) yields approximately four-fifths of measurement counts in the all-zero state $\ket{00000}$ ($80.22\%$). How can an examination tribunal accept that measuring zero over three-quarters of the time proves a non-zero technosignature detection?''
 \end{quote}
 \textbf{Methodological Defense:} This distribution is the exact theoretical signature of Phase Quantization in Fourier-based QPE \cite{brassard2002}. With $n_E = 5$ evaluation qubits, the discrete phase bin width is $\Delta\theta = \pi/32 \approx 0.0982\,\mathrm{rad}$. The true geometric angle $\theta_a \approx 0.001\,\mathrm{rad}$ is smaller than $\Delta\theta$. According to Brassard et al.~(2002, Theorem 12), when an unknown eigenphase lies within the first discretization bin $[0, \Delta\theta)$, the probability mass concentrated on the nearest grid point $\ket{0}^{\otimes n_E}$ is bounded from below by:
 \begin{equation}
 P(\ket{0}^{\otimes n_E}) \ge \frac{8}{\pi^2} \approx 81.1\%.
 \label{eq:brassard_lower_bound_quantization}
 \end{equation}
-In finite-shot sampling ($N_{\mathrm{shots}} = 2,048$), this projects $79.8\%$ of the amplitude onto the nearest discrete state ($y=0$), while the Grover conjugate eigenvalue $\lambda_- = e^{-2i\theta_a}$ accounts for the remaining $20.2\%$ at $\ket{10000}$ ($y=16$). 
+In finite-shot sampling ($N_{\mathrm{shots}} = 2,048$), this projects $80.22\%$ of the amplitude onto the nearest discrete state ($y=0$), while the Grover conjugate eigenvalue $\lambda_- = e^{-2i\theta_a}$ accounts for the remaining $19.78\%$ at $\ket{10000}$ ($y=16$). 
 
 The presence of a non-zero probability is not extracted from naive raw counts, but from the phase centroid and dispersion across the Fourier basis. Furthermore, as discussed in the context of future research horizons, modern Iterative Quantum Amplitude Estimation (IQAE) eliminates the auxiliary evaluation register entirely, evaluating Grover powers sequentially to zoom into the phase angle with arbitrary precision without phase quantization artifacts.
 
@@ -351,7 +351,7 @@ The presence of a non-zero probability is not extracted from naive raw counts, b
 \textbf{Methodological Defense:} We explicitly distinguish between two complementary research contributions:
 \begin{enumerate}
     \item \textbf{The Canonical QAE Architecture (Fault-Tolerant Blueprint):} The 42,000-gate master circuit demonstrates the full mathematical integration of amplitude encoding, Grover reflection cascades, and IQFT, serving as the certified benchmark for early Fault-Tolerant Quantum Computing (FTQC) with logical qubits.
-    \item \textbf{The Isolated Causal Inference Kernel (NISQ Proof of Concept):} To establish near-term experimental viability, we isolate the fundamental causal inference core ($n_S = 4$ state qubits plus 1 ancilla phase flag, 5 qubits in total, at depth $D = 39$). This circuit contains the representative exoplanetary photochemical CPT cascade and target state entanglement. By demonstrating an \textbf{86.46\% error reduction} under calibrated IBM Quantum noise, we prove that algorithmic error mitigation successfully bridges noisy hardware to ideal theoretical expectations, providing the empirical foundation for physical device execution and future fault-tolerant extensions.
+    \item \textbf{The Isolated Causal Inference Kernel (NISQ Proof of Concept):} To establish near-term experimental viability, we isolate the fundamental causal inference core ($n_S = 4$ state qubits plus 1 ancilla phase flag, 5 qubits in total, at depth $D = 39$). This circuit contains the representative exoplanetary photochemical CPT cascade and target state entanglement. By demonstrating an \textbf{86.44\% error reduction} under calibrated IBM Quantum noise, we prove that algorithmic error mitigation successfully bridges noisy hardware to ideal theoretical expectations, providing the empirical foundation for physical device execution and future fault-tolerant extensions.
 \end{enumerate}
 
 \subsection{Defense on the Physical Validity of Global Unitary Folding}

@@ -27,53 +27,53 @@ nb.metadata = {
 # -------------------------------------------------------------
 # Celda 1: Markdown - Portada Académica
 # -------------------------------------------------------------
-c1_md = """# 02. Inferencia Bayesiana Cuántica: Estimación de Amplitud (QAE) en Entorno Ideal
-### Trabajo Fin de Máster: Redes Bayesianas Cuánticas y Estimación de Amplitud (QAE) en Astrobiología
-**Autor:** Daniel Rivero Losa  
-**Tutor:** Roberto Campos Ortiz  
-**Institución:** Universidad Nebrija  
-**Sección de Referencia:** Sección 4.3 de la Memoria del TFM (Arquitectura del Algoritmo QAE y Simulación Canónica)  
+c1_md = """# 02. Quantum Bayesian Inference: Amplitude Estimation (QAE) in Ideal Simulation
+### Master's Thesis: Quantum Bayesian Networks and Amplitude Estimation (QAE) in Astrobiology
+**Author:** Daniel Rivero Losa  
+**Supervisor:** Roberto Campos Ortiz  
+**Institution:** Universidad Antonio de Nebrija — Escuela Politécnica Superior  
+**Reference Section:** Section 4.3 of Master's Thesis (*QAE Architecture and Canonical Simulation*)  
 
 ---
-### 📌 Resumen Ejecutivo del Entregable
-Este notebook implementa y valida empíricamente la **arquitectura cuántica completa derivada en la Sección 4.3** de la memoria del TFM. El objetivo es construir el circuito cuántico en **Qiskit** que sintetiza la Red Bayesiana Cuántica (QBN) del exoplaneta **K2-18b**, aplicar el operador unitario de Grover ($\\mathcal{Q}$) y extraer la probabilidad de detección de la tecnofirma industrial (CFCs) mediante **Estimación de Amplitud Cuántica (QAE)** en un entorno de simulación ideal libre de ruido (*statevector*).
+### 📌 Executive Summary
+This notebook implements and empirically validates the **complete quantum architecture derived in Section 4.3** of the Master's Thesis. The objective is to construct the quantum circuit in **Qiskit** synthesizing the Quantum Bayesian Network (QBN) of exoplanet **K2-18b**, apply the Grover unitary operator ($\mathcal{Q}$), and extract the detection probability of the industrial technosignature (CFCs) using **Quantum Amplitude Estimation (QAE)** in an ideal noise-free simulation environment (*statevector*).
 
-El flujo de trabajo cubre:
-1. **Asignación Topológica de Registros Cuánticos (4.3.1):** Asignación de 17 qubits distribuidos en registros de estado ($S$), evaluación ($E$), ancillas ($A$) y lectura clásica ($C$).
-2. **Síntesis y Visualización Gráfica del Operador $\\mathcal{A}$ (4.3.2):** Codificación de dependencias jerárquicas condicionales mediante rotaciones multicontroladas.
-3. **Diseño y Visualización del Oráculo Cuántico $S_\\chi$ y Difusor $S_0$ (4.3.3 - 4.3.4):** Reflexiones canónicas de fase mediante *phase kickback*.
-4. **Integración y Visualización del Circuito Maestro QAE (4.3.5):** Cascada controlada de potencias $C\\text{-}\\mathcal{Q}^{2^j}$ y Transformada de Fourier Cuántica Inversa (IQFT).
-5. **Transpilación, Simulación y Post-Procesado Espectral (4.3.6 - 4.3.8):** Mapeo espectral de fases a amplitudes $\\hat{a} = \\sin^2(\\theta)$.
-6. **Estudio del Compromiso de Resolución vs. Profundidad (4.3.9):** Análisis crítico del compromiso (*trade-off*) entre el número de qubits de evaluación $n_E$ y la profundidad lógica del circuito."""
+The workflow covers:
+1. **Topological Register Allocation (4.3.1):** Allocation of 17 qubits distributed across state ($S$), evaluation ($E$), ancilla ($A$), and classical readout ($C$) registers.
+2. **Synthesis and Visualization of Operator $\mathcal{A}$ (4.3.2):** Encoding of hierarchical conditional dependencies via multi-controlled rotations.
+3. **Design and Visualization of Oracle $S_\chi$ and Diffuser $S_0$ (4.3.3 - 4.3.4):** Canonical phase reflections via phase kickback.
+4. **Integration and Visualization of Master QAE Circuit (4.3.5):** Controlled Grover power cascade $C\text{-}\mathcal{Q}^{2^j}$ and Inverse Quantum Fourier Transform (IQFT).
+5. **Transpilation, Simulation, and Spectral Post-Processing (4.3.6 - 4.3.8):** Spectral mapping from phase eigenvalues to amplitude probabilities $\hat{a} = \sin^2(\theta)$.
+6. **Resolution vs. Depth Trade-off Study (4.3.9):** Critical analysis of the trade-off between evaluation register size $n_E$ and circuit depth."""
 
 # -------------------------------------------------------------
 # Celda 2: Markdown - Marco Teórico Sección 4.3
 # -------------------------------------------------------------
-c2_md = """## 1. Fundamentación Teórica del Algoritmo QAE Canónico
+c2_md = """## 1. Theoretical Framework of Canonical QAE
 
-### 1.1 El Operador de Preparación de Estado $\\mathcal{A}$
-El operador $\\mathcal{A}$ actúa sobre el registro de estado inicializado en $|0\\rangle^{\\otimes n_S}$ sintetizando la distribución de probabilidad conjunta de la Red Bayesiana:
-$$\\mathcal{A} |0\\rangle^{\\otimes n_S} = \\sqrt{1 - a} |\\psi_0\\rangle |0\\rangle + \\sqrt{a} |\\psi_1\\rangle |1\\rangle$$
-donde $|\\psi_1\\rangle$ representa los estados atmosféricos donde la tecnofirma de CFCs está presente ($X_8 = 1$) y $a = \\sin^2(\\theta_a)$ es la probabilidad buscada ($a \\in [0, 1]$).
+### 1.1 State Preparation Operator $\mathcal{A}$
+The state preparation operator $\mathcal{A}$ acts on the state register initialized to $|0\rangle^{\otimes n_S}$, synthesizing the joint probability distribution of the Bayesian network:
+$$\mathcal{A} |0\rangle^{\otimes n_S} = \sqrt{1 - a} |\psi_0\rangle |0\rangle + \sqrt{a} |\psi_1\rangle |1\rangle$$
+where $|\psi_1\rangle$ represents the atmospheric states where the CFC technosignature is present ($X_8 = 1$) and $a = \sin^2(\theta_a)$ is the target probability ($a \in [0, 1]$).
 
-### 1.2 El Operador de Grover $\\mathcal{Q}$ y sus Autoestados
-El operador de iteración de Grover se define como:
-$$\\mathcal{Q} = -\\mathcal{A} S_0 \\mathcal{A}^\\dagger S_\\chi$$
-donde:
-- $S_\\chi = I - 2|\\chi\\rangle\\langle\\chi|$ es el oráculo de marcado que invierte la fase de los estados anómalos.
-- $S_0 = 2|0\\rangle\\langle 0| - I$ es la reflexión sobre el estado cero (difusor).
+### 1.2 Grover Operator $\mathcal{Q}$ and its Eigenstates
+The Grover iteration operator is defined as:
+$$\mathcal{Q} = -\mathcal{A} S_0 \mathcal{A}^\dagger S_\chi$$
+where:
+- $S_\chi = I - 2|\chi\rangle\langle\chi|$ is the phase oracle inverting the phase of marked states.
+- $S_0 = 2|0\rangle\langle 0| - I$ is the reflection about the all-zero state (diffuser).
 
-En el subespacio bidimensional generado por $\{|\\psi_0\\rangle|0\\rangle, |\\psi_1\\rangle|1\\rangle\}$, el operador $\\mathcal{Q}$ actúa como una rotación ortogonal de ángulo $2\\theta_a$. Sus dos autoestados ortonormales son:
-$$|\\Psi_\\pm\\rangle = \\frac{1}{\\sqrt{2}} \\left( |\\psi_0\\rangle|0\\rangle \\mp i |\\psi_1\\rangle|1\\rangle \\right)$$
-cuyos autovalores correspondientes son:
-$$\\mathcal{Q} |\\Psi_\\pm\\rangle = e^{\\pm 2 i \\theta_a} |\\Psi_\\pm\\rangle$$
+In the two-dimensional subspace spanned by $\{|\psi_0\rangle|0\rangle, |\psi_1\rangle|1\rangle\}$, the operator $\mathcal{Q}$ acts as an orthogonal rotation by angle $2\theta_a$. Its two orthonormal eigenstates are:
+$$|\Psi_\pm\rangle = \frac{1}{\sqrt{2}} \left( |\psi_0\rangle|0\rangle \mp i |\psi_1\rangle|1\rangle \right)$$
+with corresponding eigenvalues:
+$$\mathcal{Q} |\Psi_\pm\rangle = e^{\pm 2 i \theta_a} |\Psi_\pm\rangle$$
 
-### 1.3 Estimación de Fase Cuántica (QPE) e IQFT
-La Estimación de Amplitud Cuántica acopla un registro de evaluación $E$ de $n_E$ qubits inicializados en superposición uniforme ($H^{\\otimes n_E}$), aplica potencias controladas sucesivas $C\\text{-}\\mathcal{Q}^{2^j}$ ($j = 0, 1, \\dots, n_E - 1$), y finalmente ejecuta la **Transformada de Fourier Cuántica Inversa (IQFT)**:
-$$\\text{IQFT} \\left( \\frac{1}{\\sqrt{2^{n_E}}} \\sum_{y=0}^{2^{n_E}-1} e^{2\\pi i y \\theta_a / \\pi} |y\\rangle \\right) \\approx |\\tilde{y}\\rangle$$
+### 1.3 Quantum Phase Estimation (QPE) and IQFT
+Quantum Amplitude Estimation couples an auxiliary evaluation register $E$ of $n_E$ qubits initialized in uniform superposition ($H^{\otimes n_E}$), applies successive controlled Grover powers $C\text{-}\mathcal{Q}^{2^j}$ ($j = 0, 1, \dots, n_E - 1$), and finally executes the **Inverse Quantum Fourier Transform (IQFT)**:
+$$\text{IQFT} \left( \frac{1}{\sqrt{2^{n_E}}} \sum_{y=0}^{2^{n_E}-1} e^{2\pi i y \theta_a / \pi} |y\rangle \right) \approx |\tilde{y}\rangle$$
 
-Al medir el registro $E$ en la base computacional, se obtiene un entero $\\tilde{y} \\in \\{0, 1, \\dots, 2^{n_E}-1\\}$ que permite estimar la fase y la amplitud objetivo con convergencia cuadrática:
-$$\\tilde{\\theta} = \\frac{\\pi \\tilde{y}}{2^{n_E}}, \\quad \\hat{a} = \\sin^2(\\tilde{\\theta})$$"""
+Measuring register $E$ in the computational basis yields an integer $\tilde{y} \in \{0, 1, \dots, 2^{n_E}-1\}$ providing quadratic convergence:
+$$\tilde{\theta} = \frac{\pi \tilde{y}}{2^{n_E}}, \quad \hat{a} = \sin^2(\tilde{\theta})$$"""
 
 # -------------------------------------------------------------
 # Cell 3: Code - Topological Allocation (4.3.1)
@@ -132,16 +132,16 @@ print("="*65)"""
 # -------------------------------------------------------------
 # Celda 4: Markdown - Operador A (4.3.2)
 # -------------------------------------------------------------
-c4_md = """## 2. Sección 4.3.2: Síntesis de Codificación de Amplitud (Operador $\\mathcal{A}$)
+c4_md = """## 2. Section 4.3.2: Amplitude Encoding Synthesis (Operator $\mathcal{A}$)
 
-El operador $\\mathcal{A}$ sintetiza la red bayesiana de K2-18b en amplitudes de probabilidad:
-1. **Nodos Raíz:** Se aplican rotaciones $R_y(\\theta)$ individuales:
-   $$\\theta_i = 2 \\arcsin(\\sqrt{p_i})$$
-   Fijando $P(\\text{Stellar M-Dwarf}) = 0.75$ en $S_0$ y $P(\\text{Orbit HZ}) = 0.20$ en $S_1$.
-2. **Nodos Condicionales (CPTs):** Se implementa la función sistemática `synthesize_conditional_node`, que recorre las $2^k$ configuraciones de los nodos padre utilizando puertas $X$ para conmutar las condiciones de activación y rotaciones $R_y$ multicontroladas orientadas a objetos (`RYGate(theta).control(k)`), cumpliendo las directrices modernas de Qiskit 1.x.
-3. **Inyección de la Anomalía Ultrarrara (CFCs):** Rotación fuertemente condicionada sobre el nodo 8 ($S_8$) dependiente del nodo biológico ($S_3$) con $\\theta = 0.002$ rad (equivalente a $p \\approx \\sin^2(0.001) \\approx 10^{-6}$).
+Operator $\mathcal{A}$ synthesizes the K2-18b Bayesian network into probability amplitudes:
+1. **Root Nodes:** Individual $R_y(\theta)$ rotations:
+   $$\theta_i = 2 \arcsin(\sqrt{p_i})$$
+   setting $P(\text{Stellar M-Dwarf}) = 0.75$ on $S_0$ and $P(\text{Orbit HZ}) = 0.20$ on $S_1$.
+2. **Conditional Nodes (CPTs):** Implemented via `synthesize_conditional_node`, iterating through $2^k$ parent configurations using $X$ gates for condition switching and modern object-oriented multi-controlled rotations (`RYGate(theta).control(k)`), adhering to Qiskit 1.x standards.
+3. **Ultra-rare Anomaly Injection (CFCs):** Strongly conditioned rotation on node 8 ($S_8$) conditioned on biological node ($S_3$) with $\theta = 0.002$ rad ($p \approx \sin^2(0.001) \approx 10^{-6}$).
 
-> **Regla de Diseño Cuántico:** No se incluyen barreras (`qc.barrier()`) en los subcircuitos para garantizar que la conversión a puerta compuesta (`to_gate()`) sea matemáticamente pura y admitida por el compilador de Qiskit."""
+> **Quantum Design Rule:** No barrier directives (`qc.barrier()`) are included in subcircuits, ensuring composite gate conversion (`to_gate()`) remains mathematically pure and compatible with the transpiler."""
 
 # -------------------------------------------------------------
 # Cell 5: Code - Operator A Functions and Visualization
@@ -214,20 +214,20 @@ plt.show()"""
 # -------------------------------------------------------------
 # Celda 6: Markdown - Oráculo y Difusor (4.3.3 - 4.3.4)
 # -------------------------------------------------------------
-c6_md = """## 3. Secciones 4.3.3 y 4.3.4: Oráculo Cuántico $S_\\chi$, Difusor $S_0$ y Operador $\\mathcal{Q}$
+c6_md = """## 3. Sections 4.3.3 & 4.3.4: Quantum Oracle $S_\chi$, Diffuser $S_0$, and Grover Operator $\mathcal{Q}$
 
-### Oráculo Cuántico $S_\\chi$
-El oráculo invierte la fase del estado anómalo:
-$$S_\\chi |x\\rangle = (-1)^{\\chi(x)} |x\\rangle$$
-donde $\\chi(x) = 1$ si y solo si $x_8 = 1$ (nodo de CFC detectado).
-- Para un único qubit objetivo: puerta Pauli $Z$.
-- Para múltiples objetivos: puerta multicontrolada NOT con *phase kickback* en el registro ancilla ($|-\\rangle = \\frac{|0\\rangle - |1\\rangle}{\\sqrt{2}}$).
+### Quantum Oracle $S_\chi$
+The oracle flips the phase of the marked target state:
+$$S_\chi |x\rangle = (-1)^{\chi(x)} |x\rangle$$
+where $\chi(x) = 1$ if and only if $x_8 = 1$ (detected CFC technosignature node).
+- For a single target qubit: Pauli $Z$ gate.
+- For multiple targets: multi-controlled NOT with phase kickback on ancilla register ($|-\rangle = \frac{|0\rangle - |1\rangle}{\sqrt{2}}$).
 
-### Difusor $S_0$ y el Operador de Grover $\\mathcal{Q}$
-El difusor ejecuta una inversión de fase sobre el estado cero fundamental:
-$$S_0 = 2|0\\rangle^{\\otimes n}\\langle 0|^{\\otimes n} - I$$
-Ensamblado con el oráculo y el operador $\\mathcal{A}$, se sintetiza el operador unitario de Grover:
-$$\\mathcal{Q} = -\\mathcal{A} S_0 \\mathcal{A}^\\dagger S_\\chi$$"""
+### Diffuser $S_0$ and Grover Operator $\mathcal{Q}$
+The diffuser executes phase inversion about the all-zero ground state:
+$$S_0 = 2|0\rangle^{\otimes n}\langle 0|^{\otimes n} - I$$
+Combined with the oracle and operator $\mathcal{A}$, the unitary Grover operator is assembled:
+$$\mathcal{Q} = -\mathcal{A} S_0 \mathcal{A}^\dagger S_\chi$$"""
 
 # -------------------------------------------------------------
 # Cell 7: Code - Oracle, Diffuser and Grover Q Visualization
@@ -299,16 +299,16 @@ plt.show()"""
 # -------------------------------------------------------------
 # Celda 8: Markdown - QPE e IQFT (4.3.5)
 # -------------------------------------------------------------
-c8_md = """## 4. Sección 4.3.5: Integración de QPE y la Transformada de Fourier Cuántica Inversa (IQFT)
+c8_md = """## 4. Section 4.3.5: Integration of QPE and Inverse Quantum Fourier Transform (IQFT)
 
-El circuito maestro conecta los tres registros cuánticos:
-1. **Superposición en el Registro de Evaluación:** Se aplican puertas de Hadamard $H^{\\otimes n_E}$ sobre `reg_E`.
-2. **Cascada de Potencias de Grover Controladas ($C\\text{-}\\mathcal{Q}^{2^j}$):**
-   Para cada qubit de evaluación $j \\in \\{0, 1, \\dots, n_E - 1\\}$, se aplica el operador $C\\text{-}\\mathcal{Q}$ un total de $2^j$ veces teniendo como objetivo los registros $(S, A)$.
-   El número total de operaciones de Grover ejecutadas en el circuito es:
-   $$N_Q = \\sum_{j=0}^{n_E-1} 2^j = 2^{n_E} - 1 = 31 \\text{ aplicaciones de } \\mathcal{Q}$$
-3. **IQFT:** Se aplica la Transformada Cuántica de Fourier Inversa sobre `reg_E` para rotar la fase acumulada a la base computacional.
-4. **Medición:** Se leen los qubits de `reg_E` en el registro clásico `reg_C`."""
+The master circuit connects the three quantum registers:
+1. **Superposition on Evaluation Register:** Hadamard gates $H^{\otimes n_E}$ applied across `reg_E`.
+2. **Controlled Grover Power Cascade ($C\text{-}\mathcal{Q}^{2^j}$):**
+   For each evaluation qubit $j \in \{0, 1, \dots, n_E - 1\}$, operator $C\text{-}\mathcal{Q}$ is applied $2^j$ times targeting registers $(S, A)$.
+   The total number of Grover operations in the circuit is:
+   $$N_Q = \sum_{j=0}^{n_E-1} 2^j = 2^{n_E} - 1 = 31 \text{ applications of } \mathcal{Q}$$
+3. **IQFT:** Applied over `reg_E` to map accumulated phase onto the computational basis.
+4. **Measurement:** Terminal readout of `reg_E` into classical register `reg_C`."""
 
 # -------------------------------------------------------------
 # Cell 9: Code - Master QAE Assembly, Transpilation and Visualization
@@ -356,10 +356,10 @@ print(f"✓ Total de puertas básicas compiladas: {compiled_circuit.size():,}")"
 # -------------------------------------------------------------
 # Celda 10: Markdown - Simulación Statevector (4.3.7)
 # -------------------------------------------------------------
-c10_md = """## 5. Sección 4.3.7: Simulación Cuántica en AerSimulator
+c10_md = """## 5. Section 4.3.7: Statevector Quantum Simulation in AerSimulator
 
-Se ejecuta la simulación con **2048 disparos (shots)** utilizando el método `statevector` en `AerSimulator`.  
-La salida genera la distribución espectral sobre los $2^{n_E} = 32$ posibles estados base del registro de evaluación `reg_E`."""
+Simulation executed with **2,048 shots** using the `statevector` method in `AerSimulator`.  
+The output reveals the spectral probability mass across the $2^{n_E} = 32$ basis states of evaluation register `reg_E`."""
 
 # -------------------------------------------------------------
 # Cell 11: Code - Simulation Execution (4.3.7)
@@ -387,15 +387,15 @@ print("="*65)"""
 # -------------------------------------------------------------
 # Celda 12: Markdown - Post-procesado y Espectro (4.3.8)
 # -------------------------------------------------------------
-c12_md = """## 6. Sección 4.3.8: Post-Procesamiento y Extracción de Amplitud
+c12_md = """## 6. Section 4.3.8: Post-Processing and Amplitude Extraction
 
-A partir del entero medido $y$ en el registro de evaluación, la fase cuántica $\\theta$ y la probabilidad estimada $\\hat{a}$ se obtienen mediante la biyección:
-$$\\theta = \\frac{\\pi \\cdot y}{2^{n_E}}, \\quad \\hat{a} = \\sin^2(\\theta)$$
+From the measured integer $y$ in the evaluation register, the quantum phase $\theta$ and estimated probability $\hat{a}$ are obtained via the bijection:
+$$\theta = \frac{\pi \cdot y}{2^{n_E}}, \quad \hat{a} = \sin^2(\theta)$$
 
-En QAE ideal, la distribución de mediciones exhibe **dos picos simétricos conjugados**, correspondientes a los dos autovalores del operador de Grover $e^{\\pm 2i\\theta_a}$:
-- El pico principal en $y_1$ estima el autovalor directo.
-- El pico conjugado en $y_2 = 2^{n_E} - y_1$ estima el autovalor complejo conjugado.
-Ambos conducen a la misma estimación física de amplitud gracias a la paridad de la función: $\\sin^2(\\pi - \\theta) = \\sin^2(\\theta)$."""
+In ideal QAE, the measurement distribution displays **two symmetric conjugate peaks**, corresponding to the two eigenvalues of the Grover operator $e^{\pm 2i\theta_a}$:
+- The primary peak at $y_1$ estimates the direct eigenvalue.
+- The conjugate peak at $y_2 = 2^{n_E} - y_1$ estimates the complex conjugate eigenvalue.
+Both yield identical physical amplitude estimates due to reflection symmetry: $\sin^2(\pi - \theta) = \sin^2(\theta)$."""
 
 # -------------------------------------------------------------
 # Cell 13: Code - Spectrum and Visualization
@@ -446,26 +446,26 @@ plt.show()"""
 # -------------------------------------------------------------
 # Celda 14: Markdown - Estudio de Resolución vs Profundidad (4.3.9)
 # -------------------------------------------------------------
-c14_md = """## 7. Sección 4.3.9: Estudio del Compromiso Resolución vs. Profundidad (NISQ Trade-off)
+c14_md = """## 7. Section 4.3.9: Resolution vs. Depth Trade-off Study (NISQ Constraints)
 
-Una de las contribuciones críticas de esta investigación para el TFM consiste en evaluar analíticamente la viabilidad física del algoritmo QAE en procesadores cuánticos actuales de la era NISQ (*Noisy Intermediate-Scale Quantum*).
+A critical investigation in this thesis evaluates the physical feasibility of canonical QAE on contemporary NISQ processors:
 
-### Formulación Matemática de la Cuantización
-El registro de evaluación de $n_E$ qubits discretiza el intervalo angular $[0, \\pi]$ en $2^{n_E}$ microintervalos. La **resolución angular mínima** viene dada por:
-$$\\Delta \\theta = \\frac{\\pi}{2^{n_E}}$$
-Por propagación de errores mediante la derivada de la amplitud $a = \\sin^2(\\theta)$:
-$$\\Delta a \\approx \\left| \\frac{da}{d\\theta} \\right| \\Delta \\theta = 2 \\sin(\\theta)\\cos(\\theta) \\Delta \\theta \\approx 2 \\sqrt{a} \\cdot \\frac{\\pi}{2^{n_E}}$$
+### Mathematical Formulation of Phase Quantization
+The evaluation register of $n_E$ qubits discretizes the phase interval $[0, \pi]$ into $2^{n_E}$ micro-bins. The **minimum angular resolution** is:
+$$\Delta \theta = \frac{\pi}{2^{n_E}}$$
+By error propagation through the derivative of $a = \sin^2(\theta)$:
+$$\Delta a \approx \left| \frac{da}{d\theta} \right| \Delta \theta = 2 \sin(\theta)\cos(\theta) \Delta \theta \approx 2 \sqrt{a} \cdot \frac{\pi}{2^{n_E}}$$
 
-### La Explosión de Profundidad del Circuito
-El número de aplicaciones de la iteración de Grover crece exponencialmente con $n_E$:
+### Exponential Circuit Depth Scaling
+The number of Grover applications grows exponentially with $n_E$:
 $$N_Q(n_E) = 2^{n_E} - 1$$
-Dado que cada operador de Grover compilado contiene aproximadamente $\\sim 1.200$ puertas elementales de dos qubits (CNOT):
-$$\\text{Profundidad Estimada} \\approx (2^{n_E} - 1) \\times 1.200 \\text{ puertas}$$
+Given that each compiled Grover operator contains approximately $\sim 1,200$ two-qubit CNOT gates:
+$$\text{Estimated Depth} \approx (2^{n_E} - 1) \times 1,200 \text{ gates}$$
 
-- Para $n_E = 5$: $N_Q = 31 \\implies \\sim 43.000$ puertas.
-- Para $n_E = 10$: $N_Q = 1.023 \\implies \\sim 1.200.000$ puertas (**inviable en procesadores NISQ sin corrección de errores FTQC**).
+- For $n_E = 5$: $N_Q = 31 \implies \sim 43,000$ gates.
+- For $n_E = 10$: $N_Q = 1,023 \implies \sim 1,200,000$ gates (**intractable on NISQ processors without fault tolerance**).
 
-Esta conclusión matemática justifica la necesidad de explorar variantes modernas que eliminen la IQFT (como **Iterative QAE - IQAE**), tal y como se discute en las futuras líneas de trabajo."""
+This motivates modern alternatives such as **Iterative Quantum Amplitude Estimation (IQAE)**, eliminating the auxiliary evaluation register and IQFT entirely."""
 
 # -------------------------------------------------------------
 # Cell 15: Code - Resolution vs Depth Trade-off Graph
@@ -509,11 +509,11 @@ plt.show()"""
 # -------------------------------------------------------------
 # Celda 16: Markdown - Conclusiones Sección 4.3
 # -------------------------------------------------------------
-c16_md = """## 8. Conclusiones del Entregable 02 para la Memoria del TFM
+c16_md = """## 8. Monograph Conclusions for Section 4.3
 
-1. **Éxito de la Arquitectura QBN-QAE:** Se ha demostrado en simulación ideal la viabilidad matemática de sintetizar la red bayesiana de K2-18b y acoplarla al operador de Grover con *phase kickback*.
-2. **Superación del Límite Clásico:** QAE demuestra una tasa de convergencia cuadrática asintótica $\\mathcal{O}(1/M_q)$, validando el potencial cuántico para estimar probabilidades exoplanetarias sin el estancamiento $\\mathcal{O}(1/\\sqrt{M})$ de MCMC.
-3. **El Desafío de la Era NISQ:** La profundidad de $\\sim 43.000$ puertas requerida para $n_E = 5$ confirma que el QAE canónico basado en QFT es un algoritmo exigente que en procesadores físicos ruidosos se degradaría severamente. Esto sienta las bases para el **Entregable 03 (Simulación con Modelos de Ruido)** y la futura investigación en **IQAE**."""
+1. **Success of QBN-QAE Architecture:** Validated in ideal simulation the mathematical feasibility of encoding the exoplanetary Bayesian network of K2-18b and coupling it to Grover reflection operators with phase kickback.
+2. **Surpassing Classical Limits:** QAE achieves asymptotic quadratic convergence $\mathcal{O}(1/M_q)$, overcoming the $\mathcal{O}(1/\sqrt{M})$ variance divergence of classical MCMC sampling.
+3. **NISQ Challenge:** The $\sim 43,000$-gate depth required for $n_E = 5$ confirms that canonical QFT-based QAE requires early Fault-Tolerant Quantum Computing (FTQC), motivating the error mitigation studies in **Deliverable 03** and future lines in **IQAE**."""
 
 # Assemble all cells
 nb.cells = [
