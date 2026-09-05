@@ -15,96 +15,110 @@ on:
     paths:
       - "thesis/**"
   workflow_dispatch:
-    inputs:
-      create_release:
-        description: "Publish as GitHub Release"
-        required: true
-        type: boolean
-        default: true
-      release_tag:
-        description: "Release tag (e.g. v1.0.0 or latest)"
-        required: false
-        type: string
-        default: "latest"
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
-    name: Compile LaTeX & Publish Artifacts
+  build-and-distribute:
+    name: Compile LaTeX Documents & Publish Deliverables
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
 
-      - name: Compile All Thesis Documents (Digital, Print, and Cover)
+    steps:
+      - name: Checkout Repository Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Synchronize Monograph Figures and Assets
+        run: |
+          echo "Synchronizing figure assets into compilation workspace..."
+          mkdir -p thesis/figures
+          if [ -d "figures" ]; then
+            cp -rn figures/* thesis/figures/ 2>/dev/null || true
+          fi
+          echo "Asset verification complete:"
+          find thesis/figures/ -type f | head -n 25
+
+      - name: Compile Book Cover (cover.tex)
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: |
-            main_digital.tex
-            main.tex
-            cover.tex
           working_directory: thesis
-          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+          root_file: cover.tex
 
-      - name: Organize Compiled PDFs
+      - name: Compile Print Edition Monograph (main.tex)
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: thesis
+          root_file: main.tex
+
+      - name: Compile Digital Edition Monograph (main_digital.tex)
+        uses: xu-cheng/latex-action@v4
+        with:
+          working_directory: thesis
+          root_file: main_digital.tex
+
+      - name: Consolidate Compiled PDFs
         run: |
           mkdir -p thesis_pdf
-          cp thesis/main_digital.pdf thesis_pdf/Quantum_Bayesian_Inference_Thesis_Digital.pdf
-          cp thesis/main.pdf thesis_pdf/Quantum_Bayesian_Inference_Thesis_Print.pdf
-          cp thesis/cover.pdf thesis_pdf/Quantum_Bayesian_Inference_Thesis_Cover.pdf
-          cp thesis/main_digital.pdf thesis_pdf/main_digital.pdf
-          cp thesis/main.pdf thesis_pdf/main.pdf
-          cp thesis/cover.pdf thesis_pdf/cover.pdf
-          ls -la thesis_pdf/
+          mv thesis/*.pdf thesis_pdf/ 2>/dev/null || true
+          cp thesis_pdf/cover.pdf thesis_pdf/Quantum_Bayesian_Inference_Thesis_Cover.pdf 2>/dev/null || true
+          cp thesis_pdf/main.pdf thesis_pdf/Quantum_Bayesian_Inference_Thesis_Print.pdf 2>/dev/null || true
+          cp thesis_pdf/main_digital.pdf thesis_pdf/Quantum_Bayesian_Inference_Thesis_Digital.pdf 2>/dev/null || true
+          echo "Compiled PDF catalog:"
+          ls -lh thesis_pdf/
 
-      - name: Upload PDF Artifacts (Workflow Artifact)
-        uses: actions/upload-artifact@v4
+      - name: Commit Compiled Deliverables
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: thesis-compiled-pdfs
-          path: |
-            thesis_pdf/Quantum_Bayesian_Inference_Thesis_Digital.pdf
-            thesis_pdf/Quantum_Bayesian_Inference_Thesis_Print.pdf
-            thesis_pdf/Quantum_Bayesian_Inference_Thesis_Cover.pdf
-          retention-days: 30
+          commit_message: "chore: update compiled thesis PDFs"
+          file_pattern: "thesis_pdf/*.pdf"
+          commit_user_name: "Daniel Rivero Losa"
+          commit_user_email: "danielrl.drl@protonmail.com"
+          commit_author: "Daniel Rivero Losa <danielrl.drl@protonmail.com>"
 
-      - name: Determine Release Tag
-        id: release_meta
-        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.create_release)
+      - name: Refresh Floating Latest Tag
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         run: |
-          if [[ "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]]; then
-            echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-            echo "title=Release ${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          else
-            echo "tag=${{ inputs.release_tag }}" >> $GITHUB_OUTPUT
-            echo "title=Thesis Release ${{ inputs.release_tag }}" >> $GITHUB_OUTPUT
-          fi
+          git tag -f latest
+          git push -f origin latest
 
-      - name: Publish GitHub Release
-        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.create_release)
+      - name: Clean Previous Release Assets
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --cleanup-tag -y 2>/dev/null || true
+
+      - name: Publish Official Thesis Release
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.release_meta.outputs.tag }}
-          name: ${{ steps.release_meta.outputs.title }}
+          tag_name: latest
+          name: "Quantum Bayesian Inference Thesis — Latest Edition"
           draft: false
           prerelease: false
-          generate_release_notes: true
           body: |
             # Master's Thesis: Quantum Bayesian Inference in Astrobiological Systems
-            **Author:** Daniel Rivero Losa
-            **Supervisor:** Roberto Campos Ortiz
-            **Institution:** Universidad Antonio de Nebrija — Escuela Politécnica Superior
-            **Degree:** Master's Degree in Quantum Computing (Academic Year 2025/2026)
+            **Author:** Daniel Rivero Losa  
+            **Supervisor:** Roberto Campos Ortiz  
+            **Institution:** Universidad Antonio de Nebrija — Escuela Politécnica Superior  
+            **Degree:** Master's Degree in Quantum Computing (Academic Year 2025/2026)  
+            **Official Title:** *Quantum Bayesian Inference for Atmospheric Biosignature and Technosignature Characterization in Exoplanetary Systems*
 
             ---
             ### 📦 Official Compiled Deliverables Attached:
             1. **`Quantum_Bayesian_Inference_Thesis_Digital.pdf`**: Digital screen edition (A4 format with wide margins for marginal commentary and interactive hyperlinks).
-            2. **`Quantum_Bayesian_Inference_Thesis_Print.pdf`**: Physical print edition ($18.5 \\times 25$ cm Crown Quarto format with symmetric binding margins).
+            2. **`Quantum_Bayesian_Inference_Thesis_Print.pdf`**: Physical print edition ($18.5 \times 25$ cm Crown Quarto format with symmetric binding margins).
             3. **`Quantum_Bayesian_Inference_Thesis_Cover.pdf`**: Full wrap-around physical book cover (front cover, spine, and back cover abstract in TikZ).
           files: |
             thesis_pdf/Quantum_Bayesian_Inference_Thesis_Digital.pdf
             thesis_pdf/Quantum_Bayesian_Inference_Thesis_Print.pdf
             thesis_pdf/Quantum_Bayesian_Inference_Thesis_Cover.pdf
+            thesis_pdf/cover.pdf
+            thesis_pdf/main.pdf
+            thesis_pdf/main_digital.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
