@@ -229,10 +229,10 @@ The corresponding orthonormal eigenvectors are:
 \end{equation}
 Expressing the initial state $\ket{\Psi}$ in this eigenbasis yields:
 \begin{equation}
-\ket{\Psi} = \frac{-i}{\sqrt{2}} \left( e^{i\theta}\ket{w_+} - e^{-i\theta}\ket{w_-} \right).
+\ket{\Psi} = \frac{1}{\sqrt{2}} \left( e^{-i\theta}\ket{w_+} + e^{i\theta}\ket{w_-} \right).
 \label{eq:state_expansion_eigenbasis_ch3}
 \end{equation}
-Equation \eqref{eq:state_expansion_eigenbasis_ch3} establishes that applying $\mathcal{Q}$ to the quantum system imparts distinct phase shifts of $\pm 2\theta$ to the eigencomponents. Measuring this phase shift directly reveals $\theta$, and consequently the posterior probability $a = \sin^2(\theta)$.
+Equation \eqref{eq:state_expansion_eigenbasis_ch3} establishes that applying $\mathcal{Q}$ to the quantum system imparts distinct phase shifts of $\mp 2\theta$ to the eigencomponents ($\mathcal{Q}\ket{w_\pm} = e^{\mp i 2\theta}\ket{w_\pm}$). Measuring this phase shift directly reveals $\theta$, and consequently the posterior probability $a = \sin^2(\theta)$.
 
 \subsection{Quantum Phase Estimation (QPE) and the Inverse Quantum Fourier Transform (IQFT)}
 To measure the eigenphase $\pm 2\theta$ coherently, QAE integrates the Grover operator within a Quantum Phase Estimation (QPE) circuit \cite{nielsen2010}. This requires an auxiliary evaluation register consisting of $m$ precision qubits initialized in an equal superposition via a cascade of Hadamard gates:
@@ -258,17 +258,17 @@ To translate this phase encoding into a digital computational basis readout, the
 
 The final quantum state of the evaluation register prior to measurement is:
 \begin{equation}
-\ket{\Phi_{\mathrm{final}}} = \frac{1}{M \sqrt{2}} \sum_{y=0}^{M-1} \left[ e^{i\theta} S_M\left(y - \frac{M\theta}{\pi}\right) - e^{-i\theta} S_M\left(y + \frac{M\theta}{\pi}\right) \right] \ket{y},
+\ket{\Phi_{\mathrm{final}}} = \frac{1}{M \sqrt{2}} \sum_{y=0}^{M-1} \left[ e^{-i\theta} S_M\left(y - \frac{M\theta}{\pi}\right) + e^{i\theta} S_M\left(y + \frac{M\theta}{\pi}\right) \right] \ket{y},
 \label{eq:eval_register_final_state}
 \end{equation}
-where $S_M(\delta) = \sum_{k=0}^{M-1} e^{i 2\pi k \delta / M} = \frac{1 - e^{i 2\pi \delta}}{1 - e^{i 2\pi \delta / M}}$ is the geometric interference kernel that sharply concentrates probability amplitude around integers $y \approx \frac{M\theta}{\pi}$.
+where $S_M(\delta) = \sum_{k=0}^{M-1} e^{i 2\pi k \delta / M} = \frac{1 - e^{i 2\pi \delta}}{1 - e^{i 2\pi \delta / M}}$ is the geometric interference kernel that sharply concentrates probability amplitude around integers $y \approx \frac{M\theta}{\pi}$ and $y \approx M - \frac{M\theta}{\pi}$.
 
 Measuring the evaluation register yields a classical integer $y \in \{0, \dots, M-1\}$ with high probability. The continuous posterior probability is extracted via the deterministic classical inversion formula:
 \begin{equation}
 \tilde{a} = \sin^2\left(\frac{\pi y}{M}\right).
 \label{eq:qae_probability_estimator_ch3}
 \end{equation}
-Figure \ref{fig:circuit_qae_master} shows the end-to-end master circuit architecture integrating the evaluation register, state register, Grover cascade, and IQFT block.
+Because the sine function satisfies reflection symmetry $\sin(\pi - \phi) = \sin(\phi)$, evaluating the estimator at the complementary conjugate peak $y_2 = M - y_1$ yields $\sin^2\left(\frac{\pi(M - y_1)}{M}\right) = \sin^2\left(\pi - \frac{\pi y_1}{M}\right) = \sin^2\left(\frac{\pi y_1}{M}\right) = \tilde{a}$. Consequently, the probability estimator is strictly invariant under the $\pm 2\theta$ phase ambiguity of the Grover eigenvalues, guaranteeing robust extraction of the target posterior from either spectral lobe. Figure \ref{fig:circuit_qae_master} shows the end-to-end master circuit architecture integrating the evaluation register, state register, Grover cascade, and IQFT block.
 
 \subsection{Mathematical Proof of the \texorpdfstring{$\mathcal{O}(1/M)$}{O(1/M)} Convergence Limit}
 The fundamental theoretical justification for deploying QAE is the deterministic bound on the estimation error $\Delta a = |\tilde{a} - a|$. Brassard et al.~(2002) proved that the estimator $\tilde{a}$ satisfies:
@@ -434,10 +434,10 @@ To establish the theoretical rigor of this chapter and disarm anticipated tribun
 \begin{quote}
 \emph{Hostile Tribunal Objection 2:} ``Decomposing an ancilla-free $k$-controlled rotation $C^k(R_y)$ requires $\mathcal{O}(2^k)$ CNOT gates (Barenco et al., 1995 \cite{barenco1995}). If a complex planetary network contains nodes with $k=5$ or $6$ parents, the circuit depth explodes exponentially, negating the spatial advantage.''
 \end{quote}
-\textbf{Mathematical Defense:} The topological architecture of exoplanetary atmospheres is naturally bounded. In realistic photochemical networks, individual atmospheric species are directly influenced by a sparse set of immediate parents ($k_{\max} \le 3$), keeping $2^{k_{\max}} \le 8$ CNOTs per conditional branch. For scaled networks where $k \ge 4$, our architecture utilizes borrowed dirty ancilla qubits: by borrowing idle evaluation qubits ($q_0 \dots q_4$) during the state preparation phase, $C^k(R_y)$ operations can be decomposed with strictly linear gate complexity $\mathcal{O}(k)$ without allocating dedicated physical ancillas, fully maintaining polynomial circuit depth.
+\textbf{Mathematical Defense:} The topological architecture of exoplanetary atmospheres is naturally bounded. In realistic photochemical networks, individual atmospheric species are directly influenced by a sparse set of immediate parents ($k_{\max} \le 3$), keeping $2^{k_{\max}} \le 8$ CNOTs per conditional branch. For scaled networks where $k \ge 4$, our architecture utilizes borrowed dirty ancilla qubits: by borrowing idle evaluation qubits ($q_0 \dots q_4$) during the state preparation phase (which remain in their ground state $\ket{0}^{\otimes m}$ prior to the Hadamard initialization of the evaluation register), $C^k(R_y)$ operations can be decomposed with strictly linear gate complexity $\mathcal{O}(k)$ without allocating dedicated physical ancillas, fully maintaining polynomial circuit depth.
 
 \subsection{Defense on the Physical Validity of ZNE under Coherent Noise}
 \begin{quote}
 \emph{Hostile Tribunal Objection 3:} ``Zero-Noise Extrapolation assumes that hardware noise scales monotonically and that gate folding $U \to U U^\dagger U$ preserves the underlying noise model. Real superconducting QPUs exhibit coherent errors, crosstalk, and non-Markovian drifts that violate the Taylor expansion in Equation \eqref{eq:zne_taylor_expansion_ch3}. How valid is Richardson extrapolation for deep QAE circuits?''
 \end{quote}
-\textbf{Mathematical Defense:} While coherent errors can induce oscillatory noise behavior, our implementation deploys randomized folding: gate folding identities are interleaved across different cycles and paired with randomized compiling (Pauli twirling). This twirling twirls coherent unitary errors into effective stochastic Pauli channels, validating the polynomial Taylor expansion. Furthermore, our pipeline evaluates three distinct extrapolation models (linear, polynomial, and Richardson) across conservative scale factors ($\lambda \in \{1, 3, 5\}$). As empirically proven in Chapter \ref{chap:system_architecture}, the mitigated expectation values converge within a verified error corridor, successfully recovering the theoretical signal under realistic IBM Quantum noise profiles.
+\textbf{Mathematical Defense:} While coherent errors can induce oscillatory noise behavior, our implementation deploys randomized folding: gate folding identities are interleaved across different cycles and paired with randomized compiling (Pauli twirling). This twirling twirls coherent unitary errors into effective stochastic Pauli channels, validating the polynomial Taylor expansion. Furthermore, digital gate-level folding (implemented via Mitiq) ensures that quantum operations remain strictly within the computational subspace without inducing pulse-level distortions or transmon leakage to state $\ket{2}$, validating that the effective Lindbladian generator scales linearly as $\mathcal{L}_{\mathrm{eff}}(\lambda) \approx \lambda \mathcal{L}_0$ in the weak-coupling regime. Our pipeline evaluates three distinct extrapolation models (linear, polynomial, and Richardson) across conservative scale factors ($\lambda \in \{1, 3, 5\}$). As empirically proven in Chapter \ref{chap:system_architecture}, the mitigated expectation values converge within a verified error corridor, successfully recovering the theoretical signal under realistic IBM Quantum noise profiles.
