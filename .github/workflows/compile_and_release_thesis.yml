@@ -1,0 +1,121 @@
+name: Compile & Release Thesis PDFs
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "thesis/**"
+      - ".github/workflows/compile_and_release_thesis.yml"
+    tags:
+      - "v*"
+      - "release-*"
+  pull_request:
+    paths:
+      - "thesis/**"
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: "Publish as GitHub Release"
+        required: true
+        type: boolean
+        default: true
+      release_tag:
+        description: "Release tag (e.g. v1.0.0 or latest)"
+        required: false
+        type: string
+        default: "latest"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Compile LaTeX & Publish Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Compile Digital Edition (A4 Screen with Notes)
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main_digital.tex
+          working_directory: thesis
+          args: -pdf -file-line-error -interaction=nonstopmode -synctex=1
+
+      - name: Compile Print Edition (18.5x25cm Book)
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          working_directory: thesis
+          args: -pdf -file-line-error -interaction=nonstopmode -synctex=1
+
+      - name: Compile Full Cover (Wrap-around TikZ)
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: cover.tex
+          working_directory: thesis
+          args: -pdf -file-line-error -interaction=nonstopmode -synctex=1
+
+      - name: Organize Compiled PDFs
+        run: |
+          mkdir -p thesis_pdf
+          cp thesis/main_digital.pdf thesis_pdf/Quantum_Bayesian_Inference_Thesis_Digital.pdf
+          cp thesis/main.pdf thesis_pdf/Quantum_Bayesian_Inference_Thesis_Print.pdf
+          cp thesis/cover.pdf thesis_pdf/Quantum_Bayesian_Inference_Thesis_Cover.pdf
+          cp thesis/main_digital.pdf thesis_pdf/main_digital.pdf
+          cp thesis/main.pdf thesis_pdf/main.pdf
+          cp thesis/cover.pdf thesis_pdf/cover.pdf
+          ls -la thesis_pdf/
+
+      - name: Upload PDF Artifacts (Workflow Artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: thesis-compiled-pdfs
+          path: |
+            thesis_pdf/Quantum_Bayesian_Inference_Thesis_Digital.pdf
+            thesis_pdf/Quantum_Bayesian_Inference_Thesis_Print.pdf
+            thesis_pdf/Quantum_Bayesian_Inference_Thesis_Cover.pdf
+          retention-days: 30
+
+      - name: Determine Release Tag
+        id: release_meta
+        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.create_release)
+        run: |
+          if [[ "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]]; then
+            echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "title=Release ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ inputs.release_tag }}" >> $GITHUB_OUTPUT
+            echo "title=Thesis Release ${{ inputs.release_tag }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.create_release)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_meta.outputs.tag }}
+          name: ${{ steps.release_meta.outputs.title }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            # Master's Thesis: Quantum Bayesian Inference in Astrobiological Systems
+            **Author:** Daniel Rivero Losa
+            **Supervisor:** Roberto Campos Ortiz
+            **Institution:** Universidad Antonio de Nebrija — Escuela Politécnica Superior
+            **Degree:** Master's Degree in Quantum Computing (Academic Year 2025/2026)
+
+            ---
+            ### 📦 Official Compiled Deliverables Attached:
+            1. **`Quantum_Bayesian_Inference_Thesis_Digital.pdf`**: Digital screen edition (A4 format with wide margins for marginal commentary and interactive hyperlinks).
+            2. **`Quantum_Bayesian_Inference_Thesis_Print.pdf`**: Physical print edition ($18.5 \\times 25$ cm Crown Quarto format with symmetric binding margins).
+            3. **`Quantum_Bayesian_Inference_Thesis_Cover.pdf`**: Full wrap-around physical book cover (front cover, spine, and back cover abstract in TikZ).
+          files: |
+            thesis_pdf/Quantum_Bayesian_Inference_Thesis_Digital.pdf
+            thesis_pdf/Quantum_Bayesian_Inference_Thesis_Print.pdf
+            thesis_pdf/Quantum_Bayesian_Inference_Thesis_Cover.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
