@@ -50,7 +50,7 @@ This work establishes an end-to-end **Quantum Bayesian Network (QBN)** architect
 <div align="center">
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph S1["1. Astrophysical Observation"]
         OBS["JWST Transmission Spectra<br/>(K2-18b: CH₄, CO₂, H₂O)"]
     end
@@ -73,8 +73,13 @@ flowchart LR
         ZNE["Zero-Noise Extrapolation<br/>Unitary Folding (λ ∈ {1,3,5})<br/>Richardson Extrapolation"]
     end
 
-    OBS --> DAG --> AE --> Q --> QPE --> MEAS
-    Q -.-> ZNE -.-> MEAS
+    OBS --> DAG
+    DAG --> AE
+    AE --> Q
+    Q --> QPE
+    QPE --> MEAS
+    Q -.-> ZNE
+    ZNE -.-> MEAS
 ```
 
 </div>
