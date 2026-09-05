@@ -117,7 +117,7 @@ For realistic astrobiological networks where each chemical species is directly i
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{figures/3.quantum_bayesian_formalism/circuito_operador_A.png}
+    \includegraphics[width=0.70\textwidth, height=0.52\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuito_operador_A.png}
     \caption{\textbf{Quantum Circuit Architecture of the State Preparation Operator $\mathcal{A}$.} Topological compilation of the causal Bayesian network into an $N$-qubit register. Root nodes are initialized via single-qubit $R_y(\theta)$ rotations, while hierarchical dependencies are encoded through a topological cascade of multi-controlled Pauli-Y rotations ($C^k(R_y)$), establishing conditional entanglement without internal barriers.}
     \label{fig:circuito_operador_A}
 \end{figure}
@@ -158,7 +158,7 @@ The computational challenge of probability estimation is thus transformed into t
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/3.quantum_bayesian_formalism/figura_geometria_grover.png}
+    \includegraphics[width=0.65\textwidth, height=0.40\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/figura_geometria_grover.png}
     \caption{\textbf{Geometric Representation of the Grover Operator $\mathcal{Q}$.} In the two-dimensional invariant subspace spanned by $|\Psi_0\rangle$ and $|\Psi_1\rangle$, the initial state vector $|\Psi\rangle$ resides at an angle $\theta$. The composite reflection $-\mathcal{A}S_0\mathcal{A}^\dagger S_\chi$ performs a deterministic counter-clockwise rotation by $2\theta$, amplifying the amplitude of the target subspace $|\Psi_1\rangle$.}
     \label{fig:grover_geometry}
 \end{figure}
@@ -172,7 +172,7 @@ To amplify the amplitude of $\ket{\Psi_1}$ and measure $\theta$, the architectur
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{figures/3.quantum_bayesian_formalism/circuito_operador_grover.png}
+    \includegraphics[width=0.85\textwidth, height=0.45\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuito_operador_grover.png}
     \caption{\textbf{Quantum Circuit Architecture of the Grover Iteration Operator $\mathcal{Q}$.} The operator executes a phase inversion of marked target states ($S_\chi$), followed by inverse state preparation ($\mathcal{A}^\dagger$), zero-state phase reflection ($S_0$), and forward state preparation ($\mathcal{A}$), producing a deterministic $2\theta$ rotation in the bipartite plane.}
     \label{fig:circuito_operador_grover}
 \end{figure}
@@ -243,7 +243,7 @@ To measure the eigenphase $\pm 2\theta$ coherently, QAE integrates the Grover op
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{figures/3.quantum_bayesian_formalism/circuito_qae_maestro.png}
+    \includegraphics[width=0.90\textwidth, height=0.50\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuito_qae_maestro.png}
     \caption{\textbf{Master Quantum Amplitude Estimation (QAE) Circuit Architecture.} The full 17-qubit pipeline comprises the auxiliary evaluation register ($q_0 \dots q_4$, $n_E = 5$), the astrobiological state register ($q_5 \dots q_{13}$, $n_S = 9$), and the ancilla workspace ($q_{14} \dots q_{16}$, $n_A = 3$, with $q_{16}$ serving as the phase oracle flag). Hadamard gates initialize the evaluation register, followed by controlled Grover iterations ($\mathcal{Q}^{2^j}$) and the Inverse Quantum Fourier Transform ($\mathrm{IQFT}$), extracting the continuous probability into a digital bitstring.}
     \label{fig:circuito_qae_maestro}
 \end{figure}
@@ -367,7 +367,7 @@ Zero-Noise Extrapolation (ZNE), formulated by Temme et al.~(2017) \cite{temme201
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{figures/3.quantum_bayesian_formalism/circuito_nisq_plegado_lambda3.png}
+    \includegraphics[width=0.90\textwidth, height=0.45\textheight, keepaspectratio]{figures/3.quantum_bayesian_formalism/circuito_nisq_plegado_lambda3.png}
     \caption{\textbf{Zero-Noise Extrapolation via Unitary Gate Folding ($\lambda = 3$).} Global circuit folding replaces each unitary block $U$ with $U U^\dagger U$, tripling the physical circuit depth and effective noise while preserving the mathematical identity $U U^\dagger = I$.}
     \label{fig:circuito_nisq_plegado}
 \end{figure}
