@@ -1,0 +1,57 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% Ancho total calculado = 185mm (back) + 17mm (lomo) + 185mm (front) = 387mm
+\usepackage[paperwidth=387mm, paperheight=250mm, margin=0cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+
+\definecolor{nebrijared}{cmyk}{0.0000, 0.9355, 0.7473, 0.2706}
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{tikzpicture}[remember picture, overlay]
+    % 1. Fondo completo rojo
+    \fill[nebrijared] (current page.north west) rectangle (current page.south east);
+
+    % 2. Franja blanca
+    \fill[white] ([yshift=-20mm]current page.north west) rectangle ([yshift=-70mm]current page.north east);
+
+    % 3. Logo centrado en el eje Y de la franja blanca
+    \node[anchor=center] at ([xshift=101mm, yshift=-46.5mm]current page.north) {
+        \includegraphics[height=45mm]{LogoPortada}
+    };
+
+    % 4. Portada Frontal
+    \node[anchor=north, text width=14cm, align=center, text=white] at ([xshift=101mm, yshift=-85mm]current page.north) {
+        \rmfamily
+        \large
+        \textbf{Master´s Degree in Quantum Computing \\[0.5em] Higher Polytechnic School} \par \vspace{20mm}
+
+        {\linespread{1.2}\selectfont
+        \fontsize{17pt}{21pt}\selectfont
+        \textbf{Quantum Bayesian Inference for Atmospheric\\Biosignature and Technosignature Characterization\\in Exoplanetary Systems} \par }  \vspace{25mm}
+
+        Author: \textbf{Daniel Rivero Losa}\\[0.6cm]
+        Supervisor: \textbf{Roberto Campos Ortiz} \par \vspace{25mm}
+
+        Madrid 2026
+    };
+
+    % 5. Lomo
+    \node[rotate=-90, text=white] at (current page.center) {
+        \rmfamily\bfseries\fontsize{11pt}{13pt}\selectfont
+        \hspace{6cm} QUANTUM BAYESIAN INFERENCE IN ASTROBIOLOGY \hspace{2cm} D. RIVERO LOSA
+    };
+
+    % 6. Contraportada
+    \node[anchor=north, text width=13cm, align=justify, text=white] at ([xshift=-101mm, yshift=-95mm]current page.north) {
+        \rmfamily
+        \input{cover_back}
+    };
+\end{tikzpicture}
+
+\end{document}

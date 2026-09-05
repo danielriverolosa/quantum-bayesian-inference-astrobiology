@@ -1,0 +1,38 @@
+\begin{titlepage}
+\pagecolor{nebrijared}
+\color{white}
+\rmfamily
+
+% Draw a tighter white banner with minimal padding around the 60mm logo
+\begin{tikzpicture}[remember picture, overlay]
+    \fill[white] ([yshift=-20mm]current page.north west) rectangle ([yshift=-82mm]current page.north east);
+    \node[anchor=center] at ([yshift=-51mm]current page.north) {
+        \includegraphics[height=60mm]{LogoPortada}
+    };
+\end{tikzpicture}
+
+\begin{center}
+    \vspace*{75mm}
+
+    \large
+    \textbf{Master´s Degree in Quantum Computing \\ Higher Polytechnic School}
+
+    \vfill
+
+    {\linespread{1.2}\selectfont
+    \huge
+    \textbf{Quantum Bayesian Inference for Atmospheric\\Biosignature and Technosignature Characterization\\in Exoplanetary Systems} \par }  \vspace{25mm}
+
+    \vfill
+
+    Author: \textbf{Daniel Rivero Losa}\\[0.5cm]
+    Supervisor: \textbf{Roberto Campos Ortiz}\\
+
+    \vfill
+
+    Madrid 2026
+\end{center}
+\end{titlepage}
+
+\pagecolor{white}
+\color{black}

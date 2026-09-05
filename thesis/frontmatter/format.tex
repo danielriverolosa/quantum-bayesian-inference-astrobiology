@@ -1,0 +1,349 @@
+\let\temp\showhyphens
+\usepackage[english]{babel}
+\let\showhyphens\temp
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage[scaled=0.85]{beramono}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{babel, positioning, shapes, arrows, arrows.meta, bending, decorations.pathmorphing, quantikz2, patterns}
+\usepackage[most]{tcolorbox}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{circuitikz}
+\usepackage{listings}
+\usepackage{lstautogobble} 
+\usepackage{xcolor}
+\usepackage[autostyle=true]{csquotes}
+\MakeOuterQuote{"}
+\usepackage{ragged2e}
+\usepackage{helvet}
+\usepackage{booktabs}
+\usepackage[tight]{shorttoc}
+\usepackage{emptypage}
+\usepackage{lmodern}
+\usepackage{siunitx}
+
+
+%%%%
+% \renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{subcaption}
+
+\usepackage{geometry}
+
+%%%%
+\linespread{1.15}
+%\linespread{0.96}
+
+\usepackage{parskip}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+
+\definecolor{nebrijared}{cmyk}{0.0000, 0.9355, 0.7473, 0.2706}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.98,0.96,0.96}
+
+\raggedbottom
+
+\usepackage{microtype}
+\setlength{\emergencystretch}{3em}
+
+\usepackage{marginfix}
+
+\newcommand{\notatfm}[1]{%
+    \leavevmode%
+    \marginpar{%
+        \RaggedRight
+        \footnotesize\color{black!80}%
+        \linespread{0.9}\selectfont%
+        #1%
+    }%
+    \ignorespaces% 
+}
+
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{nebrijared}}
+  {\filleft\small\MakeUppercase{\chaptertitlename} \Huge\thechapter}
+  {1ex}
+  {\titlerule\vspace*{1.5ex}\filright} 
+  [\vspace*{1.5ex}\titlerule] 
+\titlespacing*{\chapter}{0pt}{90pt}{40pt}
+
+\lstdefinestyle{mystyle}{
+    language=Python,
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen}\itshape,
+    keywordstyle=\color{nebrijared}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{orange},
+    basicstyle=\ttfamily\footnotesize,
+    keepspaces=true,
+    breaklines=true,
+    columns=flexible,
+    captionpos=b,
+    numbers=left,
+    tabsize=2,
+    showstringspaces=false,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+             {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+             {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1
+}
+\lstset{style=mystyle}
+
+% Snippet management system with auto-dedent, unified visual frame, real line numbers and clean paths
+\ExplSyntaxOn
+\ior_new:N \g_snippet_in_ior
+\iow_new:N \g_snippet_out_iow
+\bool_new:N \l_in_snippet_bool
+\bool_new:N \l_tag_found_bool
+\bool_gset_false:N \g_snippet_error_bool
+\tl_gset:Nn \g_snippet_error_msg_tl { }
+\seq_new:N \l_snippet_match_seq
+\tl_new:N \l_snippet_indent_tl
+\tl_new:N \l_current_line_tl
+
+\int_new:N \l_current_line_int
+\int_new:N \g_snippet_start_line_int
+\tl_new:N \g_snippet_clean_file_tl
+
+\msg_new:nnnn { snippet } { missing-tag }
+  { Snippet~tag~'#1'~not~found~in~file~'#2'. }
+  { Verify~\#BEGIN~#1~and~\#END~#1~exist~in~the~source. }
+
+\msg_new:nnnn { snippet } { missing-file }
+  { Source~file~'#1'~not~found. }
+  { Check~the~file~path. }
+
+\NewDocumentCommand{\extractsnippet}{m m}{
+  \bool_gset_false:N \g_snippet_error_bool
+  \tl_gset:Nn \g_snippet_error_msg_tl { }
+  \int_zero:N \l_current_line_int
+  \int_gzero:N \g_snippet_start_line_int
+  
+  \tl_gset:Nn \g_snippet_clean_file_tl { #2 }
+  \regex_replace_once:nnN { \A (\.\./)+ } { } \g_snippet_clean_file_tl
+  
+  \file_if_exist:nTF { #2 }
+    {
+      \ior_open:Nn \g_snippet_in_ior { #2 }
+      \iow_open:Nn \g_snippet_out_iow { \jobname.snippet.tmp }
+      \bool_set_false:N \l_in_snippet_bool
+      \bool_set_false:N \l_tag_found_bool
+
+      \ior_str_map_inline:Nn \g_snippet_in_ior
+        {
+          \int_incr:N \l_current_line_int 
+
+          \regex_match:nnTF { \A \s* \#END \s+ #1 \s* \Z } { ##1 }
+            { \bool_set_false:N \l_in_snippet_bool }
+            {
+              \regex_extract_once:nnNTF { \A (\s*) \#BEGIN \s+ #1 \s* \Z } { ##1 } \l_snippet_match_seq
+                {
+                  \bool_set_true:N \l_in_snippet_bool
+                  \bool_set_true:N \l_tag_found_bool
+                  \tl_set:Nx \l_snippet_indent_tl { \seq_item:Nn \l_snippet_match_seq { 2 } }
+                  \int_gset:Nn \g_snippet_start_line_int { \l_current_line_int + 1 }
+                }
+                {
+                  \bool_if:NT \l_in_snippet_bool
+                    {
+                      \tl_set:Nn \l_current_line_tl { ##1 }
+                      \regex_replace_once:nnN { \A \u{l_snippet_indent_tl} } { } \l_current_line_tl
+                      \exp_args:NNV \iow_now:Nn \g_snippet_out_iow \l_current_line_tl
+                    }
+                }
+            }
+        }
+      \iow_close:N \g_snippet_out_iow
+      \ior_close:N \g_snippet_in_ior
+
+      \bool_if:NF \l_tag_found_bool
+        { 
+          \bool_gset_true:N \g_snippet_error_bool
+          \tl_gset:Nx \g_snippet_error_msg_tl { Snippet~tag~'\tl_to_str:n{#1}'~not~found~in~file~'\tl_to_str:n{#2}' }
+          \msg_warning:nnnn { snippet } { missing-tag } { #1 } { #2 } 
+        }
+    }
+    { 
+      \bool_gset_true:N \g_snippet_error_bool
+      \tl_gset:Nx \g_snippet_error_msg_tl { Source~file~'\tl_to_str:n{#2}'~not~found }
+      \msg_warning:nnnn { snippet } { missing-file } { #2 } { } 
+    }
+}
+
+\NewDocumentCommand{\ifsnipterror}{ +m +m }{
+  \bool_if:NTF \g_snippet_error_bool { #1 } { #2 }
+}
+
+\NewExpandableDocumentCommand{\getsnipterror}{}{
+  \tl_use:N \g_snippet_error_msg_tl
+}
+
+\NewExpandableDocumentCommand{\getsnippetfirstline}{}{
+  \int_use:N \g_snippet_start_line_int
+}
+
+\NewExpandableDocumentCommand{\getsnippetfilename}{}{
+  \tl_to_str:V \g_snippet_clean_file_tl 
+}
+\NewDocumentCommand{\snippetsprintcaption}{}{
+  \tl_if_empty:NF \snippetcaption
+   {
+    \nopagebreak
+    \vspace{-0.8ex} 
+    \captionsetup{type=lstlisting, hypcap=false}
+    \captionof{lstlisting}{\snippetcaption}
+    \tl_if_empty:NF \snippetlabel { \label{\snippetlabel} }
+   }
+}
+\ExplSyntaxOff
+
+\pgfkeys{
+ /snippet/.is family, /snippet,
+ caption/.estore in = \snippetcaption,
+ label/.estore in = \snippetlabel,
+ caption={}, 
+ label={}    
+}
+
+\newcommand{\includesnippet}[3][]{%
+    \begingroup 
+    \pgfkeys{/snippet, #1}% 
+    \extractsnippet{#2}{#3}%
+    \par\addvspace{1.5ex} 
+    \noindent
+    \ifsnipterror{%
+        \begin{notebox}
+            \ttfamily\getsnipterror
+        \end{notebox}
+    }{%
+        \begin{tcolorbox}[
+            enhanced,
+            breakable,
+            boxrule=0.5pt,
+            colframe=black!20,
+            colback=backcolour,
+            coltitle=nebrijared,
+            colbacktitle=backcolour,
+            fonttitle=\small\sffamily\bfseries,
+            title={Source:\ \textcolor{black}{\ttfamily\getsnippetfilename}},
+            titlerule=0.5pt,
+            titlerule style={black!20},
+            arc=3pt,
+            left=4pt, right=4pt, top=2pt, bottom=2pt,
+            toptitle=3pt, bottomtitle=3pt,
+            boxsep=0pt,
+            width=\linewidth
+        ]
+        \lstinputlisting[%
+            style=mystyle,
+            frame=none,
+            backgroundcolor={},
+            aboveskip=0pt,
+            belowskip=0pt,
+            firstnumber=\getsnippetfirstline 
+        ]{\jobname.snippet.tmp}%
+        \end{tcolorbox}%
+        \snippetsprintcaption
+    }%
+    \par\addvspace{1.5ex} 
+    \endgroup
+}
+
+
+\newtcolorbox{notebox}[1]{
+    colback=red!2!white,
+    colframe=nebrijared,
+    title=#1,
+    fonttitle=\bfseries,
+    before upper={\setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}
+
+\usepackage{caption}
+
+\captionsetup{
+    font=small,                               
+    labelfont={bf, color=nebrijared},     
+    textfont={normalfont},                        
+    labelsep=period,                      
+    justification=raggedright,            
+    singlelinecheck=false                 
+}
+
+\usepackage{marginnote}
+\newcommand{\tablenote}[1]{%
+    \marginnote{%
+        \RaggedRight
+        \footnotesize\color{black!80}
+        \linespread{0.9}\selectfont
+        #1
+    }%
+}
+
+\usepackage{tabularx}
+\usepackage{adjustbox}
+
+
+\usepackage{etoolbox}
+
+% Reduce font size for standard tabular environments
+\AtBeginEnvironment{tabular}{\fontsize{9.5pt}{11.5pt}\selectfont}
+
+% Reduce font size for tabularx environments
+\AtBeginEnvironment{tabularx}{\fontsize{9.5pt}{11.5pt}\selectfont}
+
+
+% BibLaTeX setup
+\usepackage[style=numeric, sorting=none]{biblatex}
+\addbibresource{references.bib}
+
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map[overwrite=false]{
+      \step[fieldsource=author]
+      \step[fieldset=usera, origfieldval]
+    }
+    \map[overwrite=false]{
+      \step[fieldsource=editor]
+      \step[fieldset=usera, origfieldval]
+    }
+  }
+}
+
+% Hyperref setup
+\usepackage{hyperref}
+\hypersetup{
+    unicode=true,
+    colorlinks=true,
+    linkcolor=nebrijared,
+    filecolor=magenta,
+    urlcolor=nebrijared,
+    citecolor=nebrijared 
+}
+
+% PDF annotations
+\usepackage{pdfcomment}
+
+\DeclareCiteCommand{\cite}[\mkbibbrackets]
+  {\usebibmacro{prenote}}
+  {%
+    \iffieldundef{title}%
+      {% Si no hay título, solo enlace normal
+        \mbox{\usebibmacro{cite}}%
+      }%
+      {%
+        \iffieldundef{usera}%
+          {% Si hay título pero NO hay autor -> "Título"
+            \pdftooltip{\mbox{\usebibmacro{cite}}}{"\thefield{title}"}%
+          }%
+          {% Si hay título y SÍ hay autor -> Autor: "Título"
+            \pdftooltip{\mbox{\usebibmacro{cite}}}{\thefield{usera}: "\thefield{title}"}%
+          }%
+      }%
+  }
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}

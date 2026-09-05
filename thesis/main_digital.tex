@@ -1,0 +1,95 @@
+\RequirePackage{silence}
+\WarningFilter{latex}{Command \showhyphens has changed.}
+\pdfminorversion=7
+\documentclass[oneside, openany]{book}
+\WarningFilter{ExtSizes}{It is better to use}
+\WarningFilter{extsizes}{It is better to use}
+\WarningFilter{hyperref}{Option `pdftex' has already been used}
+\WarningFilter{soulutf8}{This package is obsolete}
+
+\usepackage[10pt]{extsizes}
+
+\input{frontmatter/format}
+
+\geometry{
+    a4paper,
+    left=2.5cm,
+    right=5cm,   
+    top=3cm,
+    bottom=3cm,
+    headsep=0.4cm,
+    marginparwidth=4cm, 
+    marginparsep=0.5cm    
+}
+
+\newcommand{\setfrontgeometry}{
+    \newgeometry{left=3cm, right=3cm, top=3cm, bottom=3cm}
+    \setlength{\headwidth}{\textwidth}
+}
+
+\newcommand{\setmaingeometry}{
+    \restoregeometry
+    \setlength{\headwidth}{\textwidth}
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[L]{\scriptsize \textbf{DANIEL RIVERO LOSA}}
+\fancyhead[R]{\scriptsize \textbf{QUANTUM BAYESIAN INFERENCE IN ASTROBIOLOGY}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\fancyfoot[R]{\footnotesize \thepage}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[R]{\footnotesize \thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\begin{document}
+
+\frontmatter
+\pagestyle{fancy}
+\setfrontgeometry
+
+\hypersetup{pageanchor=false}
+\input{frontmatter/titlepage_digital}
+\hypersetup{pageanchor=true}
+
+\clearpage
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+    \node[text width=11cm, align=justify] at (current page.center) {
+    \hypersetup{pageanchor=false}
+        \input{cover_back}
+    \hypersetup{pageanchor=true}
+    };
+\end{tikzpicture}
+\clearpage
+
+\begingroup
+  \pagestyle{plain}
+  \input{frontmatter/dedication}
+  \include{chapters/acknowledgments}
+  \include{chapters/structure}
+  \clearpage
+\endgroup
+
+\setfrontgeometry
+\phantomsection
+\label{label:short_toc}
+\begingroup
+  \pagestyle{plain}
+  \shorttableofcontents{Overview}{1}
+  \clearpage
+\endgroup
+
+\mainmatter
+\setmaingeometry 
+
+\input{index}
+
+\end{document}

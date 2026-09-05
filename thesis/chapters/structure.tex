@@ -1,0 +1,19 @@
+\chapter*{Structure of this thesis}
+
+\section*{Indexes and Tables of Content}
+A brief Table of Contents is provided at the beginning of this work (see page \pageref{label:short_toc}), outlining only the chapters and main sections. 
+
+A comprehensive Table of Contents can be found at the end of the thesis (page \pageref{label:full_toc}), alongside the List of Figures (page \pageref{label:list_of_figures}) and the Bibliography (page \pageref{label:bib_references}). 
+
+\section*{Source code and repository structure}
+Chapter \ref{chap:classical_limits} and Chapter \ref{chap:system_architecture} show the results of classical stochastic benchmarks, exact tree inference, and quantum circuit simulations, which are synthesized alongside future technological horizons in Chapter \ref{chap:conclusions}.
+
+The complete code required to execute the simulations presented in this work is organized within an extensible, modular architecture alongside the simulation result data, plots, and LaTeX sources:
+
+\begin{itemize}
+    \item \textbf{\texttt{src/}:} Contains all algorithmic implementations and simulation pipelines, partitioned into \texttt{src/chapter_2_classical} (pgmpy Bayesian networks, Junction Tree stress tests, and MCMC Gibbs sampling) and \texttt{src/chapter_4_quantum} (Qiskit 17-qubit circuit synthesis, Grover iteration cascade, QPE with IQFT, and Mitiq Zero-Noise Extrapolation).
+    \item \textbf{\texttt{data/}:} Stores the astronomical spectroscopic priors (JWST transmission spectra of K2-18b) and empirical sampling logs.
+    \item \textbf{\texttt{figures/}:} Contains generated plots, convergence curves, and transpilation circuit diagrams.
+    \item \textbf{\texttt{thesis/}:} Houses the complete \LaTeX\ source files of this monograph, with figures categorized by chapter in \texttt{thesis/figures/}.
+    \item \textbf{\texttt{thesis\_pdf/}:} Stores compiled PDF editions (digital reading and print-ready formats).
+\end{itemize}
