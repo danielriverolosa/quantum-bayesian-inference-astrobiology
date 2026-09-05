@@ -5,16 +5,29 @@
 **Master's Thesis in Quantum Computing (Academic Year 2025/2026)**  
 **Escuela Politécnica Superior — Universidad Antonio de Nebrija**
 
-[![Compile & Release Thesis PDFs](https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/actions/workflows/compile_thesis.yml/badge.svg)](https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/actions/workflows/compile_thesis.yml)
-[![Download Digital Thesis (A4)](https://img.shields.io/badge/Download%20Thesis-Digital%20Edition%20(PDF)-2EA44F?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/releases/latest/download/main_digital.pdf)
-[![Download Print Thesis (Crown Quarto)](https://img.shields.io/badge/Download%20Thesis-Print%20Edition%20(PDF)-0969DA?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/releases/latest/download/main.pdf)
+[![CI/CD: Compile & Release Thesis PDFs](https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/actions/workflows/compile_and_release_thesis.yml/badge.svg)](https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/actions/workflows/compile_and_release_thesis.yml)
+[![Latest Release](https://img.shields.io/badge/Release-Latest%20(v2026)-blue?style=flat-square&logo=github)](https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/releases/tag/latest)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-green.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
+
+<p align="center">
+  <a href="https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/releases/download/latest/Quantum_Bayesian_Inference_Thesis_Digital.pdf">
+    <img src="https://img.shields.io/badge/Download%20Thesis-Digital%20Edition%20(A4%20PDF)-2EA44F?style=for-the-badge&logo=adobeacrobatreader&logoColor=white" alt="Download Digital Thesis"/>
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/releases/download/latest/Quantum_Bayesian_Inference_Thesis_Print.pdf">
+    <img src="https://img.shields.io/badge/Download%20Thesis-Print%20Edition%20(Book%20PDF)-0969DA?style=for-the-badge&logo=adobeacrobatreader&logoColor=white" alt="Download Print Thesis"/>
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/danielriverolosa/quantum-bayesian-inference-astrobiology/releases/download/latest/Quantum_Bayesian_Inference_Thesis_Cover.pdf">
+    <img src="https://img.shields.io/badge/Download-Hardcover%20Wrap%20(PDF)-6F42C1?style=for-the-badge&logo=adobeacrobatreader&logoColor=white" alt="Download Book Cover"/>
+  </a>
+</p>
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![Qiskit 1.x / 2.x](https://img.shields.io/badge/Qiskit-1.0%2B-6929C4.svg?style=flat-square&logo=qiskit&logoColor=white)](https://qiskit.org/)
 [![Mitiq ZNE](https://img.shields.io/badge/Error%20Mitigation-Mitiq%20ZNE-FF6F00.svg?style=flat-square)](https://mitiq.readthedocs.io/)
 [![pgmpy](https://img.shields.io/badge/Classical%20PGM-pgmpy-4B8BBE.svg?style=flat-square)](https://pgmpy.org/)
 [![LaTeX BibLaTeX](https://img.shields.io/badge/Typography-LaTeX%20%7C%20BibLaTeX-008080.svg?style=flat-square&logo=latex&logoColor=white)](https://www.latex-project.org/)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
 
 <br/>
 
