@@ -38,26 +38,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Compile Digital Edition (A4 Screen with Notes)
+      - name: Compile All Thesis Documents (Digital, Print, and Cover)
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: main_digital.tex
+          root_file: |
+            main_digital.tex
+            main.tex
+            cover.tex
           working_directory: thesis
-          args: -pdf -file-line-error -interaction=nonstopmode -synctex=1
-
-      - name: Compile Print Edition (18.5x25cm Book)
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: main.tex
-          working_directory: thesis
-          args: -pdf -file-line-error -interaction=nonstopmode -synctex=1
-
-      - name: Compile Full Cover (Wrap-around TikZ)
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: cover.tex
-          working_directory: thesis
-          args: -pdf -file-line-error -interaction=nonstopmode -synctex=1
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
       - name: Organize Compiled PDFs
         run: |
