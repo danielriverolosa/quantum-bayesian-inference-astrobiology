@@ -50,36 +50,42 @@ This work establishes an end-to-end **Quantum Bayesian Network (QBN)** architect
 <div align="center">
 
 ```mermaid
-flowchart TD
-    subgraph S1["1. Astrophysical Observation"]
-        OBS["JWST Transmission Spectra<br/>(K2-18b: CH₄, CO₂, H₂O)"]
-    end
+stateDiagram-v2
+    direction TB
 
-    subgraph S2["2. Probabilistic Modeling"]
-        DAG["9-Node Astrobiological DAG<br/>{X₀ ... X₈} (Priors & CPTs)"]
-    end
+    state "1. Observational Telemetry" as S1 {
+        JWST: JWST Transmission Spectroscopy (K2-18b)
+    }
 
-    subgraph S3["3. Unitary Quantum Encoding"]
-        AE["Amplitude Encoding<br/>Operator 𝒜: |0⟩ → |Ψ⟩"]
-        Q["Grover Iterate 𝒬<br/>-𝒜 S₀ 𝒜† S_χ"]
-    end
+    state "2. Discrete Causal Modeling" as S2 {
+        DAG: 9-Node Bayesian Network (X₀ to X₈)
+        CPTs: Prior Calibration (Appendix A)
+    }
 
-    subgraph S4["4. Quantum Estimation & Readout"]
-        QPE["5-Qubit Phase Estimation<br/>+ Inverse QFT (IQFT†)"]
-        MEAS["Projective Readout<br/>Centroid & Variance"]
-    end
+    state "3. Quantum Core (QBN)" as S3 {
+        A: Operator 𝒜 (Amplitude Encoding)
+        Q: Operator 𝒬 (Grover Reflection)
+        A --> Q
+    }
 
-    subgraph S5["5. NISQ Error Mitigation"]
-        ZNE["Zero-Noise Extrapolation<br/>Unitary Folding (λ ∈ {1,3,5})<br/>Richardson Extrapolation"]
-    end
+    state "4. Dual Inference Pathways" as S4 {
+        state "FTQC Blueprint (Ideal)" as FTQC {
+            QPE: 5-Qubit Phase Estimation + IQFT†
+        }
+        state "NISQ Regime (Noisy QPUs)" as NISQ {
+            ZNE: Zero-Noise Extrapolation (λ = 1, 3, 5)
+        }
+    }
 
-    OBS --> DAG
-    DAG --> AE
-    AE --> Q
-    Q --> QPE
-    QPE --> MEAS
-    Q -.-> ZNE
-    ZNE -.-> MEAS
+    state "5. Astrobiological Readout" as S5 {
+        P_DMS: Biosignature Posterior P(DMS | e)
+        P_CFC: Technosignature Posterior P(CFC | e)
+    }
+
+    S1 --> S2
+    S2 --> S3
+    S3 --> S4
+    S4 --> S5
 ```
 
 </div>
