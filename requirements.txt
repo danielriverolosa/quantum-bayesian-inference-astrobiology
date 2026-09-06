@@ -1,6 +1,7 @@
 # Core Quantum Computing Libraries
 qiskit>=1.0.0
 qiskit-aer>=0.14.0
+pylatexenc>=2.10
 mitiq>=0.30.0
 
 # Classical Probabilistic & Scientific Computing
