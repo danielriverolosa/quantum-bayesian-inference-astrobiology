@@ -45,7 +45,7 @@ Next-generation space observatories—chiefly the **James Webb Space Telescope (
 1. **Exact Inference:** Clique trees (Junction Tree) suffer an exponential memory ceiling $\mathcal{O}(N \cdot d^{w+1})$ driven by high network treewidth $w$.
 2. **Stochastic Sampling:** Markov Chain Monte Carlo (MCMC) and Rejection Sampling are constrained to $\mathcal{O}(1/\sqrt{M})$, succumbing to **L'Ecuyer's variance divergence** ($\mathrm{RE} \to \infty$) and Kac's recurrence trap ($\mathbb{E}[\tau] \approx 10^6$ steps).
 
-This work establishes an end-to-end **Quantum Bayesian Network (QBN)** architecture coupled with **Quantum Amplitude Estimation (QAE)** in Qiskit to overcome both boundaries:
+This work establishes an end-to-end **Quantum Bayesian Network (QBN)** architecture coupled with **Quantum Amplitude Estimation (QAE)** in Qiskit to overcome both boundaries with bounded in-degree state preparation $\mathcal{O}(N \cdot 2^{k_{\max}})$:
 
 <div align="center">
 
@@ -99,7 +99,7 @@ stateDiagram-v2
 | **Spatial Scaling** | $\mathcal{O}(N \cdot d^{w+1})$ RAM explosion in clique potentials. | **$\mathcal{O}(N)$ Qubits:** 9 qubits encode all $2^9 = 512$ states. | **5 physical qubits** encode core inference kernel. |
 | **Query Scaling** | $\mathcal{O}(1/\sqrt{M})$ Monte Carlo rate; diverges on rare states. | **$\mathcal{O}(1/M)$ Heisenberg speedup** via Grover rotation. | $\mathcal{O}(1)$ queries with noise-scaled folding factors. |
 | **Rare Technosignatures** | **0 detections** in $100{,}000$ MCMC steps; $90.42\%$ rejection. | **Deterministic phase extraction** via Fourier centroid. | Controlled expectation with noise-floor tracking. |
-| **Physical Hardware** | Exact math on CPU / RAM. | Master circuit: **$43{,}874$ depth, $44{,}853$ gates** (FTQC). | Kernel: **$D = 39$ native gates** ($86.44\%$ error mitigation). |
+| **Physical Hardware** | Exact math on CPU / RAM. | Master circuit: **$43{,}874$ depth, $44{,}853$ gates** (FTQC). | Kernel: **Depth $D = 39$, $57$ native gates** ($86.44\%$ error mitigation). |
 | **Reference Section** | [Chapter 2](thesis/chapters/2.classical_limits.tex) & [Notebook 01](src/chapter_2_classical/01_Classical_Limits_K218b.ipynb) | [Chapter 3](thesis/chapters/3.quantum_bayesian_formalism.tex) & [Notebook 02](src/chapter_4_quantum/02_QAE_Ideal_Simulation.ipynb) | [Chapter 4](thesis/chapters/4.system_architecture.tex) & [Notebook 03](src/chapter_4_quantum/03_NISQ_ZNE_Mitigation.ipynb) |
 
 ---
@@ -114,6 +114,7 @@ Explore dedicated components across the repository:
 | 📊 **[Data & Priors](data/)** | Structured exoplanetary priors, JWST transmission spectra, and benchmark logs. | [`k218b_cpt_priors.json`](data/k218b_cpt_priors.json) &bull; [`transmission_spectrum.csv`](data/k218b_jwst_transmission_spectrum.csv) &bull; [`data/README.md`](data/README.md) |
 | 📚 **[Scientific Library](papers/)** | Archival repository containing 21 peer-reviewed open-access PDFs with DOIs. | Quantum Algorithms &bull; Error Mitigation &bull; Classical Complexity &bull; [`papers/README.md`](papers/README.md) |
 | 📑 **[Thesis LaTeX Source](thesis/)** | Full academic monograph source code for print, digital, and Overleaf editions. | Crown Quarto (`main.tex`) &bull; Digital A4 (`main_digital.tex`) &bull; Overleaf (`main_overleaf.tex`) |
+| 🎯 **[Conclusions & Horizons](thesis/chapters/5.conclusions.tex)** | Comprehensive synthesis, NISQ-to-FTQC roadmap, and HWO telescope prospects. | Iterative QAE (IQAE without QFT) &bull; PEC mitigation &bull; Multi-planetary scaling |
 | 📋 **[Appendix A (CPTs)](thesis/chapters/6.appendix_cpts.tex)** | Exhaustive combinatorial CPTs ($2^k$ rows), analytical marginals, and derivations. | Prior $P(X_3) = 0.0763$, $P(X_8) = 10^{-6}$, JWST posterior $P(\mathbf{e}) = 0.095804$ |
 | 🛠️ **[Appendix B (Transpilation)](thesis/chapters/7.appendix_transpilation.tex)** | 100% verified Qiskit transpiler metrics, gate inventories, and CNOT scaling. | 17Q Master Profile ($44{,}853$ ops) &bull; ZNE CNOT linearity ($23 \to 69 \to 115$) &bull; $n_E \in [3, 10]$ scaling |
 
