@@ -2,7 +2,7 @@
 
 The theoretical framework established in Chapter \ref{chap:quantum_bayesian_formalism} demonstrated the mathematical superiority of Quantum Bayesian Networks (QBNs) and Quantum Amplitude Estimation (QAE) over classical stochastic methods. However, abstract asymptotic bounds---such as the transition from the classical sampling limit $\mathcal{O}(1/\sqrt{M})$ to the quantum Heisenberg bound $\mathcal{O}(1/M)$---must be empirically validated through an end-to-end computational pipeline. 
 
-This chapter presents the applied software engineering methodology, algorithmic implementation, and experimental validation of the proposed quantum architecture. Using IBM's Qiskit framework \cite{nielsen2010}, we synthesize the complete 17-qubit quantum circuit, benchmark its performance on empirical spectroscopic priors from the exoplanet K2-18b observed by the James Webb Space Telescope (JWST) \cite{madhusudhan2023}, analyze transpilation metrics and phase quantization dynamics, and evaluate Zero-Noise Extrapolation (ZNE) error mitigation under realistic Noisy Intermediate-Scale Quantum (NISQ) conditions \cite{preskill2018, temme2017, endo2018}.
+This chapter presents the applied software engineering methodology, algorithmic implementation, and experimental validation of the proposed quantum architecture. Using IBM's Qiskit framework \cite{qiskit2021}, grounded in the quantum computational foundations of Nielsen and Chuang \cite{nielsen2010}, we synthesize the complete 17-qubit quantum circuit, benchmark its performance on empirical spectroscopic priors from the exoplanet K2-18b observed by the James Webb Space Telescope (JWST) \cite{madhusudhan2023}, analyze transpilation metrics and phase quantization dynamics, and evaluate Zero-Noise Extrapolation (ZNE) error mitigation under realistic Noisy Intermediate-Scale Quantum (NISQ) conditions \cite{preskill2018, temme2017, endo2018}.
 
 \section{Exoplanetary Dataset and Causal Topology: The K2-18b Framework}\label{sec:k218b_framework}
 
@@ -326,7 +326,7 @@ Table \ref{tab:zne_experimental_results} summarizes the quantitative mitigation 
 \end{adjustbox}
 \end{table}
 
-\section{Methodological Considerations and Empirical Boundary Analysis}\label{sec:methodological_considerations_ch4}\label{sec:preemptive_defense_ch4}
+\section{Methodological Considerations and Empirical Boundary Analysis}\label{sec:methodological_considerations_ch4}
 
 To establish the scientific validity and experimental context of these results, this section addresses three critical analytical considerations regarding measurement interpretation, circuit scaling, and noise mitigation:
 
@@ -335,7 +335,7 @@ A primary question when analyzing Figure \ref{fig:qae_ideal_spectrum} is how to 
 
 In Fourier-based QPE, discrete basis states are not independent Bernoulli samples of a random variable (as in classical rejection sampling); they represent discrete frequency modes of a coherent quantum interference pattern \cite{brassard2002}. With $n_E = 5$ evaluation qubits, the discrete phase bin width is $\Delta\theta = \pi/32 \approx 0.0982\,\mathrm{rad}$. The true geometric angle $\theta_a = \arcsin(\sqrt{10^{-6}}) \approx 0.0010\,\mathrm{rad}$ is an order of magnitude smaller than $\Delta\theta$. According to Brassard et al.~(2002), the Grover reflection operator $\mathcal{Q} = -\mathcal{A} S_0 \mathcal{A}^\dagger S_\chi$ possesses conjugate eigenvalues $\lambda_\pm = e^{\pm i(\pi - 2\theta_a)}$ with eigenphases $\phi_\pm = \frac{1}{2} \mp \frac{\theta_a}{\pi} \approx 0.5000 \mp 0.0003$. Because the angular deviation $\Delta\phi = 0.0003$ is far smaller than half a grid bin width ($\frac{1}{64} \approx 0.0156$), the Dirichlet interference kernel $S_M$ projects virtually $100\%$ of the probability mass onto the central quantization bin $y = \mathrm{round}(32 \times 0.5000) = 16$ ($\ket{10000}$).
 
-This deterministic concentration at the bin boundary is unambiguous analytical proof that the target phase satisfies $\theta_a \in [0, \Delta\theta)$. To extract the continuous sub-bin amplitude with arbitrary precision on NISQ processors without requiring $n_E \ge 12$ evaluation qubits, modern Iterative Quantum Amplitude Estimation (IQAE) eliminates the auxiliary evaluation register entirely, evaluating Grover powers sequentially to zoom into $\theta_a$ without phase quantization artifacts.
+This deterministic concentration at the bin boundary is unambiguous analytical proof that the target phase satisfies $\theta_a \in [0, \Delta\theta)$. To extract the continuous sub-bin amplitude with arbitrary precision on NISQ processors without requiring $n_E \ge 12$ evaluation qubits, modern Iterative Quantum Amplitude Estimation (IQAE) \cite{grinko2021} eliminates the auxiliary evaluation register entirely, evaluating Grover powers sequentially to zoom into $\theta_a$ without phase quantization artifacts.
 
 \subsection{Fault-Tolerant Circuit Depth vs. NISQ Isolated Inversion Kernels}
 A second practical consideration concerns the apparent dichotomy between the full canonical QAE circuit (which compiles to over 52,000 gates, exceeding current physical coherence times $T_1 \approx 150\,\mu\mathrm{s}$) and the abbreviated 39-gate core used to demonstrate Zero-Noise Extrapolation.
