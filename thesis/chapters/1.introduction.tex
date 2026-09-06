@@ -147,31 +147,29 @@ This quadratic acceleration from the classical Monte Carlo scaling $\mathcal{O}(
 \subsection{Dimension 3: Algorithmic Robustness and Resource Efficiency}
 Beyond asymptotic complexity gains, the quantum formulation provides structural stability against the variance explosion of classical sampling. Because QAE measures the eigenphase of a unitary operator rather than tallying discrete stochastic occurrences, the quantum estimator does not suffer from the relative error divergence $\mathrm{RE} \to \infty$ inherent to rejection sampling. Furthermore, replacing thousands of parallel classical supercomputing nodes with a single coherent quantum circuit architecture substantially reduces the total energetic and computational resource footprint required for planet-wide atmospheric parameter sweeps.
 
-\section{Preemptive Theoretical Defense and Methodological Scope}\label{sec:preemptive_defense}
+\section{Methodological Scope and Theoretical Boundary Conditions}\label{sec:methodological_scope}\label{sec:preemptive_defense}
 
-To establish the scientific validity of this work and address the primary criticisms anticipated from theoretical computer scientists, astrobiologists, and quantum hardware physicists, this section establishes three foundational methodological disclaimers:
+To establish the scientific rigor of this investigation and clearly delineate its operational domain across theoretical computer science, observational astrobiology, and quantum hardware engineering, this section establishes three foundational methodological boundaries:
 
 \subsection{Complexity Scope: Bounded Acceleration vs. NP-Hardness}
-\begin{quote}
-\emph{Hostile Tribunal Objection 1:} ``Probabilistic inference in Bayesian networks is NP-hard \cite{cooper1990, dagum1993}. Because quantum computers cannot solve NP-complete problems in polynomial time ($\mathrm{BQP} \not\supseteq \mathrm{NP}$), claiming quantum acceleration for Bayesian inference is theoretically flawed.''
-\end{quote}
-\textbf{Theoretical Defense:} This thesis makes no claim that Quantum Bayesian Networks reduce the worst-case NP-hard complexity of general Bayesian inference to polynomial time. In the worst case of a maximally connected DAG ($k_{\max} \to N$), the quantum state preparation complexity $\mathcal{O}(N \cdot 2^{k_{\max}})$ becomes exponential, mirroring the classical intractability. 
+A fundamental theoretical question in quantum complexity concerns whether asserting quantum acceleration for Bayesian inference contradicts the proven NP-hardness of probabilistic reasoning in graphical models \cite{cooper1990, dagum1993}. Because quantum algorithms cannot solve NP-complete problems in polynomial time ($\mathrm{BQP} \not\supseteq \mathrm{NP}$), establishing the exact computational regime where quantum advantage operates is critical.
+
+This thesis makes no claim that Quantum Bayesian Networks reduce the worst-case NP-hard complexity of general Bayesian inference to polynomial time. In the worst case of a maximally connected DAG ($k_{\max} \to N$), the quantum state preparation complexity $\mathcal{O}(N \cdot 2^{k_{\max}})$ becomes exponential, mirroring the classical intractability. 
 
 Rather, the quantum advantage proven in this thesis applies to the structurally bounded domain: sparse DAGs ($k_{\max} \ll N$) that nonetheless exhibit high treewidth $w$ after moralization and triangulation. In this regime, classical exact algorithms are blocked by memory saturation ($\mathcal{O}(N d^{w+1})$), while classical stochastic algorithms are paralyzed by $\mathcal{O}(1/\sqrt{M})$ convergence and rare-event variance divergence. Quantum Bayesian inference occupies this exact sweet spot: state preparation remains strictly polynomial ($\mathcal{O}(N)$), while QAE quadratically accelerates posterior estimation from $\mathcal{O}(1/\epsilon^2)$ to $\mathcal{O}(1/\epsilon)$, rendering previously intractable scientific calculations numerically feasible.
 
 \subsection{Interface Scope: Coupling Discrete QBNs with Continuous Retrieval Codes}
-\begin{quote}
-\emph{Hostile Tribunal Objection 2:} ``Modern exoplanetary retrieval relies on continuous atmospheric models (e.g., radiative transfer via \texttt{petitRADTRANS} or \texttt{NEMESIS}). A 9-node discrete Bayesian network is an oversimplification of an exoplanetary atmosphere.''
-\end{quote}
-\textbf{Theoretical Defense:} The Quantum Bayesian Network is not designed to replace high-resolution continuous radiative transfer solvers. Instead, it operates as a hierarchical epistemic synthesis layer positioned directly above continuous retrieval codes. Radiative transfer tools perform the low-level physical parameter extraction, converting continuous absorption cross-sections into posterior marginal distributions over gas abundances ($\mathrm{H}_2\mathrm{O}$, $\mathrm{CH}_4$, $\mathrm{CO}_2$). 
+From an astrophysical modeling perspective, one must consider how discrete Bayesian networks interface with established continuous atmospheric retrieval tools (e.g., radiative transfer solvers such as \texttt{petitRADTRANS} or \texttt{NEMESIS}). Specifically, it is vital to clarify why a discrete causal representation is adopted rather than treating it as an oversimplification of a continuous atmosphere.
+
+The Quantum Bayesian Network is not designed to replace high-resolution continuous radiative transfer solvers. Instead, it operates as a hierarchical epistemic synthesis layer positioned directly above continuous retrieval codes. Radiative transfer tools perform the low-level physical parameter extraction, converting continuous absorption cross-sections into posterior marginal distributions over gas abundances ($\mathrm{H}_2\mathrm{O}$, $\mathrm{CH}_4$, $\mathrm{CO}_2$). 
 
 The discrete QBN ingests these extracted marginals as probabilistic evidence, integrating them with stellar context (stellar type, flare UV activity), geochemical constraints (volcanism, surface pressure), and metabolic pathways. The QBN's function is to resolve the high-level causal hypothesis testing: distinguishing whether an observed chemical disequilibrium is driven by an active biosphere, an industrial technosphere, or an abiotic photochemical mimicker.
 
-\subsection{Hardware Scope: NISQ Constraints and Error Mitigation}
-\begin{quote}
-\emph{Hostile Tribunal Objection 3:} ``Current Noisy Intermediate-Scale Quantum (NISQ) processors \cite{preskill2018} suffer from two-qubit gate error rates ($\sim 10^{-2}$) and limited coherence times ($T_1, T_2$). Synthesizing multi-controlled gates and QAE on a 17-qubit circuit exceeds physical coherence limits on real quantum hardware.''
-\end{quote}
-\textbf{Theoretical Defense:} Full fault-tolerant execution of deep QAE circuits requires logical qubits protected by Quantum Error Correction (QEC). However, this thesis implements a complete bridge to near-term execution by deploying Zero-Noise Extrapolation (ZNE) error mitigation \cite{temme2017, endo2018}. By systematically amplifying circuit noise via unitary gate folding ($\lambda \in \{1, 3, 5\}$) and extrapolating expectation values to the zero-noise limit via polynomial and Richardson models, we demonstrate that the quantum signal can be recovered under realistic IBM device noise profiles. The 17-qubit architecture established herein serves as an empirically verified blueprint ready for deployment on emerging fault-tolerant quantum processors.
+\subsection{Hardware Scope: NISQ Constraints and Error Mitigation Pathways}
+From an experimental standpoint, contemporary Noisy Intermediate-Scale Quantum (NISQ) processors \cite{preskill2018} are constrained by physical two-qubit gate error rates ($\sim 10^{-2}$) and limited coherence times ($T_1, T_2$). Synthesizing multi-controlled gates and QAE on a 17-qubit circuit demands a rigorous appraisal of physical feasibility versus long-term fault-tolerant requirements.
+
+Full fault-tolerant execution of deep QAE circuits requires logical qubits protected by Quantum Error Correction (QEC). However, this thesis implements a complete bridge to near-term execution by deploying Zero-Noise Extrapolation (ZNE) error mitigation \cite{temme2017, endo2018}. By systematically amplifying circuit noise via unitary gate folding ($\lambda \in \{1, 3, 5\}$) and extrapolating expectation values to the zero-noise limit via polynomial and Richardson models, we demonstrate that the quantum signal can be recovered under realistic IBM device noise profiles. The 17-qubit architecture established herein serves as an empirically verified blueprint ready for deployment on emerging fault-tolerant quantum processors.
+
 
 \section{Thesis Objectives}\label{sec:thesis_objectives}
 
