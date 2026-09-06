@@ -35,9 +35,9 @@ Prior to global circuit assembly, each fundamental operator subcircuit was trans
 \begin{itemize}[leftmargin=*]
     \item \textbf{State Preparation Operator $\mathcal{A}$ ($12$ operational qubits: $9$ state + $3$ ancilla):}
     \begin{itemize}
-        \item Transpiled Depth: $4$
-        \item Total Gate Count (Size): $6$
-        \item Gate Breakdown: $3\times\mathrm{CRY}$, $1\times\mathrm{U}_3$, $1\times\mathrm{RY}$, $1\times\mathrm{X}$.
+        \item Transpiled Depth: $33$
+        \item Total Gate Count (Size): $47$
+        \item Gate Breakdown: $14\times\mathrm{X}$, $12\times\mathrm{CU}$, $11\times\mathrm{CRY}$, $8\times\mathrm{CX}$, $2\times\mathrm{U}_3$.
     \end{itemize}
     \item \textbf{Phase Oracle $S_\chi$ ($12$ operational qubits):}
     \begin{itemize}
@@ -47,9 +47,9 @@ Prior to global circuit assembly, each fundamental operator subcircuit was trans
     \end{itemize}
     \item \textbf{Grover Iterate Operator $\mathcal{Q} = -\mathcal{A} S_0 \mathcal{A}^\dagger S_\chi$ ($12$ operational qubits):}
     \begin{itemize}
-        \item Transpiled Depth: $9$
-        \item Total Gate Count (Size): $30$
-        \item Gate Breakdown: $16\times\mathrm{X}$, $6\times\mathrm{CRY}$, $4\times\mathrm{U}_3$, $2\times\mathrm{U}_2$, $1\times\mathrm{Z}$, $1\times\mathrm{MCX}$.
+        \item Transpiled Depth: $67$
+        \item Total Gate Count (Size): $112$
+        \item Gate Breakdown: $42\times\mathrm{X}$, $24\times\mathrm{CU}$, $22\times\mathrm{CRY}$, $16\times\mathrm{CX}$, $4\times\mathrm{U}_3$, $2\times\mathrm{U}_2$, $1\times\mathrm{Z}$, $1\times\mathrm{MCX}$.
     \end{itemize}
     \item \textbf{5-Qubit Inverse Quantum Fourier Transform ($\mathrm{IQFT}^\dagger$, $5$ evaluation qubits):}
     \begin{itemize}
@@ -62,7 +62,7 @@ Prior to global circuit assembly, each fundamental operator subcircuit was trans
 \subsection{Full Master Circuit Assembly and Gate Breakdown}
 The complete master QAE circuit cascades $\sum_{j=0}^{4} 2^j = 31$ controlled-Grover iterates $C\text{-}\mathcal{Q}^{2^j}$ across the evaluation register, bounded by a layer of Hadamard gates and finalized by $\mathrm{IQFT}^\dagger$ and classical measurement.
 
-Transpilation of the full $17$-qubit circuit yields an unrolled circuit depth of $\mathbf{43{,}874}$ and a total gate volume of $\mathbf{44{,}853}$ operations. Table \ref{tab:master_qae_gates} details the complete, exact gate inventory extracted from the compiler pass.
+Transpilation of the full $17$-qubit circuit yields an unrolled circuit depth of $\mathbf{52{,}393}$ and a total gate volume of $\mathbf{53{,}456}$ operations. Table \ref{tab:master_qae_gates} details the complete, exact gate inventory extracted from the compiler pass.
 
 \begin{table}[htbp]
 \centering
@@ -73,29 +73,32 @@ Transpilation of the full $17$-qubit circuit yields an unrolled circuit depth of
 \toprule
 \textbf{Quantum Gate Type} & \textbf{Qiskit Instruction} & \textbf{Absolute Count} & \textbf{Relative Share (\%)} \\
 \midrule
-Multi-Controlled Phase & \texttt{mcphase} & $15{,}283$ & $34.073\%$ \\
-Toffoli (Controlled-Controlled-NOT) & \texttt{ccx} & $14{,}136$ & $31.516\%$ \\
-Single-Qubit General Rotation & \texttt{u2} & $8{,}680$ & $19.352\%$ \\
-Controlled-NOT (CNOT) & \texttt{cx} & $5{,}115$ & $11.404\%$ \\
-Controlled-$R_Z$ Rotation & \texttt{crz} & $1{,}054$ & $2.350\%$ \\
-Controlled-Unitary & \texttt{cu} & $496$ & $1.106\%$ \\
-Hadamard & \texttt{h} & $72$ & $0.161\%$ \\
-Controlled-Phase & \texttt{cp} & $10$ & $0.022\%$ \\
-Projective Measurement & \texttt{measure} & $5$ & $0.011\%$ \\
+Multi-Controlled Phase & \texttt{mcphase} & $17{,}515$ & $32.765\%$ \\
+Toffoli (Controlled-Controlled-NOT) & \texttt{ccx} & $17{,}112$ & $32.011\%$ \\
+Single-Qubit General Rotation & \texttt{u2} & $8{,}680$ & $16.238\%$ \\
+Controlled-NOT (CNOT) & \texttt{cx} & $5{,}991$ & $11.207\%$ \\
+Controlled-Unitary & \texttt{cu} & $2{,}988$ & $5.590\%$ \\
+Controlled-$R_Z$ Rotation & \texttt{crz} & $1{,}054$ & $1.972\%$ \\
+Hadamard & \texttt{h} & $72$ & $0.135\%$ \\
+Pauli-$X$ & \texttt{x} & $14$ & $0.026\%$ \\
+Controlled-$R_Y$ Rotation & \texttt{cry} & $11$ & $0.021\%$ \\
+Controlled-Phase & \texttt{cp} & $10$ & $0.019\%$ \\
+Projective Measurement & \texttt{measure} & $5$ & $0.009\%$ \\
+Single-Qubit General Rotation & \texttt{u3} & $2$ & $0.004\%$ \\
 Qubit Swap & \texttt{swap} & $2$ & $0.004\%$ \\
 \midrule
-\textbf{Total Operations} & & $\mathbf{44{,}853}$ & $\mathbf{100.000\%}$ \\
+\textbf{Total Operations} & & $\mathbf{53{,}456}$ & $\mathbf{100.000\%}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\notatfm{Multi-qubit controlled gates (\texttt{mcphase}, \texttt{ccx}, \texttt{cx}) constitute $>77\%$ of the master circuit volume.}
-As shown in Table \ref{tab:master_qae_gates}, multi-controlled phase gates (\texttt{mcphase}, $34.07\%$) and Toffoli gates (\texttt{ccx}, $31.52\%$) dominate the compiled instruction stream. This concentration arises directly from the sequential conditioning of the 9-node DAG and the multi-qubit reflection operator $S_0 = 2\ket{0}\bra{0} - I$, which requires high-order entanglement across the state and ancilla registers.
+\notatfm{Multi-qubit controlled gates (\texttt{mcphase}, \texttt{ccx}, \texttt{cx}) constitute $>75\%$ of the master circuit volume.}
+As shown in Table \ref{tab:master_qae_gates}, multi-controlled phase gates (\texttt{mcphase}, $32.77\%$) and Toffoli gates (\texttt{ccx}, $32.01\%$) dominate the compiled instruction stream. This concentration arises directly from the sequential conditioning of the 9-node DAG and the multi-qubit reflection operator $S_0 = 2\ket{0}\bra{0} - I$, which requires high-order entanglement across the state and ancilla registers.
 
 \subsection{Native Two-Qubit CNOT Decomposition Overhead}\label{subsec:app_cnot_decomposition_overhead}
-It is important to distinguish between the abstract gate counts reported in Table \ref{tab:master_qae_gates} (which retain multi-controlled unitary instructions in the universal basis $\mathcal{B}_{\mathrm{target}}$) and the fully decomposed physical CNOT depth. Standard unitary synthesis of a 3-qubit Toffoli gate (\texttt{ccx}) requires at least 6 CNOT gates and 7 single-qubit rotations \cite{barenco1995}. Consequently, unrolling the $14{,}136$ Toffoli operations alone contributes $14{,}136 \times 6 = 84{,}816$ CNOT operations to the physical execution graph, while decomposing the $15{,}283$ multi-controlled phase gates (\texttt{mcphase}) introduces further entangling layers. 
+It is important to distinguish between the abstract gate counts reported in Table \ref{tab:master_qae_gates} (which retain multi-controlled unitary instructions in the universal basis $\mathcal{B}_{\mathrm{target}}$) and the fully decomposed physical CNOT depth. Standard unitary synthesis of a 3-qubit Toffoli gate (\texttt{ccx}) requires at least 6 CNOT gates and 7 single-qubit rotations \cite{barenco1995}. Consequently, unrolling the $17{,}112$ Toffoli operations alone contributes $17{,}112 \times 6 = 102{,}672$ CNOT operations to the physical execution graph, while decomposing the $17{,}515$ multi-controlled phase gates (\texttt{mcphase}) introduces further entangling layers. 
 
-This brings the total native two-qubit CNOT count well beyond $85{,}000$ operations when compiled without auxiliary borrowed-ancilla networks. This substantial compilation footprint provides the empirical justification for classifying canonical QAE as an exclusive Fault-Tolerant Quantum Computing (FTQC) blueprint, directly motivating the transition to Iterative QAE (IQAE) for near-term physical QPU viability.
+This brings the total native two-qubit CNOT count well beyond $105{,}000$ operations when compiled without auxiliary borrowed-ancilla networks. This substantial compilation footprint provides the empirical justification for classifying canonical QAE as an exclusive Fault-Tolerant Quantum Computing (FTQC) blueprint, directly motivating the transition to Iterative QAE (IQAE) for near-term physical QPU viability.
 
 \section{NISQ Kernel Transpilation and ZNE Folding Progression}\label{sec:app_nisq_kernel_profile}
 
@@ -171,7 +174,7 @@ which dictates the minimum resolvable separation between rare-event probability 
 N_Q = \sum_{j=0}^{n_E - 1} 2^j = 2^{n_E} - 1.
 \end{equation}
 
-Table \ref{tab:qae_scaling_registers} compiles the empirical and projected hardware resource requirements as the evaluation precision increases from $n_E = 3$ to $n_E = 10$. The projected gate volumes follow the analytical scaling model $\text{Estimated Gates} \approx N_Q \times 1{,}415 = (2^{n_E} - 1) \times 1{,}415$, where each controlled Grover iterate accounts for approximately $1{,}415$ compiled physical instructions. For the baseline $n_E = 5$, this closed-form model yields $43{,}865$ operations, matching the empirically transpiled master circuit total of $44{,}853$ within $2.2\%$ (with the residual difference attributable to the $\mathrm{IQFT}^\dagger$ permutation network and classical readout measurement operations).
+Table \ref{tab:qae_scaling_registers} compiles the empirical and projected hardware resource requirements as the evaluation precision increases from $n_E = 3$ to $n_E = 10$. The projected gate volumes follow the analytical scaling model $\text{Estimated Gates} \approx N_Q \times 1{,}724 = (2^{n_E} - 1) \times 1{,}724$, where each controlled Grover iterate accounts for approximately $1{,}724$ compiled physical instructions. For the baseline $n_E = 5$, this closed-form model yields $53{,}444$ operations, matching the empirically transpiled master circuit total of $53{,}456$ within $0.02\%$ (with the residual difference attributable to the $\mathrm{IQFT}^\dagger$ permutation network and classical readout measurement operations).
 
 \begin{table}[htbp]
 \centering
@@ -182,14 +185,14 @@ Table \ref{tab:qae_scaling_registers} compiles the empirical and projected hardw
 \toprule
 \textbf{Register Size ($n_E$)} & \textbf{Total Iterates ($N_Q$)} & \textbf{Grid Step $\Delta\theta$ (rad)} & \textbf{Min. Amplitude $\sin^2(\Delta\theta)$} & \textbf{Estimated Gates} \\
 \midrule
-$3$ & $7$ & $0.392699$ & $0.146447$ & $9{,}905$ \\
-$4$ & $15$ & $0.196350$ & $0.038060$ & $21{,}225$ \\
-$\mathbf{5}$ & $\mathbf{31}$ & $\mathbf{0.098175}$ & $\mathbf{0.009607}$ & $\mathbf{43{,}865}$ \\
-$6$ & $63$ & $0.049087$ & $0.002408$ & $89{,}145$ \\
-$7$ & $127$ & $0.024544$ & $0.000602$ & $179{,}705$ \\
-$8$ & $255$ & $0.012272$ & $0.000151$ & $360{,}825$ \\
-$9$ & $511$ & $0.006136$ & $0.000038$ & $723{,}065$ \\
-$10$ & $1{,}023$ & $0.003068$ & $0.000009$ & $1{,}447{,}545$ \\
+$3$ & $7$ & $0.392699$ & $0.146447$ & $12{,}068$ \\
+$4$ & $15$ & $0.196350$ & $0.038060$ & $25{,}860$ \\
+$\mathbf{5}$ & $\mathbf{31}$ & $\mathbf{0.098175}$ & $\mathbf{0.009607}$ & $\mathbf{53{,}444}$ \\
+$6$ & $63$ & $0.049087$ & $0.002408$ & $108{,}612$ \\
+$7$ & $127$ & $0.024544$ & $0.000602$ & $218{,}948$ \\
+$8$ & $255$ & $0.012272$ & $0.000151$ & $439{,}620$ \\
+$9$ & $511$ & $0.006136$ & $0.000038$ & $880{,}964$ \\
+$10$ & $1{,}023$ & $0.003068$ & $0.000009$ & $1{,}763{,}652$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -201,7 +204,7 @@ D_{\mathrm{max}} \sim \frac{1}{\epsilon_{2q}} \approx \frac{1}{1.2 \times 10^{-2
 \end{equation}
 As shown in Table \ref{tab:qae_scaling_registers}:
 \begin{itemize}[leftmargin=*]
-    \item At $n_E = 5$ (the baseline implemented in this work), the compiled circuit depth of $43{,}874$ exceeds the coherent threshold of unmitigated NISQ physical devices by more than two orders of magnitude. Consequently, full QPE-based QAE strictly requires fault-tolerant logical qubits supported by surface codes.
+    \item At $n_E = 5$ (the baseline implemented in this work), the compiled circuit depth of $52{,}393$ exceeds the coherent threshold of unmitigated NISQ physical devices by more than two orders of magnitude. Consequently, full QPE-based QAE strictly requires fault-tolerant logical qubits supported by surface codes.
     \item To resolve ultra-rare industrial technosignatures ($p \sim 10^{-6}$, requiring $n_E \ge 11$ or iterative amplitude amplification techniques), the gate count exceeds $3 \times 10^6$ operations.
 \end{itemize}
 These empirical profiles justify the methodological division adopted in this thesis: validating ideal quadratic amplitude amplification on classical statevector emulators, while deploying compact, error-mitigated inference kernels with Zero-Noise Extrapolation for physical execution on intermediate-scale quantum processors.

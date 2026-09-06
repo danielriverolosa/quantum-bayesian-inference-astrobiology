@@ -98,8 +98,8 @@ stateDiagram-v2
 | :--- | :--- | :--- | :--- |
 | **Spatial Scaling** | $\mathcal{O}(N \cdot d^{w+1})$ RAM explosion in clique potentials. | **$\mathcal{O}(N)$ Qubits:** 9 qubits encode all $2^9 = 512$ states. | **5 physical qubits** encode core inference kernel. |
 | **Query Scaling** | $\mathcal{O}(1/\sqrt{M})$ Monte Carlo rate; diverges on rare states. | **$\mathcal{O}(1/M)$ Heisenberg speedup** via Grover rotation. | $\mathcal{O}(1)$ queries with noise-scaled folding factors. |
-| **Empirical Results ($p \sim 10^{-6}$)** | &bull; **MCMC:** $0$ hits in $100{,}000$ steps (false negative).<br/>&bull; **Rejection:** $90.42\%$ discarded samples under evidence. | &bull; **Phase Quantization:** $80.22\%$ shots at `00000`, $19.78\%$ at `10000`.<br/>&bull; **Detection:** $100\%$ density on conjugate eigenvalues ($0$ mode trap). | &bull; **Raw Noise:** $+137.21\%$ distortion ($6.30\% \to 14.94\%$).<br/>&bull; **ZNE Mitigated:** $7.47\%$ recovered (**$86.44\%$ error cancelled**). |
-| **Physical Hardware** | Exact matrix math on CPU / RAM. | Master circuit: **$43{,}874$ depth, $44{,}853$ gates** (FTQC horizon). | Kernel: **Depth $D = 39$, $57$ native gates** ($23$ CNOTs at $\lambda=1$). |
+| **Empirical Results ($p \sim 10^{-6}$)** | &bull; **MCMC:** $0$ hits in $100{,}000$ steps (false negative).<br/>&bull; **Rejection:** $90.42\%$ discarded samples under evidence. | &bull; **Phase Quantization:** $100.0\%$ shots at `10000` ($y=16$).<br/>&bull; **Centroid:** Sub-resolution phase $\theta_a \ll \Delta\theta$ projects onto central basis state. | &bull; **Raw Noise:** $+137.21\%$ distortion ($6.30\% \to 14.94\%$).<br/>&bull; **ZNE Mitigated:** $7.47\%$ recovered (**$86.44\%$ error cancelled**). |
+| **Physical Hardware** | Exact matrix math on CPU / RAM. | Master circuit: **$52{,}393$ depth, $53{,}456$ gates** (FTQC horizon). | Kernel: **Depth $D = 39$, $57$ native gates** ($23$ CNOTs at $\lambda=1$). |
 | **Reference Section** | [Chapter 2](thesis/chapters/2.classical_limits.tex) & [Notebook 01](src/chapter_2_classical/01_Classical_Limits_K218b.ipynb) | [Chapter 3](thesis/chapters/3.quantum_bayesian_formalism.tex) & [Notebook 02](src/chapter_4_quantum/02_QAE_Ideal_Simulation.ipynb) | [Chapter 4](thesis/chapters/4.system_architecture.tex) & [Notebook 03](src/chapter_4_quantum/03_NISQ_ZNE_Mitigation.ipynb) |
 
 ---
@@ -116,7 +116,7 @@ Explore dedicated components across the repository:
 | 📑 **[Thesis LaTeX Source](thesis/)** | Full academic monograph source code for print, digital, and Overleaf editions. | Crown Quarto (`main.tex`) &bull; Digital A4 (`main_digital.tex`) &bull; Overleaf (`main_overleaf.tex`) |
 | 🎯 **[Conclusions & Horizons](thesis/chapters/5.conclusions.tex)** | Comprehensive synthesis, NISQ-to-FTQC roadmap, and HWO telescope prospects. | Iterative QAE (IQAE without QFT) &bull; PEC mitigation &bull; Multi-planetary scaling |
 | 📋 **[Appendix A (CPTs)](thesis/chapters/6.appendix_cpts.tex)** | Exhaustive combinatorial CPTs ($2^k$ rows), analytical marginals, and derivations. | Prior $P(X_3) = 0.0763$, $P(X_8) = 10^{-6}$, JWST posterior $P(\mathbf{e}) = 0.095804$ |
-| 🛠️ **[Appendix B (Transpilation)](thesis/chapters/7.appendix_transpilation.tex)** | 100% verified Qiskit transpiler metrics, gate inventories, and CNOT scaling. | 17Q Master Profile ($44{,}853$ ops) &bull; ZNE CNOT linearity ($23 \to 69 \to 115$) &bull; $n_E \in [3, 10]$ scaling |
+| 🛠️ **[Appendix B (Transpilation)](thesis/chapters/7.appendix_transpilation.tex)** | 100% verified Qiskit transpiler metrics, gate inventories, and CNOT scaling. | 17Q Master Profile ($53{,}456$ ops) &bull; ZNE CNOT linearity ($23 \to 69 \to 115$) &bull; $n_E \in [3, 10]$ scaling |
 
 ---
 

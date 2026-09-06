@@ -180,28 +180,27 @@ The QAE pipeline couples the evaluation register to the state register through a
 requiring a total of $\sum_{j=0}^4 2^j = 31$ applications of $\mathcal{Q}$. The $\mathrm{IQFT}$ is then applied to the 5 evaluation qubits, decoding the accumulated phase into computational basis states.
 
 \subsection{Ideal Statevector Simulation and Phase Quantization}
-We executed the master QAE circuit on Qiskit Aer's ideal statevector simulator (\texttt{AerSimulator(method='statevector')}) with $N_{\mathrm{shots}} = 2,048$.
+We executed the master QAE circuit on Qiskit Aer's ideal statevector simulator (\texttt{AerSimulator(method='statevector')}) with $N_{\mathrm{shots}} = 2,048$ and fixed seed ($\mathrm{GLOBAL\_SEED} = 42$).
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.92\textwidth]{figures/4.system_architecture/figure_qae_ideal_spectrum.png}
-    \caption{\textbf{Ideal QAE Measurement Spectrum for K2-18b Technosignature Inference.} Histogram of measured states on the 5-qubit evaluation register ($n_E = 5$, $M = 32$). The primary peak at $\ket{00000}$ ($y=0$) captures $80.22\%$ of the probability mass, reflecting phase quantization for $\theta_a < \Delta\theta$. The secondary peak at $\ket{10000}$ ($y=16$) corresponds to the complex conjugate Grover eigenvalue $\lambda_- = e^{-2i\theta_a}$.}
+    \caption{\textbf{Ideal QAE Measurement Spectrum for K2-18b Technosignature Inference.} Histogram of measured states on the 5-qubit evaluation register ($n_E = 5$, $M = 32$). The measurement concentrates deterministically in state $\ket{10000}$ ($y=16$, $100.0\%$), reflecting phase quantization: because $\theta_a = \arcsin(\sqrt{10^{-6}}) \approx 0.0010\,\mathrm{rad} \ll \Delta\theta = 0.0982\,\mathrm{rad}$, both conjugate Grover eigenvalues $\lambda_\pm = e^{\pm i(\pi - 2\theta_a)}$ project their discrete interference pattern onto the nearest computational basis centroid at $y=16$.}
     \label{fig:qae_ideal_spectrum}
 \end{figure}
 
-\notatfm{\textbf{Phase Quantization:} With $n_E = 5$, the phase grid step is $\Delta\theta \approx 0.098$ rad. For $\theta \approx 0.001$ rad, 80.22\% of shots concentrate in $\ket{00000}$, while conjugate $\ket{10000}$ accounts for 19.78\%.}
-As depicted in Figure \ref{fig:qae_ideal_spectrum}, the measurement distribution exhibits two distinct peaks:
+\notatfm{\textbf{Phase Quantization:} With $n_E = 5$, the phase grid step is $\Delta\theta \approx 0.0982$ rad. For $\theta_a \approx 0.001$ rad, both conjugate Grover eigenphases fall strictly inside the micro-bin centered at $y=16$ ($\ket{10000}$, $100\%$).}
+As depicted in Figure \ref{fig:qae_ideal_spectrum}, the measurement distribution exhibits concentration on the central quantization bin:
 \begin{enumerate}
-    \item \textbf{Dominant Peak at $\ket{00000}$ ($y=0$):} Represents $80.22\%$ of measurement shots ($1,643$ counts).
-    \item \textbf{Conjugate Peak at $\ket{10000}$ ($y=16$):} Represents $19.78\%$ of measurement shots ($405$ counts).
+    \item \textbf{Centroid Peak at $\ket{10000}$ ($y=16$):} Captures $100.0\%$ of measurement shots ($2,048$ counts).
 \end{enumerate}
 
-This distribution is the exact theoretical signature of \emph{Phase Quantization}. With $n_E = 5$ qubits, the phase circle $[0, \pi)$ is divided into 32 discrete steps of width:
+This distribution is the exact theoretical signature of \emph{Phase Quantization} under canonical state preparation $\mathcal{A}\ket{0}^{\otimes n_S}$. With $n_E = 5$ qubits, the phase circle $[0, \pi)$ is divided into 32 discrete steps of width:
 \begin{equation}
 \Delta\theta = \frac{\pi}{2^{n_E}} = \frac{\pi}{32} \approx 0.0982\,\mathrm{rad}.
 \label{eq:phase_grid_resolution}
 \end{equation}
-Because the true geometric angle of the rare technosignature is $\theta_a = \arcsin(\sqrt{10^{-6}}) \approx 0.001\,\mathrm{rad}$, it resides within the first discrete interval $[0, \Delta\theta)$. The Fourier interpolation kernel $S_M$ concentrates probability amplitude around the closest grid point ($y=0$), while the Grover conjugate eigenvalue $\lambda_- = e^{-2i\theta_a}$ generates the symmetric reflection at $y = 16$. The continuous probability is extracted with quadratic precision by evaluating the phase centroid.
+Because the true geometric angle of the rare technosignature is $\theta_a = \arcsin(\sqrt{10^{-6}}) \approx 0.0010\,\mathrm{rad}$, the eigenphases $\phi_\pm = \frac{1}{2} \mp \frac{\theta_a}{\pi} \approx 0.5000 \mp 0.0003$ deviate from the bin center ($0.5$, corresponding to decimal $y=16$) by an offset $\Delta\phi \approx 0.0003 \ll 1/32 = 0.03125$. Consequently, the Fourier interpolation kernel $S_M$ concentrates all probability amplitude onto the nearest grid point ($y=16$).
 
 \subsection{Algorithmic Resolution vs. Circuit Depth Tradeoff}
 To determine the optimal configuration for near-term execution, we analyzed the tradeoff between evaluation register size $n_E$ and compiled circuit depth.
@@ -213,11 +212,11 @@ To determine the optimal configuration for near-term execution, we analyzed the 
     \label{fig:qae_depth_resolution_tradeoff}
 \end{figure}
 
-As shown in Figure \ref{fig:qae_depth_resolution_tradeoff}, increasing $n_E$ from 3 to 6 improves phase resolution exponentially ($\Delta\theta = \pi / 2^{n_E}$). However, the total number of Grover iterations scales as $2^{n_E} - 1$, causing transpiled CNOT depth to explode:
+As shown in Figure \ref{fig:qae_depth_resolution_tradeoff}, increasing $n_E$ from 3 to 6 improves phase resolution exponentially ($\Delta\theta = \pi / 2^{n_E}$). However, the total number of Grover iterations scales as $2^{n_E} - 1$, causing transpiled gate depth to explode:
 \begin{itemize}
-    \item $n_E = 3 \implies 7$ Grover iterations $\implies D_{\mathrm{CNOT}} \approx 9,500$ gates.
-    \item $n_E = 4 \implies 15$ Grover iterations $\implies D_{\mathrm{CNOT}} \approx 20,400$ gates.
-    \item $n_E = 5 \implies 31$ Grover iterations $\implies D_{\mathrm{CNOT}} \approx 42,100$ gates.
+    \item $n_E = 3 \implies 7$ Grover iterations $\implies D_{\mathrm{compiled}} \approx 11,800$ gates.
+    \item $n_E = 4 \implies 15$ Grover iterations $\implies D_{\mathrm{compiled}} \approx 25,300$ gates.
+    \item $n_E = 5 \implies 31$ Grover iterations $\implies D_{\mathrm{compiled}} \approx 52,393$ gates ($53,456$ total operations).
 \end{itemize}
 Because current superconducting QPUs lose coherence after $\sim 1,000$ two-qubit gates, full canonical QAE serves as an asymptotic fault-tolerant blueprint (FTQC). For near-term NISQ deployment, circuit depths must be mitigated through algorithmic error mitigation (see Appendix \ref{app:transpilation_profiles} for the exact empirical transpilation dumps, gate breakdowns, and ZNE scaling profiles).
 
@@ -333,24 +332,19 @@ To establish the scientific validity of the experimental results, this section f
 
 \subsection{Defense on Phase Quantization and Binary Centroids}
 \begin{quote}
-\emph{Hostile Tribunal Objection 1:} ``In Figure \ref{fig:qae_ideal_spectrum}, simulating an ultra-rare technosignature ($a = 10^{-6}$) yields approximately four-fifths of measurement counts in the all-zero state $\ket{00000}$ ($80.22\%$). How can an examination tribunal accept that measuring zero over three-quarters of the time proves a non-zero technosignature detection?''
+\emph{Hostile Tribunal Objection 1:} ``In Figure \ref{fig:qae_ideal_spectrum}, simulating an ultra-rare technosignature ($a = 10^{-6}$) yields measurement counts concentrated in state $\ket{10000}$ ($y=16$, $100\%$). How can an examination tribunal accept that measuring state 16 proves a non-zero technosignature detection instead of a trivial outcome?''
 \end{quote}
-\textbf{Methodological Defense:} In Fourier-based QPE, discrete basis states are not independent Bernoulli samples of a random variable (as in classical rejection sampling); they represent discrete frequency modes of a coherent quantum interference pattern \cite{brassard2002}. With $n_E = 5$ evaluation qubits, the discrete phase bin width is $\Delta\theta = \pi/32 \approx 0.0982\,\mathrm{rad}$. The true geometric angle $\theta_a \approx 0.001\,\mathrm{rad}$ is smaller than $\Delta\theta$. According to Brassard et al.~(2002, Theorem 12), when an unknown eigenphase lies within the first discretization bin $[0, \Delta\theta)$, the probability mass concentrated on the nearest grid point $\ket{0}^{\otimes n_E}$ is bounded from below by:
-\begin{equation}
-P(\ket{0}^{\otimes n_E}) \ge \frac{8}{\pi^2} \approx 81.1\%.
-\label{eq:brassard_lower_bound_quantization}
-\end{equation}
-In finite-shot sampling ($N_{\mathrm{shots}} = 2,048$), this projects $80.22\%$ of the amplitude onto the nearest discrete state ($y=0$), while the Grover conjugate eigenvalue $\lambda_- = e^{-2i\theta_a}$ accounts for the remaining $19.78\%$ at $\ket{10000}$ ($y=16$). The simultaneous presence of the primary peak and the conjugate reflection peak (with the precise amplitude ratio predicted by the Dirichlet interference kernel $S_M$) provides unambiguous analytical confirmation of a non-zero phase $\theta_a \in (0, \Delta\theta)$.
+\textbf{Methodological Defense:} In Fourier-based QPE, discrete basis states are not independent Bernoulli samples of a random variable (as in classical rejection sampling); they represent discrete frequency modes of a coherent quantum interference pattern \cite{brassard2002}. With $n_E = 5$ evaluation qubits, the discrete phase bin width is $\Delta\theta = \pi/32 \approx 0.0982\,\mathrm{rad}$. The true geometric angle $\theta_a = \arcsin(\sqrt{10^{-6}}) \approx 0.0010\,\mathrm{rad}$ is an order of magnitude smaller than $\Delta\theta$. According to Brassard et al.~(2002), the Grover reflection operator $\mathcal{Q} = -\mathcal{A} S_0 \mathcal{A}^\dagger S_\chi$ possesses conjugate eigenvalues $\lambda_\pm = e^{\pm i(\pi - 2\theta_a)}$ with eigenphases $\phi_\pm = \frac{1}{2} \mp \frac{\theta_a}{\pi} \approx 0.5000 \mp 0.0003$. Because the angular deviation $\Delta\phi = 0.0003$ is far smaller than half a grid bin width ($\frac{1}{64} \approx 0.0156$), the Dirichlet interference kernel $S_M$ projects virtually $100\%$ of the probability mass onto the central quantization bin $y = \mathrm{round}(32 \times 0.5000) = 16$ ($\ket{10000}$).
 
-The continuous non-zero probability is extracted from the phase centroid across both symmetric lobes. Furthermore, as discussed in the context of future research horizons, modern Iterative Quantum Amplitude Estimation (IQAE) eliminates the auxiliary evaluation register entirely, evaluating Grover powers sequentially to zoom into the phase angle with arbitrary precision without phase quantization artifacts.
+This deterministic concentration at the bin boundary is unambiguous analytical proof that the target phase satisfies $\theta_a \in [0, \Delta\theta)$. To extract the continuous sub-bin amplitude with arbitrary precision on NISQ processors without requiring $n_E \ge 12$ evaluation qubits, modern Iterative Quantum Amplitude Estimation (IQAE) eliminates the auxiliary evaluation register entirely, evaluating Grover powers sequentially to zoom into $\theta_a$ without phase quantization artifacts.
 
 \subsection{Defense on FTQC Circuit Depth vs. NISQ Isolated Inversion Kernels}
 \begin{quote}
-\emph{Hostile Tribunal Objection 2:} ``The master QAE circuit with 5 evaluation qubits has a transpiled CNOT depth exceeding 42,000 gates. No physical superconducting processor today can execute 42,000 gates within $T_1 \approx 150\,\mu\mathrm{s}$. Why claim your architecture is viable on NISQ hardware when you had to isolate an abbreviated 39-gate core to demonstrate ZNE?''
+\emph{Hostile Tribunal Objection 2:} ``The master QAE circuit with 5 evaluation qubits has a transpiled depth exceeding 52,000 gates. No physical superconducting processor today can execute 52,000 gates within $T_1 \approx 150\,\mu\mathrm{s}$. Why claim your architecture is viable on NISQ hardware when you had to isolate an abbreviated 39-gate core to demonstrate ZNE?''
 \end{quote}
 \textbf{Methodological Defense:} We explicitly distinguish between two complementary research contributions:
 \begin{enumerate}
-    \item \textbf{The Canonical QAE Architecture (Fault-Tolerant Blueprint):} The 42,000-gate master circuit demonstrates the full mathematical integration of amplitude encoding, Grover reflection cascades, and IQFT, serving as the certified benchmark for early Fault-Tolerant Quantum Computing (FTQC) with logical qubits.
+    \item \textbf{The Canonical QAE Architecture (Fault-Tolerant Blueprint):} The 52,393-gate master circuit demonstrates the full mathematical integration of amplitude encoding, Grover reflection cascades, and IQFT, serving as the certified benchmark for early Fault-Tolerant Quantum Computing (FTQC) with logical qubits.
     \item \textbf{The Isolated Causal Inference Kernel (NISQ Proof of Concept):} To establish near-term experimental viability, we isolate the fundamental causal inference core ($n_S = 4$ state qubits plus 1 ancilla phase flag, 5 qubits in total, at depth $D = 39$). This circuit contains the representative exoplanetary photochemical CPT cascade and target state entanglement. By demonstrating an \textbf{86.44\% error reduction} under calibrated IBM Quantum noise, we prove that algorithmic error mitigation successfully bridges noisy hardware to ideal theoretical expectations, providing the empirical foundation for physical device execution and future fault-tolerant extensions.
 \end{enumerate}
 

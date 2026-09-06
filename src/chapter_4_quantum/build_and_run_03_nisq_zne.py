@@ -151,19 +151,19 @@ print("="*65)"""
 # -------------------------------------------------------------
 # Cell 4: Markdown - Section 4.4.2: Inference Circuit Kernel
 # -------------------------------------------------------------
-c4_md = """## 2. Section 4.4.2: Astrobiological Inference Kernel for NISQ Benchmarking
+c4_md = r"""## 2. Section 4.4.2: Astrobiological Inference Kernel for NISQ Benchmarking
 
-As demonstrated in **Section 4.3.9**, the canonical 17-qubit QAE circuit requires **43,874 compiled physical gates**.  
-On contemporary physical NISQ hardware, where coherence windows tolerate approximately $\\sim 500$ to $1,500$ gates before wavefunction collapse into pure entropy, executing 43,000 gates yields complete decoherence.
+As demonstrated in **Section 4.3.9**, the canonical 17-qubit QAE circuit requires **52,393 compiled physical gates**.  
+On contemporary physical NISQ hardware, where coherence windows tolerate approximately $\sim 500$ to $1,500$ gates before wavefunction collapse into pure entropy, executing 52,000 gates yields complete decoherence.
 
 Therefore, to rigorously benchmark physical noise degradation and demonstrate algorithmic **Zero-Noise Extrapolation**, we isolate the **fundamental causal Bayesian inference kernel of K2-18b**:
 1. **State Register ($n_S = 4$ qubits):** Representative exoplanetary Bayesian network subset:
    - $q_0$: Stellar spectral type (M-Dwarf, $P = 0.75$).
    - $q_1$: Liquid habitable zone (HZ, $P = 0.20$).
    - $q_2$: Hycean planet condition (conditioned on $q_0$ and $q_1$).
-   - $q_3$: Active marine biosignature / biomarker indicator ($P \\approx 0.060$).
+   - $q_3$: Active marine biosignature / biomarker indicator ($P \approx 0.060$).
 2. **Ancilla Register ($q_4$):** Phase kickback marker qubit.
-3. **Grover Reflection Operator ($\\mathcal{Q}$):** One complete iteration of $\\mathcal{Q} = -\\mathcal{A} S_0 \\mathcal{A}^\\dagger S_\\chi$, executed within an accessible depth ($D = 39$ native gates) within current NISQ operational limits."""
+3. **Grover Reflection Operator ($\mathcal{Q}$):** One complete iteration of $\mathcal{Q} = -\mathcal{A} S_0 \mathcal{A}^\dagger S_\chi$, executed within an accessible depth ($D = 39$ native gates) within current NISQ operational limits."""
 
 # -------------------------------------------------------------
 # Cell 5: Code - K2-18b Inference Circuit and Ideal Execution

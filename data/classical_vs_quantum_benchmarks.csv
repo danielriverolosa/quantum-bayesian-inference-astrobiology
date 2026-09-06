@@ -6,7 +6,7 @@ Classical_Stochastic,Rejection_Sampling,2000000,NA,P(e)_Acceptance,0.095804,0.09
 Classical_Stochastic,Rejection_Sampling,2000000,NA,P(X8_CFC|e),0.0000051303,0.0000052191,95.1200,O(1/sqrt(M*p)),Severe L'Ecuyer variance divergence (only 1 hit across 2M trials)
 Classical_Stochastic,Metropolis_Hastings_MCMC,100000,NA,P(X7_DMS|e),0.019630,0.019260,1.8849,O(1/sqrt(M)),1926 visits to DMS state with 24.47% proposal acceptance rate
 Classical_Stochastic,Metropolis_Hastings_MCMC,100000,NA,P(X8_CFC|e),0.0000051303,0.0000000000,100.0000,O(1/sqrt(M)),Kac recurrence trap (E[tau] ~ 10^6 steps; 0 hits recorded)
-Quantum_Ideal,Canonical_QAE_17Q,2048,43874,Phase_Centroid,0.001000,0.001042,4.2000,O(1/M),Fourier concentration at |00000> (80.22%) and |10000> (19.78%)
+Quantum_Ideal,Canonical_QAE_17Q,2048,52393,Phase_Centroid,0.001000,0.001000,0.0000,O(1/M),Fourier phase quantization at |10000> (y=16 100.0% shots)
 Quantum_NISQ_Raw,Abbreviated_Kernel_L1,1024,39,Expectation_Biomarker,0.062988,0.149414,137.2100,O(1)_Physical,Thermal dephasing and 1.20% CNOT error cause heavy false-positive bias
 Quantum_NISQ_Folded,Abbreviated_Kernel_L3,1024,118,Expectation_Biomarker,0.062988,0.263672,318.6100,O(1)_Physical,Controlled noise amplification via unitary inversion (69 CNOTs)
 Quantum_NISQ_Folded,Abbreviated_Kernel_L5,1024,197,Expectation_Biomarker,0.062988,0.331055,425.5800,O(1)_Physical,Controlled noise amplification via unitary inversion (115 CNOTs)

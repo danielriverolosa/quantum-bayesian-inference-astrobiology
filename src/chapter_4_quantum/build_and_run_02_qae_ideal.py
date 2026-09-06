@@ -27,7 +27,7 @@ nb.metadata = {
 # -------------------------------------------------------------
 # Cell 1: Markdown - Academic Header
 # -------------------------------------------------------------
-c1_md = """# 02. Quantum Bayesian Inference: Amplitude Estimation (QAE) in Ideal Simulation
+c1_md = r"""# 02. Quantum Bayesian Inference: Amplitude Estimation (QAE) in Ideal Simulation
 ### Master's Thesis: Quantum Bayesian Networks and Amplitude Estimation (QAE) in Astrobiology
 **Author:** Daniel Rivero Losa  
 **Supervisor:** Roberto Campos Ortiz  
@@ -40,16 +40,16 @@ This notebook implements and empirically validates the **complete quantum archit
 
 The workflow covers:
 1. **Topological Register Allocation (4.3.1):** Allocation of 17 qubits distributed across state ($S$), evaluation ($E$), ancilla ($A$), and classical readout ($C$) registers.
-2. **Synthesis and Visualization of Operator $\mathcal{A}$ (4.3.2):** Encoding of hierarchical conditional dependencies via multi-controlled rotations.
+2. **Synthesis and Visualization of Operator $\mathcal{A}$ (4.3.2):** Encoding of hierarchical conditional dependencies via multi-controlled rotations with strict prior normalization.
 3. **Design and Visualization of Oracle $S_\chi$ and Diffuser $S_0$ (4.3.3 - 4.3.4):** Canonical phase reflections via phase kickback.
-4. **Integration and Visualization of Master QAE Circuit (4.3.5):** Controlled Grover power cascade $C\text{-}\mathcal{Q}^{2^j}$ and Inverse Quantum Fourier Transform (IQFT).
+4. **Integration and Visualization of Master QAE Circuit (4.3.5):** State preparation $\mathcal{A}|0\rangle$, controlled Grover power cascade $C\text{-}\mathcal{Q}^{2^j}$, and Inverse Quantum Fourier Transform (IQFT).
 5. **Transpilation, Simulation, and Spectral Post-Processing (4.3.6 - 4.3.8):** Spectral mapping from phase eigenvalues to amplitude probabilities $\hat{a} = \sin^2(\theta)$.
 6. **Resolution vs. Depth Trade-off Study (4.3.9):** Critical analysis of the trade-off between evaluation register size $n_E$ and circuit depth."""
 
 # -------------------------------------------------------------
 # Cell 2: Markdown - Theoretical Framework Section 4.3
 # -------------------------------------------------------------
-c2_md = """## 1. Theoretical Framework of Canonical QAE
+c2_md = r"""## 1. Theoretical Framework of Canonical QAE
 
 ### 1.1 State Preparation Operator $\mathcal{A}$
 The state preparation operator $\mathcal{A}$ acts on the state register initialized to $|0\rangle^{\otimes n_S}$, synthesizing the joint probability distribution of the Bayesian network:
@@ -69,7 +69,7 @@ with corresponding eigenvalues:
 $$\mathcal{Q} |\Psi_\pm\rangle = e^{\pm 2 i \theta_a} |\Psi_\pm\rangle$$
 
 ### 1.3 Quantum Phase Estimation (QPE) and IQFT
-Quantum Amplitude Estimation couples an auxiliary evaluation register $E$ of $n_E$ qubits initialized in uniform superposition ($H^{\otimes n_E}$), applies successive controlled Grover powers $C\text{-}\mathcal{Q}^{2^j}$ ($j = 0, 1, \dots, n_E - 1$), and finally executes the **Inverse Quantum Fourier Transform (IQFT)**:
+Quantum Amplitude Estimation couples an auxiliary evaluation register $E$ of $n_E$ qubits initialized in uniform superposition ($H^{\otimes n_E}$) to the state register prepared in $|\Psi\rangle = \mathcal{A}|0\rangle^{\otimes n_S}$, applies successive controlled Grover powers $C\text{-}\mathcal{Q}^{2^j}$ ($j = 0, 1, \dots, n_E - 1$), and finally executes the **Inverse Quantum Fourier Transform (IQFT)**:
 $$\text{IQFT} \left( \frac{1}{\sqrt{2^{n_E}}} \sum_{y=0}^{2^{n_E}-1} e^{2\pi i y \theta_a / \pi} |y\rangle \right) \approx |\tilde{y}\rangle$$
 
 Measuring register $E$ in the computational basis yields an integer $\tilde{y} \in \{0, 1, \dots, 2^{n_E}-1\}$ providing quadratic convergence:
@@ -82,8 +82,11 @@ c3_code = r"""import os
 import numpy as np
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, transpile
 from qiskit_aer import AerSimulator
-from qiskit.circuit.library import QFT, RYGate
+from qiskit.circuit.library import QFTGate, RYGate
 import matplotlib.pyplot as plt
+
+GLOBAL_SEED = 42
+np.random.seed(GLOBAL_SEED)
 
 # 1. Topological Allocation of Quantum Registers (Section 4.3.1)
 num_state_qubits = 9       # n_S = 9 qubits for K2-18b Bayesian Network
@@ -126,27 +129,35 @@ print(f" Evaluation Register (E)   : {reg_E.size} qubits (QPE resolution: {2**re
 print(f" Ancilla Register (A)      : {reg_A.size} qubits (Workspace / Kickback)")
 print(f" Classical Register (C)    : {reg_C.size} bits (Readout register)")
 print(f" Total Physical Qubits     : {master_circuit.num_qubits} qubits")
+print(f" Global RNG / Seed         : {GLOBAL_SEED} (Strict Determinism)")
 print(f" Simulation Backend        : AerSimulator (Ideal statevector)")
 print("="*65)"""
 
 # -------------------------------------------------------------
 # Cell 4: Markdown - Operator A (4.3.2)
 # -------------------------------------------------------------
-c4_md = """## 2. Section 4.3.2: Amplitude Encoding Synthesis (Operator $\mathcal{A}$)
+c4_md = r"""## 2. Section 4.3.2: Amplitude Encoding Synthesis (Operator $\mathcal{A}$)
 
-Operator $\mathcal{A}$ synthesizes the K2-18b Bayesian network into probability amplitudes:
-1. **Root Nodes:** Individual $R_y(\theta)$ rotations:
+Operator $\mathcal{A}$ synthesizes the full K2-18b Bayesian network (Table 4.1) into probability amplitudes:
+1. **Root Nodes (Marginal Priors):** Individual $R_y(\theta)$ rotations:
    $$\theta_i = 2 \arcsin(\sqrt{p_i})$$
    setting $P(\text{Stellar M-Dwarf}) = 0.75$ on $S_0$ and $P(\text{Orbit HZ}) = 0.20$ on $S_1$.
-2. **Conditional Nodes (CPTs):** Implemented via `synthesize_conditional_node`, iterating through $2^k$ parent configurations using $X$ gates for condition switching and modern object-oriented multi-controlled rotations (`RYGate(theta).control(k)`), adhering to Qiskit 1.x standards.
-3. **Ultra-rare Anomaly Injection (CFCs):** Strongly conditioned rotation on node 8 ($S_8$) conditioned on biological node ($S_3$) with $\theta = 0.002$ rad ($p \approx \sin^2(0.001) \approx 10^{-6}$).
+2. **Conditional Nodes (CPTs):** Implemented via `synthesize_conditional_node`, iterating through $2^k$ parent configurations using $X$ gates for condition switching and modern object-oriented multi-controlled rotations (`RYGate(theta).control(k)`), adhering strictly to Qiskit 1.x/2.x standards.
+3. **Full Planetary Causal Chain:**
+   - $S_2$ (Hycean Planet) conditioned on $[S_0, S_1]$.
+   - $S_3$ (Marine Biosphere) conditioned on $S_2$.
+   - Atmospheric spectroscopic proxies: $S_4$ ($\mathrm{CH}_4$), $S_5$ ($\mathrm{CO}_2$), $S_6$ ($\mathrm{H}_2\mathrm{O}$), $S_7$ ($\mathrm{DMS}$).
+4. **Ultra-rare Anomaly Injection (CFCs):** Strongly conditioned rotation on node 8 ($S_8$) conditioned on active biology ($S_3 = 1$) with prior $P(X_8 = 1 \mid X_3 = 1) = 1.0\times 10^{-6} / 0.0763 \approx 1.3106\times 10^{-5}$, ensuring exact global prior normalization:
+   $$P(X_8 = 1) = 1.0 \times 10^{-6}$$
 
 > **Quantum Design Rule:** No barrier directives (`qc.barrier()`) are included in subcircuits, ensuring composite gate conversion (`to_gate()`) remains mathematically pure and compatible with the transpiler."""
 
 # -------------------------------------------------------------
 # Cell 5: Code - Operator A Functions and Visualization
 # -------------------------------------------------------------
-c5_code = r"""def apply_root_nodes(qc, reg_S):
+c5_code = r"""from qiskit.quantum_info import Statevector
+
+def apply_root_nodes(qc, reg_S):
     """ + '"""Applies Ry rotations on root nodes (marginal priors)."""' + r"""
     p_stellar = 0.75
     p_orbit = 0.20
@@ -156,7 +167,7 @@ c5_code = r"""def apply_root_nodes(qc, reg_S):
     qc.ry(theta_1, reg_S[1])
     return qc
 
-def synthesize_conditional_node(qc, target_qubit, parent_qubits, cpt_probabilities, ancilla_reg):
+def synthesize_conditional_node(qc, target_qubit, parent_qubits, cpt_probabilities):
     """ + '"""Synthesizes a Conditional Probability Table (CPT) via multi-controlled rotations."""' + r"""
     num_parents = len(parent_qubits)
     num_states = 2 ** num_parents
@@ -172,32 +183,59 @@ def synthesize_conditional_node(qc, target_qubit, parent_qubits, cpt_probabiliti
         if num_parents == 1:
             qc.cry(theta, parent_qubits[0], target_qubit)
         else:
-            try:
-                qc.append(RYGate(theta).control(num_parents), parent_qubits + [target_qubit])
-            except Exception:
-                qc.mcry(theta, parent_qubits, target_qubit, q_ancillae=ancilla_reg, mode='v-chain')
+            qc.append(RYGate(theta).control(num_parents), parent_qubits + [target_qubit])
         for i, bit in enumerate(bin_str):
             if bit == '0':
                 qc.x(parent_qubits[i])
     return qc
 
 def build_A_operator(num_state_qubits, ancilla_reg):
-    """ + '"""Constructs the complete unitary gate for Operator A."""' + r"""
+    """ + '"""Constructs the complete unitary gate for Operator A (K2-18b Bayesian network)."""' + r"""
     qc_A = QuantumCircuit(num_state_qubits + len(ancilla_reg))
     state_qubits = list(range(num_state_qubits))
     ancillas = list(range(num_state_qubits, num_state_qubits + len(ancilla_reg)))
     
+    # 1. Root nodes (X0: M-Dwarf, X1: Habitable Zone)
     apply_root_nodes(qc_A, state_qubits)
-    cpt_hycean = [0.05, 0.85]
-    synthesize_conditional_node(qc_A, state_qubits[2], [state_qubits[0]], cpt_hycean, ancilla_reg)
-    qc_A.cry(0.002, state_qubits[3], state_qubits[8])
+    
+    # 2. X2 (Hycean): conditioned on X0 and X1
+    cpt_hycean = [0.05, 0.05, 0.05, 0.85]
+    synthesize_conditional_node(qc_A, state_qubits[2], [state_qubits[0], state_qubits[1]], cpt_hycean)
+    
+    # 3. X3 (Marine Biosphere): conditioned on X2
+    cpt_bio = [0.01, 0.40]
+    synthesize_conditional_node(qc_A, state_qubits[3], [state_qubits[2]], cpt_bio)
+    
+    # 4. Spectroscopic atmospheric nodes
+    cpt_ch4 = [0.15, 0.90]
+    synthesize_conditional_node(qc_A, state_qubits[4], [state_qubits[2]], cpt_ch4)
+    
+    cpt_co2 = [0.20, 0.80]
+    synthesize_conditional_node(qc_A, state_qubits[5], [state_qubits[2]], cpt_co2)
+    
+    cpt_h2o = [0.10, 0.70]
+    synthesize_conditional_node(qc_A, state_qubits[6], [state_qubits[1]], cpt_h2o)
+    
+    cpt_dms = [0.0001, 0.05]
+    synthesize_conditional_node(qc_A, state_qubits[7], [state_qubits[3]], cpt_dms)
+    
+    # 5. X8 (CFC Technosignature): conditioned on X3=1 with prior P(X8=1)=1e-6
+    p_cfc_given_bio = 1.0e-6 / 0.0763
+    synthesize_conditional_node(qc_A, state_qubits[8], [state_qubits[3]], [0.0, p_cfc_given_bio])
     
     A_gate = qc_A.to_gate()
     A_gate.name = "Operator_A"
     return A_gate, qc_A
 
 A_gate, qc_A_circuit = build_A_operator(num_state_qubits, reg_A)
+
+# Theoretical validation via statevector
+sv_A = Statevector.from_instruction(qc_A_circuit)
+probs_A = sv_A.probabilities()
+p_cfc_exact = sum(p for i, p in enumerate(probs_A) if (i >> 8) & 1)
 print("✓ Operator A assembled successfully.")
+print(f"✓ Exact statevector prior P(CFC=1) : {p_cfc_exact:.8e} (Target: 1.00000000e-06)")
+assert np.isclose(p_cfc_exact, 1.0e-6, atol=1e-12), "Error: Prior probability mismatch in Operator A!"
 
 # Graphical Visualization of Operator A Subcircuit
 print("Generating graphical visualization of Operator A subcircuit...")
@@ -214,7 +252,7 @@ plt.show()"""
 # -------------------------------------------------------------
 # Cell 6: Markdown - Oracle and Diffuser (4.3.3 - 4.3.4)
 # -------------------------------------------------------------
-c6_md = """## 3. Sections 4.3.3 & 4.3.4: Quantum Oracle $S_\chi$, Diffuser $S_0$, and Grover Operator $\mathcal{Q}$
+c6_md = r"""## 3. Sections 4.3.3 & 4.3.4: Quantum Oracle $S_\chi$, Diffuser $S_0$, and Grover Operator $\mathcal{Q}$
 
 ### Quantum Oracle $S_\chi$
 The oracle flips the phase of the marked target state:
@@ -260,15 +298,12 @@ def build_grover_operator(A_gate, oracle_gate, num_state_qubits, ancilla_reg):
     # 2. Undo A: A^dagger
     qc_Q.append(A_gate.inverse(), state_qubits + ancillas)
     
-    # 3. Diffuser S0
+    # 3. Diffuser S0: reflection about all-zero state
     qc_Q.x(state_qubits)
     kickback_qubit = ancillas[-1]
     qc_Q.x(kickback_qubit)
     qc_Q.h(kickback_qubit)
-    try:
-        qc_Q.mcx(state_qubits, kickback_qubit, ancilla_qubits=ancillas[:-1], mode='v-chain')
-    except Exception:
-        qc_Q.mcx(state_qubits, kickback_qubit)
+    qc_Q.mcx(state_qubits, kickback_qubit)
     qc_Q.h(kickback_qubit)
     qc_Q.x(kickback_qubit)
     qc_Q.x(state_qubits)
@@ -299,46 +334,53 @@ plt.show()"""
 # -------------------------------------------------------------
 # Cell 8: Markdown - QPE and IQFT (4.3.5)
 # -------------------------------------------------------------
-c8_md = """## 4. Section 4.3.5: Integration of QPE and Inverse Quantum Fourier Transform (IQFT)
+c8_md = r"""## 4. Section 4.3.5: Integration of QPE and Inverse Quantum Fourier Transform (IQFT)
 
 The master circuit connects the three quantum registers:
-1. **Superposition on Evaluation Register:** Hadamard gates $H^{\otimes n_E}$ applied across `reg_E`.
-2. **Controlled Grover Power Cascade ($C\text{-}\mathcal{Q}^{2^j}$):**
+1. **State Preparation:** Operator $\mathcal{A}$ applied to $(S, A)$ to prepare the joint distribution $|\Psi\rangle = \mathcal{A}|0\rangle$.
+2. **Superposition on Evaluation Register:** Hadamard gates $H^{\otimes n_E}$ applied across `reg_E`.
+3. **Controlled Grover Power Cascade ($C\text{-}\mathcal{Q}^{2^j}$):**
    For each evaluation qubit $j \in \{0, 1, \dots, n_E - 1\}$, operator $C\text{-}\mathcal{Q}$ is applied $2^j$ times targeting registers $(S, A)$.
    The total number of Grover operations in the circuit is:
    $$N_Q = \sum_{j=0}^{n_E-1} 2^j = 2^{n_E} - 1 = 31 \text{ applications of } \mathcal{Q}$$
-3. **IQFT:** Applied over `reg_E` to map accumulated phase onto the computational basis.
-4. **Measurement:** Terminal readout of `reg_E` into classical register `reg_C`."""
+4. **IQFT:** Applied over `reg_E` via modern `QFTGate(n_E).inverse()` to map accumulated phase onto the computational basis.
+5. **Measurement:** Terminal readout of `reg_E` into classical register `reg_C`."""
 
 # -------------------------------------------------------------
 # Cell 9: Code - Master QAE Assembly, Transpilation and Visualization
 # -------------------------------------------------------------
-c9_code = r"""def synthesize_full_qae(qc, Q_gate, eval_reg, state_reg, ancilla_reg, class_reg):
-    """ + '"""Assembles the full QAE circuit with controlled cascade and IQFT."""' + r"""
+c9_code = r"""def synthesize_full_qae(qc, A_gate, Q_gate, eval_reg, state_reg, ancilla_reg, class_reg):
+    """ + '"""Assembles the full QAE circuit with state prep, controlled cascade and IQFT."""' + r"""
+    target_qubits = list(state_reg) + list(ancilla_reg)
+    
+    # 1. State preparation on target registers: |Psi> = A |0>
+    qc.append(A_gate, target_qubits)
+    
+    # 2. Equal superposition on evaluation register
     num_eval = eval_reg.size
     for i in range(num_eval):
         qc.h(eval_reg[i])
         
-    target_qubits = list(state_reg) + list(ancilla_reg)
+    # 3. Controlled-Grover power cascade: C-Q^(2^j)
     c_Q_gate = Q_gate.control(1)
-    
     for j in range(num_eval):
         iterations = 2 ** j
         for _ in range(iterations):
             qc.append(c_Q_gate, [eval_reg[j]] + target_qubits)
             
-    iqft_circuit = QFT(num_qubits=num_eval, approximation_degree=0, do_swaps=True, inverse=True)
-    qc.append(iqft_circuit.to_gate(), eval_reg)
+    # 4. Inverse Quantum Fourier Transform (IQFT)
+    iqft_gate = QFTGate(num_qubits=num_eval).inverse()
+    qc.append(iqft_gate, eval_reg)
     qc.measure(eval_reg, class_reg)
     return qc
 
-synthesize_full_qae(master_circuit, Q_gate, reg_E, reg_S, reg_A, reg_C)
+synthesize_full_qae(master_circuit, A_gate, Q_gate, reg_E, reg_S, reg_A, reg_C)
 print(f"✓ Master circuit assembled. Abstract depth: {master_circuit.depth()}")
 
 # Graphical Visualization of the Master QAE Circuit
 print("Generating high-level graphical visualization of the QAE Master Circuit...")
 fig_master = master_circuit.draw('mpl', style='iqp', fold=35)
-plt.title("Complete Canonical QAE Master Circuit (H^⊗nE + C-Q^2^j + IQFT + Measurement)", fontsize=13, pad=12, fontweight='bold')
+plt.title("Complete Canonical QAE Master Circuit (A + H^⊗nE + C-Q^2^j + IQFT + Measurement)", fontsize=13, pad=12, fontweight='bold')
 plt.tight_layout()
 export_figure(fig_master, [
     os.path.join('figures', 'circuits', 'circuit_qae_master.png'),
@@ -349,24 +391,24 @@ plt.show()
 
 # Transpilation
 print("\nTranspiling master circuit for AerSimulator (native gate decomposition)...")
-compiled_circuit = transpile(master_circuit, ideal_backend, optimization_level=1)
+compiled_circuit = transpile(master_circuit, ideal_backend, optimization_level=1, seed_transpiler=GLOBAL_SEED)
 print(f"✓ Compiled circuit depth          : {compiled_circuit.depth():,}")
 print(f"✓ Total compiled elementary gates : {compiled_circuit.size():,}")"""
 
 # -------------------------------------------------------------
 # Cell 10: Markdown - Statevector Simulation (4.3.7)
 # -------------------------------------------------------------
-c10_md = """## 5. Section 4.3.7: Statevector Quantum Simulation in AerSimulator
+c10_md = r"""## 5. Section 4.3.7: Statevector Quantum Simulation in AerSimulator
 
-Simulation executed with **2,048 shots** using the `statevector` method in `AerSimulator`.  
+Simulation executed with **2,048 shots** using the `statevector` method in `AerSimulator` with deterministic seed `GLOBAL_SEED = 42`.  
 The output reveals the spectral probability mass across the $2^{n_E} = 32$ basis states of evaluation register `reg_E`."""
 
 # -------------------------------------------------------------
 # Cell 11: Code - Simulation Execution (4.3.7)
 # -------------------------------------------------------------
 c11_code = r"""shots = 2048
-print(f"Executing quantum simulation with {shots} shots...")
-job = ideal_backend.run(compiled_circuit, shots=shots)
+print(f"Executing quantum simulation with {shots} shots (seed={GLOBAL_SEED})...")
+job = ideal_backend.run(compiled_circuit, shots=shots, seed_simulator=GLOBAL_SEED)
 result = job.result()
 counts = result.get_counts(compiled_circuit)
 
@@ -387,15 +429,14 @@ print("="*65)"""
 # -------------------------------------------------------------
 # Cell 12: Markdown - Post-Processing and Spectrum (4.3.8)
 # -------------------------------------------------------------
-c12_md = """## 6. Section 4.3.8: Post-Processing and Amplitude Extraction
+c12_md = r"""## 6. Section 4.3.8: Post-Processing and Amplitude Extraction
 
 From the measured integer $y$ in the evaluation register, the quantum phase $\theta$ and estimated probability $\hat{a}$ are obtained via the bijection:
 $$\theta = \frac{\pi \cdot y}{2^{n_E}}, \quad \hat{a} = \sin^2(\theta)$$
 
-In ideal QAE, the measurement distribution displays **two symmetric conjugate peaks**, corresponding to the two eigenvalues of the Grover operator $e^{\pm 2i\theta_a}$:
-- The primary peak at $y_1$ estimates the direct eigenvalue.
-- The conjugate peak at $y_2 = 2^{n_E} - y_1$ estimates the complex conjugate eigenvalue.
-Both yield identical physical amplitude estimates due to reflection symmetry: $\sin^2(\pi - \theta) = \sin^2(\theta)$."""
+In ideal QAE, the measurement distribution displays the consequence of **finite phase grid resolution** ($\Delta\theta = \pi / 2^{n_E}$):
+- For an ultra-rare event ($p \approx 10^{-6}$), the true phase $\theta_a \approx 0.001$ rad is smaller than the grid step ($\Delta\theta \approx 0.098$ rad).
+- The projection falls onto the nearest computational basis state ($|10000\rangle$ or $|00000\rangle$), validating the mathematical bounds of phase quantization."""
 
 # -------------------------------------------------------------
 # Cell 13: Code - Spectrum and Visualization
@@ -446,7 +487,7 @@ plt.show()"""
 # -------------------------------------------------------------
 # Cell 14: Markdown - Resolution vs Depth Study (4.3.9)
 # -------------------------------------------------------------
-c14_md = """## 7. Section 4.3.9: Resolution vs. Depth Trade-off Study (NISQ Constraints)
+c14_md = r"""## 7. Section 4.3.9: Resolution vs. Depth Trade-off Study (NISQ Constraints)
 
 A critical investigation in this thesis evaluates the physical feasibility of canonical QAE on contemporary NISQ processors:
 
@@ -459,11 +500,11 @@ $$\Delta a \approx \left| \frac{da}{d\theta} \right| \Delta \theta = 2 \sin(\the
 ### Exponential Circuit Depth Scaling
 The number of Grover applications grows exponentially with $n_E$:
 $$N_Q(n_E) = 2^{n_E} - 1$$
-Given that each compiled Grover operator contains approximately $\sim 1,200$ two-qubit CNOT gates:
-$$\text{Estimated Depth} \approx (2^{n_E} - 1) \times 1,200 \text{ gates}$$
+Given that each compiled Grover operator contains approximately $\sim 1,600$ two-qubit CNOT gates:
+$$\text{Estimated Depth} \approx (2^{n_E} - 1) \times D_Q \text{ gates}$$
 
-- For $n_E = 5$: $N_Q = 31 \implies \sim 43,000$ gates.
-- For $n_E = 10$: $N_Q = 1,023 \implies \sim 1,200,000$ gates (**intractable on NISQ processors without fault tolerance**).
+- For $n_E = 5$: $N_Q = 31 \implies \sim 52,000$ gates.
+- For $n_E = 10$: $N_Q = 1,023 \implies \sim 1,700,000$ gates (**intractable on NISQ processors without fault tolerance**).
 
 This motivates modern alternatives such as **Iterative Quantum Amplitude Estimation (IQAE)**, eliminating the auxiliary evaluation register and IQFT entirely."""
 
@@ -473,7 +514,8 @@ This motivates modern alternatives such as **Iterative Quantum Amplitude Estimat
 c15_code = r"""n_E_range = np.arange(3, 11)
 angular_resolution = np.pi / (2 ** n_E_range)
 grover_iterations = (2 ** n_E_range) - 1
-approx_circuit_depth = grover_iterations * 1415
+single_grover_depth = compiled_circuit.depth() // 31
+approx_circuit_depth = grover_iterations * single_grover_depth
 
 fig, ax1 = plt.subplots(figsize=(10, 6))
 
@@ -509,11 +551,11 @@ plt.show()"""
 # -------------------------------------------------------------
 # Cell 16: Markdown - Conclusions Section 4.3
 # -------------------------------------------------------------
-c16_md = """## 8. Monograph Conclusions for Section 4.3
+c16_md = r"""## 8. Monograph Conclusions for Section 4.3
 
 1. **Success of QBN-QAE Architecture:** Validated in ideal simulation the mathematical feasibility of encoding the exoplanetary Bayesian network of K2-18b and coupling it to Grover reflection operators with phase kickback.
 2. **Surpassing Classical Limits:** QAE achieves asymptotic quadratic convergence $\mathcal{O}(1/M_q)$, overcoming the $\mathcal{O}(1/\sqrt{M})$ variance divergence of classical MCMC sampling.
-3. **NISQ Challenge:** The $\sim 43,000$-gate depth required for $n_E = 5$ confirms that canonical QFT-based QAE requires early Fault-Tolerant Quantum Computing (FTQC), motivating the error mitigation studies in **Deliverable 03** and future lines in **IQAE**."""
+3. **NISQ Challenge:** The $\sim 52,000$-gate depth required for $n_E = 5$ confirms that canonical QFT-based QAE requires early Fault-Tolerant Quantum Computing (FTQC), motivating the error mitigation studies in **Deliverable 03** and future lines in **IQAE**."""
 
 # Assemble all cells
 nb.cells = [

@@ -54,6 +54,6 @@ This directory houses the foundational datasets, astrophysical priors, spectrosc
   * **Classical Exact Inference:** Junction Tree / Variable Elimination clique potential evaluations ($w = 2$, exact precision).
   * **Classical Rejection Sampling:** $2 \times 10^6$ forward sampling trials demonstrating the $90.42\%$ rejection ceiling and L'Ecuyer variance divergence on CFCs (1 detection, relative error $>95\%$).
   * **Classical MCMC (Metropolis-Hastings Gibbs):** $100{,}000$ transitions demonstrating Kac's recurrence trap ($0$ visits to CFC due to $\mathbb{E}[\tau] \approx 10^6$ steps).
-  * **Canonical Quantum Amplitude Estimation (QAE):** 17-qubit statevector simulation ($n_E = 5$, 2,048 shots) detailing Fourier eigenvalue concentration ($80.22\%$ in $\ket{00000}$ and $19.78\%$ in $\ket{10000}$).
+  * **Canonical Quantum Amplitude Estimation (QAE):** 17-qubit statevector simulation ($n_E = 5$, 2,048 shots) detailing Fourier phase quantization ($100.0\%$ in $\ket{10000}$ at $y=16$).
   * **NISQ Hardware Noise & ZNE:** 5-qubit kernel under calibrated IBM transmon decoherence ($T_1 = 150\,\mu\mathrm{s}, T_2 = 120\,\mu\mathrm{s}$) and unitary folding factors $\lambda \in \{1, 3, 5\}$, achieving $86.44\%$ error mitigation via 2nd-order Richardson extrapolation.
 * **Thesis Cross-Reference:** Chapter 2, Chapter 4 (Sections 4.2–4.4), Chapter 5, and Appendix B.
