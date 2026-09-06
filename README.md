@@ -98,8 +98,8 @@ stateDiagram-v2
 | :--- | :--- | :--- | :--- |
 | **Spatial Scaling** | $\mathcal{O}(N \cdot d^{w+1})$ RAM explosion in clique potentials. | **$\mathcal{O}(N)$ Qubits:** 9 qubits encode all $2^9 = 512$ states. | **5 physical qubits** encode core inference kernel. |
 | **Query Scaling** | $\mathcal{O}(1/\sqrt{M})$ Monte Carlo rate; diverges on rare states. | **$\mathcal{O}(1/M)$ Heisenberg speedup** via Grover rotation. | $\mathcal{O}(1)$ queries with noise-scaled folding factors. |
-| **Rare Technosignatures** | &bull; **MCMC:** $0$ hits in $100{,}000$ steps (false negative).<br/>&bull; **Rejection:** $90.42\%$ discarded samples under evidence. | **Deterministic phase extraction** via Fourier centroid. | Controlled expectation with noise-floor tracking. |
-| **Physical Hardware** | Exact math on CPU / RAM. | Master circuit: **$43{,}874$ depth, $44{,}853$ gates** (FTQC). | Kernel: **Depth $D = 39$, $57$ native gates** ($86.44\%$ error mitigation). |
+| **Empirical Results ($p \sim 10^{-6}$)** | &bull; **MCMC:** $0$ hits in $100{,}000$ steps (false negative).<br/>&bull; **Rejection:** $90.42\%$ discarded samples under evidence. | &bull; **Phase Quantization:** $80.22\%$ shots at `00000`, $19.78\%$ at `10000`.<br/>&bull; **Detection:** $100\%$ density on conjugate eigenvalues ($0$ mode trap). | &bull; **Raw Noise:** $+137.21\%$ distortion ($6.30\% \to 14.94\%$).<br/>&bull; **ZNE Mitigated:** $7.47\%$ recovered (**$86.44\%$ error cancelled**). |
+| **Physical Hardware** | Exact matrix math on CPU / RAM. | Master circuit: **$43{,}874$ depth, $44{,}853$ gates** (FTQC horizon). | Kernel: **Depth $D = 39$, $57$ native gates** ($23$ CNOTs at $\lambda=1$). |
 | **Reference Section** | [Chapter 2](thesis/chapters/2.classical_limits.tex) & [Notebook 01](src/chapter_2_classical/01_Classical_Limits_K218b.ipynb) | [Chapter 3](thesis/chapters/3.quantum_bayesian_formalism.tex) & [Notebook 02](src/chapter_4_quantum/02_QAE_Ideal_Simulation.ipynb) | [Chapter 4](thesis/chapters/4.system_architecture.tex) & [Notebook 03](src/chapter_4_quantum/03_NISQ_ZNE_Mitigation.ipynb) |
 
 ---
