@@ -22,14 +22,17 @@ Includes:
 import sys
 import io
 import os
+import warnings
 import base64
+
+os.environ['MPLCONFIGDIR'] = '/tmp/mpl_cache'
+os.environ['IPYTHONDIR'] = '/tmp/ipython_cache'
+warnings.filterwarnings('ignore', category=FutureWarning, module='pgmpy')
+
 import nbformat
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
-os.environ['MPLCONFIGDIR'] = '/tmp/mpl_cache'
-os.environ['IPYTHONDIR'] = '/tmp/ipython_cache'
 
 nb = nbformat.v4.new_notebook()
 nb.metadata = {
@@ -117,6 +120,8 @@ import scipy.stats as stats
 import matplotlib.pyplot as plt
 
 # Classical Bayesian & Graphical Model Framework
+import warnings
+warnings.filterwarnings('ignore', category=FutureWarning, module='pgmpy')
 import pgmpy
 from pgmpy.models import DiscreteBayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
@@ -247,8 +252,11 @@ assert k218b_dag.check_model(), "Error: DAG specification is mathematically inva
 
 # 3. Graph Moralization, Triangulation, and Treewidth Analysis
 moral_graph = k218b_dag.to_undirected()
-# Moralize: marry unmarried parents of common children (X0 and X1 both share child X2)
-moral_graph.add_edge('X0_Stellar_M', 'X1_Orbit_HZ')
+for node in k218b_dag.nodes():
+    parents = list(k218b_dag.predecessors(node))
+    for i in range(len(parents)):
+        for j in range(i + 1, len(parents)):
+            moral_graph.add_edge(parents[i], parents[j])
 
 maximal_cliques = list(nx.find_cliques(moral_graph))
 treewidth_w = max(len(c) for c in maximal_cliques) - 1
@@ -298,7 +306,7 @@ cell7_code = r"""class K218bBayesianNetwork:
     Formal vectorized implementation of the 9-node K2-18b Bayesian network,
     homologous to the 17-qubit quantum state register (Section 4.3 of the Thesis).
     """ + '"""' + r"""
-    def __init__(self, cfc_rare_prob: float = 1e-6):
+    def __init__(self, cfc_rare_prob: float = 1e-6, random_state: int = None):
         self.node_names = [
             "X0_Stellar_M", "X1_Orbit_HZ", "X2_Hycean", "X3_Bio_Ocean",
             "X4_CH4", "X5_CO2", "X6_H2O", "X7_DMS", "X8_CFC"
@@ -310,6 +318,8 @@ cell7_code = r"""class K218bBayesianNetwork:
         self.p_x0 = 0.75  # K2-18 is an M2.5V red dwarf
         self.p_x1 = 0.20  # Temperate 33-day orbit in habitable zone
         self.p_x3_marginal = 0.0763  # Exact analytical marginal P(X3=1)
+        self.random_state = random_state
+        self.rng = np.random.RandomState(random_state) if random_state is not None else np.random.mtrand._rand
 
     def sample_joint(self, n_samples: int) -> np.ndarray:
         """ + '"""' + r"""
@@ -319,37 +329,37 @@ cell7_code = r"""class K218bBayesianNetwork:
         X = np.zeros((n_samples, self.num_nodes), dtype=np.int8)
 
         # Root nodes
-        X[:, 0] = np.random.rand(n_samples) < self.p_x0
-        X[:, 1] = np.random.rand(n_samples) < self.p_x1
+        X[:, 0] = self.rng.uniform(size=n_samples) < self.p_x0
+        X[:, 1] = self.rng.uniform(size=n_samples) < self.p_x1
 
         # X2: Hycean Condition (requires M star and habitable orbit)
         p_x2 = np.where((X[:, 0] == 1) & (X[:, 1] == 1), 0.85, 0.05)
-        X[:, 2] = np.random.rand(n_samples) < p_x2
+        X[:, 2] = self.rng.uniform(size=n_samples) < p_x2
 
         # X3: Biological ocean (conditioned on Hycean state X2)
         p_x3 = np.where(X[:, 2] == 1, 0.40, 0.01)
-        X[:, 3] = np.random.rand(n_samples) < p_x3
+        X[:, 3] = self.rng.uniform(size=n_samples) < p_x3
 
         # X4: Methane CH4 (abundant in reducing Hycean atmosphere)
         p_x4 = np.where(X[:, 2] == 1, 0.90, 0.15)
-        X[:, 4] = np.random.rand(n_samples) < p_x4
+        X[:, 4] = self.rng.uniform(size=n_samples) < p_x4
 
         # X5: Carbon dioxide CO2 (temperate sub-Neptune equilibrium)
         p_x5 = np.where(X[:, 2] == 1, 0.80, 0.20)
-        X[:, 5] = np.random.rand(n_samples) < p_x5
+        X[:, 5] = self.rng.uniform(size=n_samples) < p_x5
 
         # X6: Water vapor H2O (temperate orbital zone)
         p_x6 = np.where(X[:, 1] == 1, 0.70, 0.10)
-        X[:, 6] = np.random.rand(n_samples) < p_x6
+        X[:, 6] = self.rng.uniform(size=n_samples) < p_x6
 
         # X7: DMS biosignature (conditioned on active marine biosphere X3=1)
         p_x7 = np.where(X[:, 3] == 1, 0.05, 0.0001)
-        X[:, 7] = np.random.rand(n_samples) < p_x7
+        X[:, 7] = self.rng.uniform(size=n_samples) < p_x7
 
         # X8: Industrial CFC technosignature (ultra-rare anomaly, conditioned on active biosphere X3=1)
         # Exactly normalized: P(X8=1|X3=1) = cfc_rare_prob / 0.0763 => Prior marginal = 1.0000e-6
         p_x8 = np.where(X[:, 3] == 1, self.cfc_rare_prob / self.p_x3_marginal, 0.0)
-        X[:, 8] = np.random.rand(n_samples) < p_x8
+        X[:, 8] = self.rng.uniform(size=n_samples) < p_x8
 
         return X
 
@@ -490,7 +500,7 @@ cell11_code = r"""def run_metropolis_hastings(bn: K218bBayesianNetwork, evidence
     current_prob = bn.evaluate_unnormalized_posterior(current_state, evidence)
     while current_prob <= 0.0:
         for fn in free_nodes:
-            current_state[fn] = np.random.choice([0, 1])
+            current_state[fn] = bn.rng.choice([0, 1])
         current_prob = bn.evaluate_unnormalized_posterior(current_state, evidence)
 
     chain = np.zeros((n_steps, bn.num_nodes), dtype=np.int8)
@@ -498,7 +508,7 @@ cell11_code = r"""def run_metropolis_hastings(bn: K218bBayesianNetwork, evidence
 
     t0 = time.time()
     for t in range(n_steps + burn_in):
-        flip_node = np.random.choice(free_nodes)
+        flip_node = bn.rng.choice(free_nodes)
         proposed_state = current_state.copy()
         proposed_state[flip_node] = 1 - proposed_state[flip_node]
 
@@ -509,7 +519,7 @@ cell11_code = r"""def run_metropolis_hastings(bn: K218bBayesianNetwork, evidence
         else:
             alpha = proposed_prob / current_prob if current_prob > 0 else 0.0
 
-        if np.random.rand() < alpha:
+        if bn.rng.uniform() < alpha:
             current_state = proposed_state
             current_prob = proposed_prob
             if t >= burn_in:
@@ -725,8 +735,6 @@ for d in export_dirs:
     os.makedirs(d, exist_ok=True)
     plt.savefig(os.path.join(d, 'figure1_classical_diagnostic_panel.png'), dpi=300)
 
-plt.show()
-
 # =====================================================================
 # FIGURE 2: QUANTUM ADVANTAGE CROSSOVER POINT (PUBLICATION STYLE)
 # =====================================================================
@@ -763,8 +771,6 @@ plt.tight_layout()
 
 for d in export_dirs:
     plt.savefig(os.path.join(d, 'figure2_quantum_crossover.png'), dpi=300)
-
-plt.show()
 
 print("✓ Publication figures generated and exported to:")
 for d in export_dirs:
