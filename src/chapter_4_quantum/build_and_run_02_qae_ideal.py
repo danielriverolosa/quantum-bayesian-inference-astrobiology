@@ -25,7 +25,7 @@ nb.metadata = {
 }
 
 # -------------------------------------------------------------
-# Celda 1: Markdown - Portada Académica
+# Cell 1: Markdown - Academic Header
 # -------------------------------------------------------------
 c1_md = """# 02. Quantum Bayesian Inference: Amplitude Estimation (QAE) in Ideal Simulation
 ### Master's Thesis: Quantum Bayesian Networks and Amplitude Estimation (QAE) in Astrobiology
@@ -47,7 +47,7 @@ The workflow covers:
 6. **Resolution vs. Depth Trade-off Study (4.3.9):** Critical analysis of the trade-off between evaluation register size $n_E$ and circuit depth."""
 
 # -------------------------------------------------------------
-# Celda 2: Markdown - Marco Teórico Sección 4.3
+# Cell 2: Markdown - Theoretical Framework Section 4.3
 # -------------------------------------------------------------
 c2_md = """## 1. Theoretical Framework of Canonical QAE
 
@@ -121,16 +121,16 @@ def export_figure(fig, relative_targets, **kwargs):
 print("="*65)
 print(" TOPOLOGICAL REGISTER ALLOCATION (Section 4.3.1)")
 print("="*65)
-print(f" Registro de Estado (S)   : {reg_S.size} qubits (Variables de K2-18b)")
-print(f" Registro de Evaluación (E): {reg_E.size} qubits (Resolución QPE: {2**reg_E.size} niveles)")
-print(f" Registro Ancilla (A)     : {reg_A.size} qubits (Workspace / Kickback)")
-print(f" Registro Clásico (C)     : {reg_C.size} bits (Lectura de medición)")
-print(f" Total de Qubits Físicos  : {master_circuit.num_qubits} qubits")
-print(f" Backend de Simulación    : AerSimulator (Statevector ideal)")
+print(f" State Register (S)        : {reg_S.size} qubits (K2-18b planetary variables)")
+print(f" Evaluation Register (E)   : {reg_E.size} qubits (QPE resolution: {2**reg_E.size} levels)")
+print(f" Ancilla Register (A)      : {reg_A.size} qubits (Workspace / Kickback)")
+print(f" Classical Register (C)    : {reg_C.size} bits (Readout register)")
+print(f" Total Physical Qubits     : {master_circuit.num_qubits} qubits")
+print(f" Simulation Backend        : AerSimulator (Ideal statevector)")
 print("="*65)"""
 
 # -------------------------------------------------------------
-# Celda 4: Markdown - Operador A (4.3.2)
+# Cell 4: Markdown - Operator A (4.3.2)
 # -------------------------------------------------------------
 c4_md = """## 2. Section 4.3.2: Amplitude Encoding Synthesis (Operator $\mathcal{A}$)
 
@@ -147,7 +147,7 @@ Operator $\mathcal{A}$ synthesizes the K2-18b Bayesian network into probability 
 # Cell 5: Code - Operator A Functions and Visualization
 # -------------------------------------------------------------
 c5_code = r"""def apply_root_nodes(qc, reg_S):
-    """ + '"""Aplica rotaciones Ry sobre los nodos raíz (priors marginales)."""' + r"""
+    """ + '"""Applies Ry rotations on root nodes (marginal priors)."""' + r"""
     p_stellar = 0.75
     p_orbit = 0.20
     theta_0 = 2.0 * np.arcsin(np.sqrt(p_stellar))
@@ -157,7 +157,7 @@ c5_code = r"""def apply_root_nodes(qc, reg_S):
     return qc
 
 def synthesize_conditional_node(qc, target_qubit, parent_qubits, cpt_probabilities, ancilla_reg):
-    """ + '"""Sintetiza una tabla de probabilidad condicional (CPT) mediante rotaciones multicontroladas."""' + r"""
+    """ + '"""Synthesizes a Conditional Probability Table (CPT) via multi-controlled rotations."""' + r"""
     num_parents = len(parent_qubits)
     num_states = 2 ** num_parents
     for state_idx in range(num_states):
@@ -182,7 +182,7 @@ def synthesize_conditional_node(qc, target_qubit, parent_qubits, cpt_probabiliti
     return qc
 
 def build_A_operator(num_state_qubits, ancilla_reg):
-    """ + '"""Construye la puerta unitaria completa del Operador A."""' + r"""
+    """ + '"""Constructs the complete unitary gate for Operator A."""' + r"""
     qc_A = QuantumCircuit(num_state_qubits + len(ancilla_reg))
     state_qubits = list(range(num_state_qubits))
     ancillas = list(range(num_state_qubits, num_state_qubits + len(ancilla_reg)))
@@ -212,7 +212,7 @@ export_figure(fig_A, [
 plt.show()"""
 
 # -------------------------------------------------------------
-# Celda 6: Markdown - Oráculo y Difusor (4.3.3 - 4.3.4)
+# Cell 6: Markdown - Oracle and Diffuser (4.3.3 - 4.3.4)
 # -------------------------------------------------------------
 c6_md = """## 3. Sections 4.3.3 & 4.3.4: Quantum Oracle $S_\chi$, Diffuser $S_0$, and Grover Operator $\mathcal{Q}$
 
@@ -233,7 +233,7 @@ $$\mathcal{Q} = -\mathcal{A} S_0 \mathcal{A}^\dagger S_\chi$$"""
 # Cell 7: Code - Oracle, Diffuser and Grover Q Visualization
 # -------------------------------------------------------------
 c7_code = r"""def synthesize_quantum_oracle(target_qubits, num_state_qubits, ancilla_reg):
-    """ + '"""Sintetiza el oráculo cuántico S_chi de inversión de fase."""' + r"""
+    """ + '"""Synthesizes the phase-flip quantum oracle S_chi."""' + r"""
     qc_oracle = QuantumCircuit(num_state_qubits + len(ancilla_reg))
     if len(target_qubits) == 1:
         qc_oracle.z(target_qubits[0])
@@ -250,7 +250,7 @@ c7_code = r"""def synthesize_quantum_oracle(target_qubits, num_state_qubits, anc
     return oracle_gate, qc_oracle
 
 def build_grover_operator(A_gate, oracle_gate, num_state_qubits, ancilla_reg):
-    """ + '"""Construye el operador canónico de Grover Q = -A S0 A^dagger S_chi."""' + r"""
+    """ + '"""Constructs the canonical Grover operator Q = -A S0 A^dagger S_chi."""' + r"""
     qc_Q = QuantumCircuit(num_state_qubits + len(ancilla_reg))
     state_qubits = list(range(num_state_qubits))
     ancillas = list(range(num_state_qubits, num_state_qubits + len(ancilla_reg)))
@@ -297,7 +297,7 @@ export_figure(fig_Q, [
 plt.show()"""
 
 # -------------------------------------------------------------
-# Celda 8: Markdown - QPE e IQFT (4.3.5)
+# Cell 8: Markdown - QPE and IQFT (4.3.5)
 # -------------------------------------------------------------
 c8_md = """## 4. Section 4.3.5: Integration of QPE and Inverse Quantum Fourier Transform (IQFT)
 
@@ -314,7 +314,7 @@ The master circuit connects the three quantum registers:
 # Cell 9: Code - Master QAE Assembly, Transpilation and Visualization
 # -------------------------------------------------------------
 c9_code = r"""def synthesize_full_qae(qc, Q_gate, eval_reg, state_reg, ancilla_reg, class_reg):
-    """ + '"""Ensambla el circuito QAE completo con cascada controlada e IQFT."""' + r"""
+    """ + '"""Assembles the full QAE circuit with controlled cascade and IQFT."""' + r"""
     num_eval = eval_reg.size
     for i in range(num_eval):
         qc.h(eval_reg[i])
@@ -333,7 +333,7 @@ c9_code = r"""def synthesize_full_qae(qc, Q_gate, eval_reg, state_reg, ancilla_r
     return qc
 
 synthesize_full_qae(master_circuit, Q_gate, reg_E, reg_S, reg_A, reg_C)
-print(f"✓ Circuito maestro ensamblado. Profundidad abstracta: {master_circuit.depth()}")
+print(f"✓ Master circuit assembled. Abstract depth: {master_circuit.depth()}")
 
 # Graphical Visualization of the Master QAE Circuit
 print("Generating high-level graphical visualization of the QAE Master Circuit...")
@@ -350,11 +350,11 @@ plt.show()
 # Transpilation
 print("\nTranspiling master circuit for AerSimulator (native gate decomposition)...")
 compiled_circuit = transpile(master_circuit, ideal_backend, optimization_level=1)
-print(f"✓ Profundidad del circuito compilado : {compiled_circuit.depth():,}")
-print(f"✓ Total de puertas básicas compiladas: {compiled_circuit.size():,}")"""
+print(f"✓ Compiled circuit depth          : {compiled_circuit.depth():,}")
+print(f"✓ Total compiled elementary gates : {compiled_circuit.size():,}")"""
 
 # -------------------------------------------------------------
-# Celda 10: Markdown - Simulación Statevector (4.3.7)
+# Cell 10: Markdown - Statevector Simulation (4.3.7)
 # -------------------------------------------------------------
 c10_md = """## 5. Section 4.3.7: Statevector Quantum Simulation in AerSimulator
 
@@ -365,7 +365,7 @@ The output reveals the spectral probability mass across the $2^{n_E} = 32$ basis
 # Cell 11: Code - Simulation Execution (4.3.7)
 # -------------------------------------------------------------
 c11_code = r"""shots = 2048
-print(f"Ejecutando simulación cuántica con {shots} shots...")
+print(f"Executing quantum simulation with {shots} shots...")
 job = ideal_backend.run(compiled_circuit, shots=shots)
 result = job.result()
 counts = result.get_counts(compiled_circuit)
@@ -375,7 +375,7 @@ sorted_counts = sorted(counts.items(), key=lambda item: item[1], reverse=True)
 print("="*65)
 print(" EVALUATION REGISTER MEASUREMENT RESULTS")
 print("="*65)
-print(f"{'Bitstring':<12} | {'Decimal y':<10} | {'Disparos (Shots)':<18} | {'Frecuencia (%)':<15}")
+print(f"{'Bitstring':<12} | {'Decimal y':<10} | {'Shots Count':<18} | {'Frequency (%)':<15}")
 print("-" * 65)
 
 for bitstring, count in sorted_counts:
@@ -385,7 +385,7 @@ for bitstring, count in sorted_counts:
 print("="*65)"""
 
 # -------------------------------------------------------------
-# Celda 12: Markdown - Post-procesado y Espectro (4.3.8)
+# Cell 12: Markdown - Post-Processing and Spectrum (4.3.8)
 # -------------------------------------------------------------
 c12_md = """## 6. Section 4.3.8: Post-Processing and Amplitude Extraction
 
@@ -401,9 +401,9 @@ Both yield identical physical amplitude estimates due to reflection symmetry: $\
 # Cell 13: Code - Spectrum and Visualization
 # -------------------------------------------------------------
 c13_code = r"""print("="*80)
-print(f" TABLA ESPECTRAL QAE: EXTRACCIÓN DE PROBABILIDAD (n_E = {num_eval_qubits})")
+print(f" QAE SPECTRAL TABLE: PROBABILITY EXTRACTION (n_E = {num_eval_qubits})")
 print("="*80)
-print(f"{'Bitstring':<12} | {'Decimal y':<10} | {'Fase theta (rad)':<18} | {'Amplitud a = sin^2(theta)':<28} | {'Frecuencia':<10}")
+print(f"{'Bitstring':<12} | {'Decimal y':<10} | {'Phase theta (rad)':<18} | {'Amplitude a = sin^2(theta)':<28} | {'Frequency (%)':<10}")
 print("-" * 80)
 
 x_labels = []
@@ -444,7 +444,7 @@ export_figure(fig, [
 plt.show()"""
 
 # -------------------------------------------------------------
-# Celda 14: Markdown - Estudio de Resolución vs Profundidad (4.3.9)
+# Cell 14: Markdown - Resolution vs Depth Study (4.3.9)
 # -------------------------------------------------------------
 c14_md = """## 7. Section 4.3.9: Resolution vs. Depth Trade-off Study (NISQ Constraints)
 
@@ -507,7 +507,7 @@ export_figure(fig, [
 plt.show()"""
 
 # -------------------------------------------------------------
-# Celda 16: Markdown - Conclusiones Sección 4.3
+# Cell 16: Markdown - Conclusions Section 4.3
 # -------------------------------------------------------------
 c16_md = """## 8. Monograph Conclusions for Section 4.3
 
@@ -537,14 +537,14 @@ nb.cells = [
 
 output_filename = os.path.join(os.path.dirname(__file__), "02_QAE_Ideal_Simulation.ipynb")
 
-print(f"Ejecutando celdas en Python puro con renderizado mpl para {output_filename}...")
+print(f"Executing cells in pure Python with mpl rendering for {output_filename}...")
 exec_namespace = {}
 execution_count = 1
 
 for idx, cell in enumerate(nb.cells):
     if cell.cell_type == "code":
         code = cell.source
-        print(f"\n--- Ejecutando celda {execution_count} (índice {idx}) ---")
+        print(f"\n--- Executing cell {execution_count} (index {idx}) ---")
         
         old_stdout = sys.stdout
         redirected_output = io.StringIO()
@@ -556,7 +556,7 @@ for idx, cell in enumerate(nb.cells):
             stdout_text = redirected_output.getvalue()
         except Exception as e:
             sys.stdout = old_stdout
-            print(f"ERROR en celda {execution_count}: {e}")
+            print(f"ERROR in cell {execution_count}: {e}")
             import traceback
             traceback.print_exc()
             sys.exit(1)
@@ -585,13 +585,13 @@ for idx, cell in enumerate(nb.cells):
                     metadata={}
                 ))
             plt.close('all')
-            print(f"  [Capturadas {len(fignums)} figuras]")
+            print(f"  [Captured {len(fignums)} figures]")
             
         cell.execution_count = execution_count
         execution_count += 1
 
-print(f"\nGuardando notebook ejecutado en {output_filename}...")
+print(f"\nSaving executed notebook to {output_filename}...")
 with open(output_filename, "w", encoding="utf-8") as f:
     nbformat.write(nb, f)
 
-print(f"✓ ¡Notebook {output_filename} con diagramas de circuitos generado y guardado con éxito!")
+print(f"✓ Notebook {output_filename} with circuit diagrams generated and saved successfully!")
