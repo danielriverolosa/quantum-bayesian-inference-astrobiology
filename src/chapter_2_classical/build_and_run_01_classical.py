@@ -817,63 +817,69 @@ nb.cells = [
     nbformat.v4.new_markdown_cell(cell16_md)
 ]
 
-output_filename = os.path.join(os.path.dirname(__file__), "01_Classical_Limits_K218b.ipynb")
-print(f"Executing cells in Python and capturing outputs for {output_filename}...")
+def build_and_run(output_filename: str = None):
+    if output_filename is None:
+        output_filename = os.path.join(os.path.dirname(__file__), "01_Classical_Limits_K218b.ipynb")
+    print(f"Executing cells in Python and capturing outputs for {output_filename}...")
 
-exec_namespace = {}
-execution_count = 1
+    exec_namespace = {}
+    execution_count = 1
 
-for idx, cell in enumerate(nb.cells):
-    if cell.cell_type == "code":
-        code = cell.source
-        print(f"\n--- Executing code cell {execution_count} (index {idx}) ---")
+    for idx, cell in enumerate(nb.cells):
+        if cell.cell_type == "code":
+            code = cell.source
+            print(f"\n--- Executing code cell {execution_count} (index {idx}) ---")
 
-        old_stdout = sys.stdout
-        redirected_output = io.StringIO()
-        sys.stdout = redirected_output
+            old_stdout = sys.stdout
+            redirected_output = io.StringIO()
+            sys.stdout = redirected_output
 
-        cell.outputs = []
-        try:
-            exec(code, exec_namespace)
-            stdout_text = redirected_output.getvalue()
-        except Exception as e:
-            sys.stdout = old_stdout
-            print(f"ERROR in cell {execution_count}: {e}")
-            import traceback
-            traceback.print_exc()
-            sys.exit(1)
-        finally:
-            sys.stdout = old_stdout
+            cell.outputs = []
+            try:
+                exec(code, exec_namespace)
+                stdout_text = redirected_output.getvalue()
+            except Exception as e:
+                sys.stdout = old_stdout
+                print(f"ERROR in cell {execution_count}: {e}")
+                import traceback
+                traceback.print_exc()
+                sys.exit(1)
+            finally:
+                sys.stdout = old_stdout
 
-        if stdout_text:
-            print(stdout_text, end="")
-            cell.outputs.append(nbformat.v4.new_output(
-                output_type="stream",
-                name="stdout",
-                text=stdout_text
-            ))
-
-        fignums = plt.get_fignums()
-        if fignums:
-            for fig_id in fignums:
-                fig = plt.figure(fig_id)
-                img_buf = io.BytesIO()
-                fig.savefig(img_buf, format='png', dpi=150, bbox_inches='tight')
-                img_buf.seek(0)
-                img_base64 = base64.b64encode(img_buf.read()).decode('utf-8')
+            if stdout_text:
+                print(stdout_text, end="")
                 cell.outputs.append(nbformat.v4.new_output(
-                    output_type="display_data",
-                    data={"image/png": img_base64},
-                    metadata={}
+                    output_type="stream",
+                    name="stdout",
+                    text=stdout_text
                 ))
-            plt.close('all')
-            print(f"  [Captured {len(fignums)} figure(s)]")
 
-        cell.execution_count = execution_count
-        execution_count += 1
+            fignums = plt.get_fignums()
+            if fignums:
+                for fig_id in fignums:
+                    fig = plt.figure(fig_id)
+                    img_buf = io.BytesIO()
+                    fig.savefig(img_buf, format='png', dpi=150, bbox_inches='tight')
+                    img_buf.seek(0)
+                    img_base64 = base64.b64encode(img_buf.read()).decode('utf-8')
+                    cell.outputs.append(nbformat.v4.new_output(
+                        output_type="display_data",
+                        data={"image/png": img_base64},
+                        metadata={}
+                    ))
+                plt.close('all')
+                print(f"  [Captured {len(fignums)} figure(s)]")
 
-print(f"\nSaving executed notebook to {output_filename}...")
-with open(output_filename, "w", encoding="utf-8") as f:
-    nbformat.write(nb, f)
+            cell.execution_count = execution_count
+            execution_count += 1
 
-print(f"✓ Notebook {output_filename} successfully generated, executed, and saved!")
+    print(f"\nSaving executed notebook to {output_filename}...")
+    with open(output_filename, "w", encoding="utf-8") as f:
+        nbformat.write(nb, f)
+
+    print(f"✓ Notebook {output_filename} successfully generated, executed, and saved!")
+    return nb
+
+if __name__ == "__main__":
+    build_and_run()
