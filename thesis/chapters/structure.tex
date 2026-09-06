@@ -1,19 +1,30 @@
 \chapter*{Structure of this thesis}
 
-\section*{Indexes and Tables of Content}
-A brief Table of Contents is provided at the beginning of this work (see page \pageref{label:short_toc}), outlining only the chapters and main sections. 
-
-A comprehensive Table of Contents can be found at the end of the thesis (page \pageref{label:full_toc}), alongside the List of Figures (page \pageref{label:list_of_figures}) and the Bibliography (page \pageref{label:bib_references}). 
-
-\section*{Source code and repository structure}
-Chapter \ref{chap:classical_limits} and Chapter \ref{chap:system_architecture} show the results of classical stochastic benchmarks, exact tree inference, and quantum circuit simulations, which are synthesized alongside future technological horizons in Chapter \ref{chap:conclusions}.
-
-The complete code required to execute the simulations presented in this work is organized within an extensible, modular architecture alongside the simulation result data, plots, and LaTeX sources:
+\section*{Monograph Outline and Chapter Roadmap}
+This Master's Thesis investigates the theoretical formulation, circuit synthesis, and empirical validation of Quantum Bayesian Inference for exoplanetary biosignature and technosignature characterization. The monograph is logically organized into five core chapters and two technical appendices:
 
 \begin{itemize}
-    \item \textbf{\texttt{src/}:} Contains all algorithmic implementations and simulation pipelines, partitioned into \texttt{src/chapter\_2\_classical} (pgmpy Bayesian networks, Junction Tree stress tests, and MCMC Gibbs sampling) and \texttt{src/chapter\_4\_quantum} (Qiskit 17-qubit circuit synthesis, Grover iteration cascade, QPE with IQFT, and Mitiq Zero-Noise Extrapolation).
-    \item \textbf{\texttt{data/}:} Stores the astronomical spectroscopic priors (JWST transmission spectra of K2-18b) and empirical sampling logs.
-    \item \textbf{\texttt{figures/}:} Contains generated plots, convergence curves, and transpilation circuit diagrams.
-    \item \textbf{\texttt{thesis/}:} Houses the complete \LaTeX\ source files of this monograph, with figures categorized by chapter in \texttt{thesis/figures/}.
-    \item \textbf{\texttt{thesis\_pdf/}:} Stores compiled PDF editions (digital reading and print-ready formats).
+    \item \textbf{Chapter \ref{chap:introduction} (Introduction and Astrobiological Context):} Establishes the observational framework of transmission spectroscopy, details the atmospheric retrieval problem for the habitable-zone candidate K2-18b, reviews candidate spectroscopic signatures ($\mathrm{CH}_4$, $\mathrm{CO}_2$, DMS, and chlorofluorocarbons), and introduces the foundational motivations for Bayesian probabilistic inference.
+    \item \textbf{Chapter \ref{chap:classical_limits} (Bayesian Inference and Classical Computational Intractability):} Formalizes Bayesian networks and establishes the fundamental complexity barriers of classical inference, demonstrating the exponential spatial intractability of exact algorithms (\textit{Junction Tree}) across dense topologies ($\mathcal{O}(N \cdot d^{w+1})$) and the sample divergence of stochastic sampling (\textit{MCMC Gibbs}) when estimating rare technosignature posteriors ($\mathcal{O}(1/\sqrt{M})$).
+    \item \textbf{Chapter \ref{chap:quantum_bayesian_formalism} (Quantum Bayesian Formalism and Quadratic Speedup via QAE):} Constructs the mathematical operators governing Quantum Bayesian Networks (QBN), proves the linear state preparation scaling for bounded in-degree DAGs ($\mathcal{O}(N \cdot 2^{k_{\max}})$), formalizes the state preparation unitary $\mathcal{A}$, the phase oracle $\mathcal{S}_\chi$, and the Grover reflection $\mathcal{S}_0$, and analytically derives the quadratic speedup of Quantum Amplitude Estimation ($\mathcal{O}(1/M)$).
+    \item \textbf{Chapter \ref{chap:system_architecture} (System Architecture, Algorithmic Implementation \& Quantum Circuit Synthesis):} Details the end-to-end execution of the 17-qubit quantum architecture in Qiskit, presenting statevector evaluations under ideal conditions, realistic density-matrix simulations under thermal relaxation and depolarizing noise ($T_1, T_2$), and mitigation benchmarks via Zero-Noise Extrapolation (ZNE) with Mitiq.
+    \item \textbf{Chapter \ref{chap:conclusions} (Conclusions, Discussion, and Future Work):} Synthesizes the empirical findings, contrasts the performance regimes of NISQ coprocessors against Fault-Tolerant Quantum Computing (FTQC), delineates the boundaries of practical quantum utility, and charts future research directions in space-borne quantum sensing.
+    \item \textbf{Appendix \ref{app:complete_cpts} (Exhaustive Astrobiological Conditional Probability Tables):} Tabulates the complete combinatorial specifications, conditional probability matrices, and exact marginal/conditional posterior distributions for all nine nodes of the exoplanetary network.
+    \item \textbf{Appendix \ref{app:transpilation_profiles} (Quantum Circuit Transpilation and Hardware Resource Profiles):} Provides exhaustive transpilation benchmarks, basis gate decompositions, two-qubit CNOT overheads, depth metrics, and unitary scaling across evaluation register widths.
+\end{itemize}
+
+\section*{Indexes and Tables of Content}
+A concise Table of Contents is provided at the beginning of this work (see page \pageref{label:short_toc}), outlining the overarching chapters and primary divisions to facilitate quick structural navigation.
+
+A comprehensive, detailed Table of Contents is situated at the conclusion of the monograph (page \pageref{label:full_toc}), alongside the List of Figures (page \pageref{label:list_of_figures}) and the complete Bibliography (page \pageref{label:bib_references}).
+
+\section*{Source Code and Repository Architecture}
+The computational benchmarks, circuit synthesis routines, and simulation pipelines developed in this thesis are fully open and organized into an extensible modular architecture:
+
+\begin{itemize}
+    \item \textbf{\texttt{src/}:} Algorithmic implementations partitioned into \texttt{src/chapter\_2\_classical/} (pgmpy graphical models, Junction Tree stress tests, and MCMC Gibbs sampling) and \texttt{src/chapter\_4\_quantum/} (17-qubit Qiskit circuit synthesis, controlled Grover iteration cascades, Inverse QFT routines, and Mitiq ZNE error mitigation pipelines), each accompanied by automated unit tests.
+    \item \textbf{\texttt{data/}:} Observational priors derived from JWST transmission telemetry of K2-18b, tabular CPT definitions, and classical vs. quantum benchmark logs.
+    \item \textbf{\texttt{figures/}:} High-resolution vector diagrams, posterior comparison plots, and transpilation circuit schematics.
+    \item \textbf{\texttt{thesis/}:} Full \LaTeX\ source files under the dual-compilation system (Crown Quarto print edition and A4 digital format with margin commentary), with chapter-segregated graphics in \texttt{thesis/figures/}.
+    \item \textbf{\texttt{thesis\_pdf/}:} Pre-compiled production PDF editions.
 \end{itemize}
