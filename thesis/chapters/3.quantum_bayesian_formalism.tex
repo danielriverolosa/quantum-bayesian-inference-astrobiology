@@ -204,7 +204,7 @@ Applying $\mathcal{Q}$ recursively $j$ times deterministically yields:
 \end{equation}
 Figure \ref{fig:circuit_operator_grover} illustrates the full quantum circuit synthesis of this composite operator.
 
-\subsection{Spectral Analysis and Eigenvalues of the \texorpdfstring{$\mathcal{Q}$}{Q}} Operator
+\subsection{Spectral Analysis and Eigenvalues of the Grover Operator \texorpdfstring{$\mathcal{Q}$}{Q}}
 To extract the continuous probability $a = \sin^2(\theta)$ without relying on destructive projective sampling, QAE performs spectral analysis on the Grover operator $\mathcal{Q}$. In the orthonormal basis $\{\ket{\Psi_0}, \ket{\Psi_1}\}$, the matrix representation of $\mathcal{Q}$ is:
 \begin{equation}
 \mathcal{Q} = \begin{pmatrix} \cos(2\theta) & -\sin(2\theta) \\ \sin(2\theta) & \cos(2\theta) \end{pmatrix}.
@@ -224,15 +224,15 @@ The roots of this quadratic equation are complex conjugate eigenvalues:
 
 The corresponding orthonormal eigenvectors are:
 \begin{equation}
-\ket{w_\pm} = \frac{1}{\sqrt{2}} \left( \ket{\Psi_0} \pm i \ket{\Psi_1} \right).
+\ket{w_\pm} = \frac{1}{\sqrt{2}} \left( \ket{\Psi_0} \mp i \ket{\Psi_1} \right).
 \label{eq:grover_eigenvectors_ch3}
 \end{equation}
 Expressing the initial state $\ket{\Psi}$ in this eigenbasis yields:
 \begin{equation}
-\ket{\Psi} = \frac{1}{\sqrt{2}} \left( e^{-i\theta}\ket{w_+} + e^{i\theta}\ket{w_-} \right).
+\ket{\Psi} = \frac{1}{\sqrt{2}} \left( e^{i\theta}\ket{w_+} + e^{-i\theta}\ket{w_-} \right).
 \label{eq:state_expansion_eigenbasis_ch3}
 \end{equation}
-Equation \eqref{eq:state_expansion_eigenbasis_ch3} establishes that applying $\mathcal{Q}$ to the quantum system imparts distinct phase shifts of $\mp 2\theta$ to the eigencomponents ($\mathcal{Q}\ket{w_\pm} = e^{\mp i 2\theta}\ket{w_\pm}$). Measuring this phase shift directly reveals $\theta$, and consequently the posterior probability $a = \sin^2(\theta)$.
+Equation \eqref{eq:state_expansion_eigenbasis_ch3} establishes that applying $\mathcal{Q}$ to the quantum system imparts distinct phase shifts of $\pm 2\theta$ to the eigencomponents ($\mathcal{Q}\ket{w_\pm} = e^{\pm i 2\theta}\ket{w_\pm}$). Measuring this phase shift directly reveals $\theta$, and consequently the posterior probability $a = \sin^2(\theta)$.
 
 \subsection{Quantum Phase Estimation (QPE) and the Inverse Quantum Fourier Transform (IQFT)}
 To measure the eigenphase $\pm 2\theta$ coherently, QAE integrates the Grover operator within a Quantum Phase Estimation (QPE) circuit \cite{nielsen2010}. This requires an auxiliary evaluation register consisting of $m$ precision qubits initialized in an equal superposition via a cascade of Hadamard gates:
@@ -420,7 +420,7 @@ C = \sum_i |q_i| \ge 1.
 \end{equation}
 The processor stochastically samples operations $\mathcal{O}_i$ according to probabilities $p_i = |q_i| / C$, and measurement outcomes are multiplied by $\mathrm{sgn}(q_i) \cdot C$. While the resulting estimator is strictly unbiased ($\mathbb{E}[E_{\mathrm{PEC}}] = E(0)$), its statistical variance is inflated by a factor of $C^2$ per mitigated gate. For deep QAE circuits containing thousands of gates, $C^{2D}$ explodes exponentially. Consequently, our quantum pipeline adopts a hybrid approach: ZNE is prioritized for global inference circuits, while PEC concepts inform local CPT gate compilation.
 
-\section{Theoretical Boundary Conditions and Gate Synthesis Analysis}\label{sec:theoretical_boundaries_ch3}\label{sec:preemptive_defense_ch3}
+\section{Theoretical Boundary Conditions and Gate Synthesis Analysis}\label{sec:theoretical_boundaries_ch3}
 
 To establish the mathematical rigor of this chapter and clearly delineate its theoretical foundation across quantum gate synthesis, calibration limits, and open-system noise dynamics, this section addresses three fundamental analytical considerations:
 
