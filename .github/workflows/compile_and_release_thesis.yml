@@ -11,6 +11,7 @@ on:
       - "figures/**"
       - "requirements.txt"
       - ".github/workflows/compile_and_release_thesis.yml"
+      - ".github/scripts/**"
     tags:
       - "v*"
       - "release-*"
@@ -20,6 +21,7 @@ on:
       - "thesis/**"
       - "figures/**"
       - "requirements.txt"
+      - ".github/scripts/**"
   workflow_dispatch:
 
 permissions:
@@ -51,17 +53,33 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Chapter 2 Classical Tests
+      - name: Execute Test Suite with Step Summary Reporting
         run: |
-          python -m unittest discover -s src/chapter_2_classical/tests -v
+          python .github/scripts/run_tests_with_summary.py
 
-      - name: Run Chapter 4 Quantum Tests
+  verify-latex-integrity:
+    name: Verify LaTeX Integrity & Citations (Pre-Release Gate)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run LaTeX Integrity & Syntax Pre-Flight Audit
         run: |
-          python -m unittest discover -s src/chapter_4_quantum/tests -v
+          python .github/scripts/verify_latex_integrity.py
 
   build-cover:
     name: Build Book Cover
-    needs: [run-tests]
+    needs: [run-tests, verify-latex-integrity]
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -87,7 +105,7 @@ jobs:
 
   build-print:
     name: Build Physical Print Edition
-    needs: [run-tests]
+    needs: [run-tests, verify-latex-integrity]
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -120,7 +138,7 @@ jobs:
 
   build-digital:
     name: Build Digital Screen Edition
-    needs: [run-tests]
+    needs: [run-tests, verify-latex-integrity]
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -153,7 +171,7 @@ jobs:
 
   release-and-distribute:
     name: Release & Distribute Deliverables
-    needs: [run-tests, build-cover, build-print, build-digital]
+    needs: [run-tests, verify-latex-integrity, build-cover, build-print, build-digital]
     if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
