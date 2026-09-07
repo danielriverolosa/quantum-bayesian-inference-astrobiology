@@ -96,7 +96,7 @@
     #viewer-frame {
       width: 100%;
       height: 100%;
-      max-width: 1350px;
+      max-width: 1720px;
       max-height: 900px;
       border-radius: 12px;
       border: 1px solid #1e293b;
@@ -139,11 +139,17 @@
     <div class="controls-wrapper">
       <span class="group-label">Display Mode:</span>
       <div class="tabs" id="mode-tabs">
-        <button class="tab-btn active-mode" onclick="setMode('animated', this)">
-          ★ Master Animated Pipeline
+        <button class="tab-btn active-mode" onclick="setMode('1row-anim', this)">
+          ★ 1-Row Animated
         </button>
-        <button class="tab-btn" onclick="setMode('static', this)">
-          Static Publication Mode
+        <button class="tab-btn" onclick="setMode('1row-static', this)">
+          1-Row Static
+        </button>
+        <button class="tab-btn" onclick="setMode('2row-anim', this)">
+          ★ 2-Row Animated (README)
+        </button>
+        <button class="tab-btn" onclick="setMode('2row-static', this)">
+          2-Row Static
         </button>
       </div>
     </div>
@@ -160,20 +166,32 @@
   </main>
 
   <script>
-    const descriptions = {
-      'animated': '★ Master Animated Pipeline: Full dynamic visualization with continuous timeline flow, orbital transit motion, active noise cancellation, and rotating delocalized pi-electrons.',
-      'static': 'Static Publication Mode: 100% fixed vector rendering, optimized for print, academic slides, and thesis defense monographs without animated artifacts.'
+    const modes = {
+      '1row-anim': {
+        file: 'croquis_keynote.svg',
+        desc: '★ 1-Row Animated (Panoramic): Continuous horizontal timeline flow, orbital transit motion, and rotating delocalized pi-electrons.'
+      },
+      '1row-static': {
+        file: 'croquis_keynote_static.svg',
+        desc: '1-Row Static (Panoramic): 100% fixed vector rendering, optimized for wide screens and presentation slides.'
+      },
+      '2row-anim': {
+        file: 'croquis_keynote_2row.svg',
+        desc: '★ 2-Row Animated: Full-width stacked layout optimized for GitHub README with spacious non-overlapping cards.'
+      },
+      '2row-static': {
+        file: 'croquis_keynote_2row_static.svg',
+        desc: '2-Row Static: Fixed vector edition in 2 rows, optimized for publication prints and narrow viewports.'
+      }
     };
 
-    let currentMode = 'animated';
+    let currentMode = '1row-anim';
 
     function updateViewer() {
-      const filename = currentMode === 'animated' ? 'croquis_keynote_2row.svg' : 'croquis_keynote_2row_static.svg';
+      const modeData = modes[currentMode];
       const obj = document.getElementById('svg-view');
-      obj.data = filename + '?v=' + Date.now();
-
-      const desc = descriptions[currentMode];
-      document.getElementById('legend-status').innerHTML = '<span>' + desc + '</span>';
+      obj.data = modeData.file + '?v=' + Date.now();
+      document.getElementById('legend-status').innerHTML = '<span>' + modeData.desc + '</span>';
     }
 
     function setMode(mode, btn) {
