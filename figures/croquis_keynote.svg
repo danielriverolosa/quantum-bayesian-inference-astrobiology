@@ -1,16 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" width="100%" height="100%" style="background-color: #030509;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 720" width="100%" height="100%" style="background-color: #030509;">
   <defs>
-    <!-- Stream Flow Gradient Row 1 (Warm / Observational / Classical) -->
-    <linearGradient id="kn-stream-row1" x1="0%" y1="0%" x2="100%" y2="0%">
+    <!-- Stream Flow Gradient -->
+    <linearGradient id="kn-stream" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#f97316"/>
-      <stop offset="50%" stop-color="#eab308"/>
-      <stop offset="100%" stop-color="#ef4444"/>
-    </linearGradient>
-
-    <!-- Stream Flow Gradient Row 2 (Quantum / Mitigation / Inferred) -->
-    <linearGradient id="kn-stream-row2" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#c084fc"/>
-      <stop offset="50%" stop-color="#38bdf8"/>
+      <stop offset="20%" stop-color="#eab308"/>
+      <stop offset="40%" stop-color="#ef4444"/>
+      <stop offset="60%" stop-color="#c084fc"/>
+      <stop offset="80%" stop-color="#38bdf8"/>
       <stop offset="100%" stop-color="#10b981"/>
     </linearGradient>
 
@@ -23,90 +19,100 @@
 
   <style>
     <![CDATA[
-    .kn-phase-tag { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; }
-    .kn-title { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 700; font-size: 20px; fill: #ffffff; letter-spacing: -0.2px; }
-    .kn-desc { font-family: -apple-system, 'Inter', sans-serif; font-weight: 400; font-size: 15px; fill: #94a3b8; line-height: 1.45; }
-    .kn-metric { font-family: -apple-system, 'Inter', sans-serif; font-weight: 700; font-size: 15px; }
-    .kn-formula { font-family: 'SF Mono', Menlo, 'Cascadia Code', 'Courier New', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0px; text-anchor: middle; }
-    .kn-tech-axis { font-family: 'SF Mono', Menlo, monospace; font-size: 8.5px; fill: #64748b; }
+    .kn-header { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 500; fill: #64748b; letter-spacing: 2.5px; font-size: 12.5px; }
+    .kn-main-title { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 700; font-size: 22px; fill: #ffffff; letter-spacing: -0.3px; }
+    .kn-title { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 700; font-size: 18px; fill: #ffffff; letter-spacing: -0.2px; }
+    .kn-desc { font-family: -apple-system, 'Inter', sans-serif; font-weight: 400; font-size: 14px; fill: #94a3b8; line-height: 1.5; }
+    .kn-metric { font-family: -apple-system, 'Inter', sans-serif; font-weight: 500; font-size: 13.5px; }
+    .kn-formula { font-family: 'SF Mono', Menlo, 'Cascadia Code', 'Courier New', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0px; text-anchor: middle; }
+    .kn-tech-axis { font-family: 'SF Mono', Menlo, monospace; font-size: 7px; fill: #64748b; }
     ]]>
   </style>
 
-  <!-- ============================================================== -->
-  <!-- PHASE I: OBSERVATION & CLASSICAL INFERENCE LIMITS (ROW 1)      -->
-  <!-- ============================================================== -->
-  <g transform="translate(80, 26)">
-    <circle cx="4" cy="-4" r="3" fill="#f97316"/>
-    <text x="14" y="0" class="kn-phase-tag" fill="#f97316">PHASE I // ASTROPHYSICAL OBSERVATION &amp; CLASSICAL INFERENCE LIMITS</text>
+  <!-- Header -->
+  <g transform="translate(70, 48)">
+    <text x="0" y="0" class="kn-header">SCIENTIFIC &amp; ALGORITHMIC PIPELINE // M.SC. IN QUANTUM COMPUTING</text>
+    <text x="0" y="28" class="kn-main-title">Quantum Bayesian Inference for Atmospheric Characterization in Exoplanetary Systems</text>
   </g>
 
-  <!-- Row 1 Flow Timeline Line -->
-  <line x1="80" y1="185" x2="1120" y2="185" stroke="#111827" stroke-width="2.5"/>
-  <line x1="80" y1="185" x2="1120" y2="185" stroke="url(#kn-stream-row1)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="30 180">
-    <animate attributeName="stroke-dashoffset" from="420" to="0" dur="6s" repeatCount="indefinite"/>
+  <!-- Continuous Flow Timeline Line (Smooth continuous 7s flow) -->
+  <line x1="80" y1="415" x2="1350" y2="415" stroke="#111827" stroke-width="2.5"/>
+  <line x1="80" y1="415" x2="1350" y2="415" stroke="url(#kn-stream)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="30 180">
+    <animate attributeName="stroke-dashoffset" from="420" to="0" dur="7s" repeatCount="indefinite"/>
   </line>
 
-  <!-- 1. K2-18b -->
-  <g transform="translate(220, 185)">
+  <!-- ============================================================== -->
+  <!-- 1. K2-18b (ASTROPHYSICAL TRANSIT OBSERVATION) -->
+  <!-- ============================================================== -->
+  <g transform="translate(140, 415)">
     <!-- Top Icon: Orbital transit across M2.5V dwarf (6s) -->
-    <g transform="translate(0, -115)">
-      <circle cx="0" cy="0" r="42" fill="url(#kn-star)"/>
+    <g transform="translate(0, -170)">
+      <circle cx="0" cy="0" r="44" fill="url(#kn-star)"/>
       <g>
         <animateTransform attributeName="transform" type="translate"
-          values="-65, 0; 0, 0; 65, 0"
+          values="-68, 0; 0, 0; 68, 0"
           keyTimes="0; 0.5; 1"
           dur="6s" repeatCount="indefinite" />
-        <circle cx="0" cy="0" r="15" fill="#030509" stroke="#38bdf8" stroke-width="2"/>
+        <circle cx="0" cy="0" r="16" fill="#030509" stroke="#38bdf8" stroke-width="2"/>
       </g>
     </g>
 
     <!-- Mathematical Micro-Chart: Mandel & Agol Light Curve (δ = 3800 ppm, F0=1.0) -->
     <g transform="translate(0, 0)">
-      <line x1="-75" y1="-80" x2="75" y2="-80" stroke="#1e293b" stroke-width="1" stroke-dasharray="3 3"/>
-      <text x="-75" y="-85" class="kn-tech-axis">F₀=1.0</text>
+      <line x1="-65" y1="-80" x2="65" y2="-80" stroke="#1e293b" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="-65" y="-85" class="kn-tech-axis">F₀=1.0</text>
       <!-- Mandel & Agol transit curve -->
-      <path d="M -75 -80 L -42 -80 C -30 -80 -25 -58 -14 -58 L 14 -58 C 25 -58 30 -80 42 -80 L 75 -80" 
-            fill="none" stroke="#f97316" stroke-width="2.2" stroke-linecap="round"/>
-      <circle r="3.2" fill="#ffffff" stroke="#f97316" stroke-width="1.6">
-        <animateMotion path="M -75 -80 L -42 -80 C -30 -80 -25 -58 -14 -58 L 14 -58 C 25 -58 30 -80 42 -80 L 75 -80" 
+      <path d="M -65 -80 L -36 -80 C -26 -80 -22 -58 -12 -58 L 12 -58 C 22 -58 26 -80 36 -80 L 65 -80" 
+            fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+      <circle r="3" fill="#ffffff" stroke="#f97316" stroke-width="1.6">
+        <animateMotion path="M -65 -80 L -36 -80 C -26 -80 -22 -58 -12 -58 L 12 -58 C 22 -58 26 -80 36 -80 L 65 -80" 
                        dur="6s" repeatCount="indefinite"/>
       </circle>
-      <line x1="-42" y1="-80" x2="-42" y2="-45" stroke="#f97316" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.4"/>
-      <line x1="42" y1="-80" x2="42" y2="-45" stroke="#f97316" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.4"/>
+      <line x1="-36" y1="-80" x2="-36" y2="-45" stroke="#f97316" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.4"/>
+      <line x1="36" y1="-80" x2="36" y2="-45" stroke="#f97316" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.4"/>
       <text x="0" y="-45" class="kn-tech-axis" fill="#f97316" text-anchor="middle">Transit Depth δ = 3800 ppm</text>
-      <line x1="-75" y1="-38" x2="75" y2="-38" stroke="#1e293b" stroke-width="1"/>
-      <text x="0" y="-16" class="kn-formula" fill="#f97316">ΔF/F = (Rp/Rs)² ≈ 0.38%</text>
-      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#f97316" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <line x1="-65" y1="-38" x2="65" y2="-38" stroke="#1e293b" stroke-width="1"/>
+      <!-- Standard Rp/Rs transit formula -->
+      <text x="0" y="-18" class="kn-formula" fill="#f97316">ΔF/F = (Rp/Rs)² ≈ 0.38%</text>
+      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#f97316" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
-    <circle cx="0" cy="0" r="5.5" fill="#f97316"/>
+    <circle cx="0" cy="0" r="5" fill="#f97316"/>
 
-    <text x="0" y="32" class="kn-title" text-anchor="middle">1. K2-18b</text>
-    <text x="0" y="58" class="kn-desc" text-anchor="middle">Sub-Neptune around M2.5V dwarf</text>
-    <text x="0" y="78" class="kn-desc" text-anchor="middle">Orbital transit (δ = 3800 ppm)</text>
-    <text x="0" y="104" class="kn-metric" fill="#f97316" text-anchor="middle">Habitable Zone (T_eq ≈ 255 K)</text>
+    <!-- Explanatory descriptions (English) -->
+    <text x="0" y="36" class="kn-title" text-anchor="middle">1. K2-18b</text>
+    <text x="0" y="64" class="kn-desc" text-anchor="middle">Sub-Neptune around M2.5V dwarf</text>
+    <text x="0" y="84" class="kn-desc" text-anchor="middle">Orbital transit (δ = 3800 ppm)</text>
+    <text x="0" y="112" class="kn-metric" fill="#f97316" text-anchor="middle">Habitable Zone (T_eq ≈ 255 K)</text>
   </g>
 
-  <!-- 2. JWST (Spectrum) -->
-  <g transform="translate(600, 185)">
-    <!-- Top Icon: JWST Primary Mirror 18 Hexagons (scale 1.15 at y=-115) -->
-    <g transform="translate(0, -115) scale(1.15)">
+  <!-- ============================================================== -->
+  <!-- 2. JWST (TRANSMISSION SPECTRUM & EVIDENCE VECTOR) -->
+  <!-- ============================================================== -->
+  <g transform="translate(370, 415)">
+    <!-- Top Icon: JWST Primary Mirror 18 Hexagons (scale 1.15 at y=-170) -->
+    <g transform="translate(0, -170) scale(1.15)">
+      <!-- Column -2 -->
       <polygon points="-23.79,-20.01 -29.22,-10.6 -40.08,-10.6 -45.51,-20.01 -40.08,-29.41 -29.22,-29.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="-23.79,0.0 -29.22,9.4 -40.08,9.4 -45.51,0.0 -40.08,-9.4 -29.22,-9.4" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="-23.79,20.01 -29.22,29.41 -40.08,29.41 -45.51,20.01 -40.08,10.6 -29.22,10.6" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
+      <!-- Column -1 -->
       <polygon points="-6.47,-30.01 -11.9,-20.61 -22.75,-20.61 -28.18,-30.01 -22.75,-39.41 -11.9,-39.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="-6.47,-10.0 -11.9,-0.6 -22.75,-0.6 -28.18,-10.0 -22.75,-19.41 -11.9,-19.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="-6.47,10.0 -11.9,19.41 -22.75,19.41 -28.18,10.0 -22.75,0.6 -11.9,0.6" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="-6.47,30.01 -11.9,39.41 -22.75,39.41 -28.18,30.01 -22.75,20.61 -11.9,20.61" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
+      <!-- Column 0 (Center) -->
       <polygon points="10.86,-40.01 5.43,-30.61 -5.43,-30.61 -10.86,-40.01 -5.43,-49.41 5.43,-49.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="10.86,-20.01 5.43,-10.6 -5.43,-10.6 -10.86,-20.01 -5.43,-29.41 5.43,-29.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="10.86,0.0 5.43,9.4 -5.43,9.4 -10.86,0.0 -5.43,-9.4 5.43,-9.4" fill="#030509" stroke="#1e293b" stroke-width="1"/>
       <polygon points="10.86,20.01 5.43,29.41 -5.43,29.41 -10.86,20.01 -5.43,10.6 5.43,10.6" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="10.86,40.01 5.43,49.41 -5.43,49.41 -10.86,40.01 -5.43,30.61 5.43,30.61" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
+      <!-- Column +1 -->
       <polygon points="28.18,-30.01 22.75,-20.61 11.9,-20.61 6.47,-30.01 11.9,-39.41 22.75,-39.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="28.18,-10.0 22.75,-0.6 11.9,-0.6 6.47,-10.0 11.9,-19.41 22.75,-19.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="28.18,10.0 22.75,19.41 11.9,19.41 6.47,10.0 11.9,0.6 22.75,0.6" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="28.18,30.01 22.75,39.41 11.9,39.41 6.47,30.01 11.9,20.61 22.75,20.61" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
+      <!-- Column +2 -->
       <polygon points="45.51,-20.01 40.08,-10.6 29.22,-10.6 23.79,-20.01 29.22,-29.41 40.08,-29.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="45.51,0.0 40.08,9.4 29.22,9.4 23.79,0.0 29.22,-9.4 40.08,-9.4" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="45.51,20.01 40.08,29.41 29.22,29.41 23.79,20.01 29.22,10.6 40.08,10.6" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
@@ -114,47 +120,54 @@
 
     <!-- Mathematical Micro-Chart: 4 Atmospheric Evidence Channels -->
     <g transform="translate(0, 0)">
-      <line x1="-75" y1="-38" x2="85" y2="-38" stroke="#1e293b" stroke-width="1"/>
-      <text x="68" y="-42" class="kn-tech-axis" text-anchor="start">λ (μm)</text>
-      <path d="M -75 -42 C -65 -42, -58 -72, -52 -72 C -38 -70, -28 -66, -18 -68 C -4 -68, 6 -48, 18 -48 C 28 -48, 42 -64, 54 -64 C 62 -64, 68 -42, 75 -42" 
+      <line x1="-65" y1="-38" x2="80" y2="-38" stroke="#1e293b" stroke-width="1"/>
+      <text x="58" y="-42" class="kn-tech-axis" text-anchor="start">λ (μm)</text>
+      <!-- Continuous spectral envelope -->
+      <path d="M -65 -42 C -60 -42, -54 -72, -48 -72 C -36 -70, -26 -66, -16 -68 C -4 -68, 6 -48, 16 -48 C 26 -48, 38 -64, 48 -64 C 55 -64, 60 -42, 65 -42" 
             fill="none" stroke="#ca8a04" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.45"/>
-      <line x1="18" y1="-48" x2="18" y2="-74" stroke="#334155" stroke-width="0.8" stroke-dasharray="1.5 1.5" opacity="0.4"/>
-      <line x1="54" y1="-64" x2="54" y2="-74" stroke="#ca8a04" stroke-width="0.8" stroke-dasharray="1.5 1.5" opacity="0.4"/>
-      <!-- CH4 -->
-      <line x1="-54" y1="-38" x2="-54" y2="-72" stroke="#eab308" stroke-width="3.5" stroke-linecap="round"/>
-      <circle cx="-54" cy="-72" r="2.5" fill="#eab308"/>
-      <text x="-54" y="-80" class="kn-tech-axis" fill="#eab308" text-anchor="middle">CH₄:1</text>
-      <!-- CO2 -->
-      <line x1="-18" y1="-38" x2="-18" y2="-68" stroke="#eab308" stroke-width="3.5" stroke-linecap="round"/>
-      <circle cx="-18" cy="-68" r="2.5" fill="#eab308"/>
-      <text x="-18" y="-80" class="kn-tech-axis" fill="#eab308" text-anchor="middle">CO₂:1</text>
-      <!-- H2O -->
-      <line x1="18" y1="-38" x2="18" y2="-48" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/>
-      <circle cx="18" cy="-48" r="2" fill="#334155"/>
-      <text x="18" y="-80" class="kn-tech-axis" fill="#475569" text-anchor="middle">H₂O:0</text>
-      <!-- DMS -->
-      <line x1="54" y1="-38" x2="54" y2="-64" stroke="#eab308" stroke-width="3.5" stroke-linecap="round"/>
-      <circle cx="54" cy="-64" r="2.5" fill="#eab308"/>
-      <text x="54" y="-80" class="kn-tech-axis" fill="#eab308" text-anchor="middle">DMS</text>
+      <!-- Projection lines -->
+      <line x1="16" y1="-48" x2="16" y2="-74" stroke="#334155" stroke-width="0.8" stroke-dasharray="1.5 1.5" opacity="0.4"/>
+      <line x1="48" y1="-64" x2="48" y2="-74" stroke="#ca8a04" stroke-width="0.8" stroke-dasharray="1.5 1.5" opacity="0.4"/>
+      <!-- CH4 channel (X4 = 1) -->
+      <line x1="-48" y1="-38" x2="-48" y2="-72" stroke="#eab308" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="-48" cy="-72" r="2.4" fill="#eab308"/>
+      <text x="-48" y="-80" class="kn-tech-axis" fill="#eab308" text-anchor="middle">CH₄:1</text>
+      <!-- CO2 channel (X5 = 1) -->
+      <line x1="-16" y1="-38" x2="-16" y2="-68" stroke="#eab308" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="-16" cy="-68" r="2.4" fill="#eab308"/>
+      <text x="-16" y="-80" class="kn-tech-axis" fill="#eab308" text-anchor="middle">CO₂:1</text>
+      <!-- H2O channel (X6 = 0: Depleted) -->
+      <line x1="16" y1="-38" x2="16" y2="-48" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="16" cy="-48" r="2" fill="#334155"/>
+      <text x="16" y="-80" class="kn-tech-axis" fill="#475569" text-anchor="middle">H₂O:0</text>
+      <!-- DMS channel (X7: Biosignature candidate) -->
+      <line x1="48" y1="-38" x2="48" y2="-64" stroke="#eab308" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="48" cy="-64" r="2.4" fill="#eab308"/>
+      <text x="48" y="-80" class="kn-tech-axis" fill="#eab308" text-anchor="middle">DMS</text>
 
-      <text x="0" y="-16" class="kn-formula" fill="#eab308">e = [CH₄=1, CO₂=1, H₂O=0]</text>
-      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#eab308" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <!-- Bayesian Evidence Vector Formula -->
+      <text x="0" y="-18" class="kn-formula" fill="#eab308">e = [CH₄=1, CO₂=1, H₂O=0]</text>
+      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#eab308" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
-    <circle cx="0" cy="0" r="5.5" fill="#eab308"/>
+    <circle cx="0" cy="0" r="5" fill="#eab308"/>
 
-    <text x="0" y="32" class="kn-title" text-anchor="middle">2. JWST (Spectrum)</text>
-    <text x="0" y="58" class="kn-desc" text-anchor="middle">Transmission spectroscopy</text>
-    <text x="0" y="78" class="kn-desc" text-anchor="middle">CH₄ &amp; CO₂ detection (1%)</text>
-    <text x="0" y="104" class="kn-metric" fill="#eab308" text-anchor="middle">Oceanic signature: H₂O &lt; 0.1%</text>
+    <!-- Explanatory descriptions (English) -->
+    <text x="0" y="36" class="kn-title" text-anchor="middle">2. JWST (Spectrum)</text>
+    <text x="0" y="64" class="kn-desc" text-anchor="middle">Transmission spectroscopy</text>
+    <text x="0" y="84" class="kn-desc" text-anchor="middle">CH₄ &amp; CO₂ detection (1%)</text>
+    <text x="0" y="112" class="kn-metric" fill="#eab308" text-anchor="middle">Oceanic signature: H₂O &lt; 0.1%</text>
   </g>
 
-  <!-- 3. Classical Algorithm -->
-  <g transform="translate(980, 185)">
+  <!-- ============================================================== -->
+  <!-- 3. CLASSICAL ALGORITHM (EXPONENTIAL WALL & L'ECUYER VARIANCE) -->
+  <!-- ============================================================== -->
+  <g transform="translate(600, 415)">
     <!-- Top Icon: Saturated Classical Processor -->
-    <g transform="translate(0, -115)">
+    <g transform="translate(0, -170)">
       <rect x="-30" y="-30" width="60" height="60" rx="6" fill="#090d15" stroke="#1e293b" stroke-width="1.4"/>
       <circle cx="-23" cy="-23" r="1.6" fill="#ef4444" fill-opacity="0.6"/>
+      <!-- Red Pins -->
       <line x1="-14" y1="-35" x2="-14" y2="-30" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
       <line x1="0" y1="-35" x2="0" y2="-30" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
       <line x1="14" y1="-35" x2="14" y2="-30" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
@@ -167,65 +180,49 @@
       <line x1="30" y1="-14" x2="35" y2="-14" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
       <line x1="30" y1="0" x2="35" y2="0" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
       <line x1="30" y1="14" x2="35" y2="14" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+      <!-- Die -->
       <rect x="-18" y="-18" width="36" height="36" rx="3" fill="#14080e" stroke="#ef4444" stroke-width="1.4"/>
+      <!-- Infinite loop symbol -->
       <path d="M -8 0 C -8 -4.5 -4 -4.5 0 0 C 4 4.5 8 4.5 8 0 C 8 -4.5 4 -4.5 0 0 C -4 4.5 -8 4.5 -8 0 Z" 
             fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     </g>
 
     <!-- Mathematical Micro-Chart: Exponential RAM Ceiling O(2^N) & L'Ecuyer Variance -->
     <g transform="translate(0, 0)">
-      <line x1="-75" y1="-38" x2="75" y2="-38" stroke="#1e293b" stroke-width="1"/>
-      <line x1="-75" y1="-38" x2="-75" y2="-88" stroke="#1e293b" stroke-width="1"/>
-      <text x="-75" y="-92" class="kn-tech-axis">2ᴺ (RAM)</text>
-      <text x="75" y="-42" class="kn-tech-axis" text-anchor="end">N (treewidth)</text>
-      <line x1="-75" y1="-80" x2="75" y2="-80" stroke="#ef4444" stroke-width="1" stroke-dasharray="4 3" opacity="0.6"/>
-      <text x="25" y="-84" class="kn-tech-axis" fill="#ef4444" text-anchor="end">HARDWARE LIMIT</text>
-      <path d="M -75 -39 C -15 -39, 25 -44, 52 -80" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round"/>
-      <circle cx="52" cy="-80" r="3.2" fill="#ef4444"/>
-      <circle cx="52" cy="-80" r="6.5" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.5"/>
-      <text x="0" y="-16" class="kn-formula" fill="#ef4444">RE = 1/√(M·p) ➔ <tspan font-size="14.5px" font-weight="700" dy="1px">∞</tspan></text>
-      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#ef4444" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <line x1="-65" y1="-38" x2="65" y2="-38" stroke="#1e293b" stroke-width="1"/>
+      <line x1="-65" y1="-38" x2="-65" y2="-88" stroke="#1e293b" stroke-width="1"/>
+      <text x="-65" y="-92" class="kn-tech-axis">2ᴺ (RAM)</text>
+      <text x="65" y="-42" class="kn-tech-axis" text-anchor="end">N (treewidth)</text>
+      <!-- Hardware Ceiling -->
+      <line x1="-65" y1="-80" x2="65" y2="-80" stroke="#ef4444" stroke-width="1" stroke-dasharray="4 3" opacity="0.6"/>
+      <text x="18" y="-84" class="kn-tech-axis" fill="#ef4444" text-anchor="end">HARDWARE LIMIT</text>
+      <!-- Strictly monotonic exponential curve -->
+      <path d="M -65 -39 C -10 -39, 20 -44, 45 -80" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="45" cy="-80" r="3.2" fill="#ef4444"/>
+      <circle cx="45" cy="-80" r="6.5" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.5"/>
+      <!-- L'Ecuyer (2010) Relative Error Divergence Formula -->
+      <text x="0" y="-18" class="kn-formula" fill="#ef4444">RE = 1/√(M·p) ➔ <tspan font-size="14.5px" font-weight="700" dy="1px">∞</tspan></text>
+      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#ef4444" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
-    <circle cx="0" cy="0" r="5.5" fill="#ef4444"/>
+    <circle cx="0" cy="0" r="5" fill="#ef4444"/>
 
-    <text x="0" y="32" class="kn-title" text-anchor="middle">3. Classical Algorithm</text>
-    <text x="0" y="58" class="kn-desc" text-anchor="middle">Exact inference: O(2^N) RAM</text>
-    <text x="0" y="78" class="kn-desc" text-anchor="middle">Divergent MCMC variance</text>
-    <text x="0" y="104" class="kn-metric" fill="#ef4444" text-anchor="middle">Bottleneck: 4×10⁸ (p=10⁻⁶)</text>
+    <!-- Explanatory descriptions (English) -->
+    <text x="0" y="36" class="kn-title" text-anchor="middle">3. Classical Algorithm</text>
+    <text x="0" y="64" class="kn-desc" text-anchor="middle">Exact inference: O(2^N) RAM</text>
+    <text x="0" y="84" class="kn-desc" text-anchor="middle">Divergent MCMC variance</text>
+    <text x="0" y="112" class="kn-metric" fill="#ef4444" text-anchor="middle">Bottleneck: 4×10⁸ (p=10⁻⁶)</text>
   </g>
 
   <!-- ============================================================== -->
-  <!-- INTER-PHASE BRIDGE CONNECTOR (CLASSICAL ➔ QUANTUM TRANSITION)   -->
+  <!-- 4. QUANTUM ALGORITHM (17 QUBITS: DAG + QAE + ANCILLA) -->
   <!-- ============================================================== -->
-  <g transform="translate(600, 325)">
-    <line x1="-520" y1="0" x2="520" y2="0" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4" opacity="0.4"/>
-    <rect x="-185" y="-11" width="370" height="22" rx="11" fill="#070c18" stroke="#1e293b" stroke-width="1"/>
-    <text x="0" y="3.5" font-family="-apple-system, sans-serif" font-size="9.5px" font-weight="700" fill="#64748b" letter-spacing="1.5px" text-anchor="middle">
-      INTRACTABLE BARRIER ➔ QUANTUM SPEEDUP (QAE)
-    </text>
-  </g>
-
-  <!-- ============================================================== -->
-  <!-- PHASE II: QUANTUM COMPUTATION & MITIGATED INFERENCE (ROW 2)    -->
-  <!-- ============================================================== -->
-  <g transform="translate(80, 355)">
-    <circle cx="4" cy="-4" r="3" fill="#38bdf8"/>
-    <text x="14" y="0" class="kn-phase-tag" fill="#38bdf8">PHASE II // QUANTUM AMPLITUDE ESTIMATION &amp; NISQ ERROR MITIGATION</text>
-  </g>
-
-  <!-- Row 2 Flow Timeline Line -->
-  <line x1="80" y1="495" x2="1120" y2="495" stroke="#111827" stroke-width="2.5"/>
-  <line x1="80" y1="495" x2="1120" y2="495" stroke="url(#kn-stream-row2)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="30 180">
-    <animate attributeName="stroke-dashoffset" from="420" to="0" dur="6s" repeatCount="indefinite"/>
-  </line>
-
-  <!-- 4. Quantum Algorithm -->
-  <g transform="translate(220, 495)">
+  <g transform="translate(830, 415)">
     <!-- Top Icon: QPU Chip with 3-Orbit Atom at 60° and White Nucleus -->
-    <g transform="translate(0, -115)">
+    <g transform="translate(0, -170)">
       <rect x="-30" y="-30" width="60" height="60" rx="6" fill="#0b0a14" stroke="#1e293b" stroke-width="1.4"/>
       <circle cx="-23" cy="-23" r="1.6" fill="#c084fc" fill-opacity="0.6"/>
+      <!-- Purple Pins -->
       <line x1="-14" y1="-35" x2="-14" y2="-30" stroke="#c084fc" stroke-width="2" stroke-linecap="round"/>
       <line x1="0" y1="-35" x2="0" y2="-30" stroke="#c084fc" stroke-width="2" stroke-linecap="round"/>
       <line x1="14" y1="-35" x2="14" y2="-30" stroke="#c084fc" stroke-width="2" stroke-linecap="round"/>
@@ -238,6 +235,7 @@
       <line x1="30" y1="-14" x2="35" y2="-14" stroke="#c084fc" stroke-width="2" stroke-linecap="round"/>
       <line x1="30" y1="0" x2="35" y2="0" stroke="#c084fc" stroke-width="2" stroke-linecap="round"/>
       <line x1="30" y1="14" x2="35" y2="14" stroke="#c084fc" stroke-width="2" stroke-linecap="round"/>
+      <!-- Die -->
       <rect x="-18" y="-18" width="36" height="36" rx="3" fill="#170d28" stroke="#c084fc" stroke-width="1.4"/>
       <ellipse cx="0" cy="0" rx="11" ry="4" transform="rotate(0)" fill="none" stroke="#c084fc" stroke-width="1.3"/>
       <ellipse cx="0" cy="0" rx="11" ry="4" transform="rotate(60)" fill="none" stroke="#c084fc" stroke-width="1.3"/>
@@ -247,35 +245,42 @@
 
     <!-- Mathematical Micro-Chart: 2D Hilbert Space & Grover Rotation (Static N_Q = 31) -->
     <g transform="translate(0, 0)">
-      <line x1="-45" y1="-38" x2="70" y2="-38" stroke="#1e293b" stroke-width="1.2"/>
-      <line x1="-45" y1="-38" x2="-45" y2="-90" stroke="#1e293b" stroke-width="1.2"/>
-      <text x="70" y="-42" class="kn-tech-axis" text-anchor="end">|Bad⟩</text>
-      <text x="-45" y="-93" class="kn-tech-axis" fill="#c084fc">|Good⟩</text>
-      <path d="M 6 -38 A 51 51 0 0 0 -45 -89" fill="none" stroke="#334155" stroke-width="1.2" stroke-dasharray="3 2"/>
-      <line x1="-45" y1="-38" x2="5" y2="-50" stroke="#64748b" stroke-width="1.4" stroke-dasharray="2 2"/>
-      <circle cx="5" cy="-50" r="2" fill="#64748b"/>
-      <text x="9" y="-51" class="kn-tech-axis" fill="#64748b">|Ψ₀⟩</text>
-      <line x1="-45" y1="-38" x2="-16" y2="-82" stroke="#c084fc" stroke-width="2.6" stroke-linecap="round"/>
-      <circle cx="-16" cy="-82" r="3.2" fill="#ffffff" stroke="#c084fc" stroke-width="1.6"/>
-      <text x="-12" y="-86" class="kn-tech-axis" fill="#c084fc" font-weight="700">Q|Ψ⟩</text>
-      <path d="M -25 -38 A 20 20 0 0 0 -34 -53" fill="none" stroke="#c084fc" stroke-width="1"/>
-      <text x="-22" y="-49" class="kn-tech-axis" fill="#c084fc">2θ</text>
-      <text x="0" y="-16" class="kn-formula" fill="#c084fc">Q|Ψ⟩ = e^(±i2θ)|Ψ⟩ (N=31)</text>
-      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#c084fc" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <line x1="-40" y1="-38" x2="65" y2="-38" stroke="#1e293b" stroke-width="1.2"/>
+      <line x1="-40" y1="-38" x2="-40" y2="-90" stroke="#1e293b" stroke-width="1.2"/>
+      <text x="65" y="-42" class="kn-tech-axis" text-anchor="end">|Bad⟩</text>
+      <text x="-40" y="-93" class="kn-tech-axis" fill="#c084fc">|Good⟩</text>
+      <!-- Unit Circle Arc R=46 -->
+      <path d="M 6 -38 A 46 46 0 0 0 -40 -84" fill="none" stroke="#334155" stroke-width="1.2" stroke-dasharray="3 2"/>
+      <!-- Initial State |Ψ₀⟩ -->
+      <line x1="-40" y1="-38" x2="4" y2="-49" stroke="#64748b" stroke-width="1.4" stroke-dasharray="2 2"/>
+      <circle cx="4" cy="-49" r="2" fill="#64748b"/>
+      <text x="8" y="-50" class="kn-tech-axis" fill="#64748b">|Ψ₀⟩</text>
+      <!-- Grover Rotated Vector Q|Ψ⟩ toward |Good⟩ -->
+      <line x1="-40" y1="-38" x2="-14" y2="-78" stroke="#c084fc" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="-14" cy="-78" r="3.2" fill="#ffffff" stroke="#c084fc" stroke-width="1.6"/>
+      <text x="-10" y="-82" class="kn-tech-axis" fill="#c084fc" font-weight="700">Q|Ψ⟩</text>
+      <path d="M -22 -38 A 18 18 0 0 0 -30 -52" fill="none" stroke="#c084fc" stroke-width="1"/>
+      <text x="-19" y="-48" class="kn-tech-axis" fill="#c084fc">2θ</text>
+      <!-- Grover Unitary Operator Formula (N=31) -->
+      <text x="0" y="-18" class="kn-formula" fill="#c084fc">Q|Ψ⟩ = e^(±i2θ)|Ψ⟩ (N=31)</text>
+      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#c084fc" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
-    <circle cx="0" cy="0" r="5.5" fill="#c084fc"/>
+    <circle cx="0" cy="0" r="5" fill="#c084fc"/>
 
-    <text x="0" y="32" class="kn-title" text-anchor="middle">4. Quantum Algorithm</text>
-    <text x="0" y="58" class="kn-desc" text-anchor="middle">17 Qubits (DAG + QAE + Ancilla)</text>
-    <text x="0" y="78" class="kn-desc" text-anchor="middle">Quadratic speedup O(1/M)</text>
-    <text x="0" y="104" class="kn-metric" fill="#c084fc" text-anchor="middle">QAE advantage: 10⁴ (p=10⁻⁶)</text>
+    <!-- Explanatory descriptions (English) -->
+    <text x="0" y="36" class="kn-title" text-anchor="middle">4. Quantum Algorithm</text>
+    <text x="0" y="64" class="kn-desc" text-anchor="middle">17 Qubits (DAG + QAE + Ancilla)</text>
+    <text x="0" y="84" class="kn-desc" text-anchor="middle">Quadratic speedup O(1/M)</text>
+    <text x="0" y="112" class="kn-metric" fill="#c084fc" text-anchor="middle">QAE advantage: 10⁴ (p=10⁻⁶)</text>
   </g>
 
-  <!-- 5. ZNE Mitigation -->
-  <g transform="translate(600, 495)">
+  <!-- ============================================================== -->
+  <!-- 5. ZNE MITIGATION (NISQ NOISE CANCELLATION VIA RICHARDSON) -->
+  <!-- ============================================================== -->
+  <g transform="translate(1060, 415)">
     <!-- Top Icon: Active Noise Cancellation (4s animation, enlarged scale) -->
-    <g transform="translate(0, -115) scale(1.35)">
+    <g transform="translate(0, -170) scale(1.35)">
       <line x1="-38" y1="0" x2="38" y2="0" stroke="#1e293b" stroke-width="1" stroke-dasharray="2 2"/>
       <path fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <animate attributeName="d" dur="4s" repeatCount="indefinite"
@@ -297,44 +302,59 @@
       <circle cx="34" cy="0" r="4" fill="#38bdf8"/>
       <circle cx="34" cy="0" r="1.6" fill="#ffffff"/>
       <text x="34" y="-11" font-family="-apple-system, sans-serif" font-size="10" font-weight="700" fill="#38bdf8" text-anchor="middle">λ➔0</text>
+      <!-- White cancellation node on top of blue line -->
       <circle cx="0" cy="0" r="3.6" fill="#ffffff"/>
     </g>
 
     <!-- Mathematical Micro-Chart: Richardson Extrapolation (λ ∈ {1, 3, 5} to λ=0) -->
     <g transform="translate(0, 0)">
-      <line x1="-65" y1="-38" x2="75" y2="-38" stroke="#1e293b" stroke-width="1.2"/>
-      <text x="75" y="-42" class="kn-tech-axis" text-anchor="end">Noise factor λ</text>
-      <line x1="-55" y1="-38" x2="-55" y2="-88" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="3 2"/>
-      <text x="-55" y="-92" class="kn-tech-axis" fill="#38bdf8" text-anchor="middle">λ=0 (Ideal)</text>
-      <path d="M -55 -78 Q -5 -60.22 45 -49.85" fill="none" stroke="#38bdf8" stroke-width="2"/>
-      <circle cx="-25" cy="-68" r="2.6" fill="#38bdf8"/>
-      <circle cx="5" cy="-59.33" r="2.6" fill="#38bdf8"/>
-      <circle cx="35" cy="-52" r="2.6" fill="#38bdf8"/>
-      <circle cx="-55" cy="-78" r="3.5" fill="#ffffff" stroke="#38bdf8" stroke-width="1.8"/>
-      <text x="-34" y="-81" class="kn-tech-axis" fill="#38bdf8" font-weight="700">E₀ ZNE</text>
-      <text x="0" y="-16" class="kn-formula" fill="#38bdf8">lim(λ➔0) E(λ) = E₀(86%)</text>
-      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <line x1="-55" y1="-38" x2="65" y2="-38" stroke="#1e293b" stroke-width="1.2"/>
+      <text x="65" y="-42" class="kn-tech-axis" text-anchor="end">Noise factor λ</text>
+      <!-- Vertical axis at λ = 0 -->
+      <line x1="-45" y1="-38" x2="-45" y2="-88" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="3 2"/>
+      <text x="-45" y="-92" class="kn-tech-axis" fill="#38bdf8" text-anchor="middle">λ=0 (Ideal)</text>
+
+      <!-- Richardson Extrapolation Parabola -->
+      <path d="M -45 -78 Q 5 -60.22 55 -49.85" fill="none" stroke="#38bdf8" stroke-width="2"/>
+
+      <!-- Physical noise points: λ=1 (0.149), λ=3 (0.264), λ=5 (0.331) exactly on curve -->
+      <circle cx="-15" cy="-68" r="2.6" fill="#38bdf8"/>
+      <circle cx="15" cy="-59.33" r="2.6" fill="#38bdf8"/>
+      <circle cx="45" cy="-52" r="2.6" fill="#38bdf8"/>
+
+      <!-- Zero-noise ZNE Estimator E₀ (86.44% error cancelled) -->
+      <circle cx="-45" cy="-78" r="3.5" fill="#ffffff" stroke="#38bdf8" stroke-width="1.8"/>
+      <text x="-24" y="-81" class="kn-tech-axis" fill="#38bdf8" font-weight="700">E₀ ZNE</text>
+
+      <!-- ZNE Zero-Noise Limit Formula -->
+      <text x="0" y="-18" class="kn-formula" fill="#38bdf8">lim(λ➔0) E(λ) = E₀(86%)</text>
+      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
-    <circle cx="0" cy="0" r="5.5" fill="#38bdf8"/>
+    <circle cx="0" cy="0" r="5" fill="#38bdf8"/>
 
-    <text x="0" y="32" class="kn-title" text-anchor="middle">5. ZNE Mitigation</text>
-    <text x="0" y="58" class="kn-desc" text-anchor="middle">Global folding λ ∈ {1,3,5}</text>
-    <text x="0" y="78" class="kn-desc" text-anchor="middle">Richardson extrapolation</text>
-    <text x="0" y="104" class="kn-metric" fill="#38bdf8" text-anchor="middle">Mitigated error: 86.44%</text>
+    <!-- Explanatory descriptions (English) -->
+    <text x="0" y="36" class="kn-title" text-anchor="middle">5. ZNE Mitigation</text>
+    <text x="0" y="64" class="kn-desc" text-anchor="middle">Global folding λ ∈ {1,3,5}</text>
+    <text x="0" y="84" class="kn-desc" text-anchor="middle">Richardson extrapolation</text>
+    <text x="0" y="112" class="kn-metric" fill="#38bdf8" text-anchor="middle">Mitigated error: 86.44%</text>
   </g>
 
-  <!-- 6. Final Inference -->
-  <g transform="translate(980, 495)">
+  <!-- ============================================================== -->
+  <!-- 6. FINAL INFERENCE (RESEARCH OUTCOMES & HYPOTHESIS RESOLUTION) -->
+  <!-- ============================================================== -->
+  <g transform="translate(1290, 415)">
     <!-- Top Icon: Hexagonal Molecular Ring (Delocalized pi-electrons rotating at 10s) -->
-    <g transform="translate(0, -115) scale(1.75)">
+    <g transform="translate(0, -170) scale(1.75)">
       <polygon points="0,-16 13.8,-8 13.8,8 0,16 -13.8,8 -13.8,-8" 
                fill="#064e3b" fill-opacity="0.18" stroke="#10b981" stroke-width="2.2" stroke-linejoin="round"/>
       <circle cx="0" cy="0" r="8.5" fill="none" stroke="#34d399" stroke-width="1.6" stroke-dasharray="7 5">
         <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite"/>
       </circle>
+      <!-- Central Green Nucleus -->
       <circle cx="0" cy="0" r="3.5" fill="#10b981"/>
       <circle cx="0" cy="0" r="1.2" fill="#ffffff"/>
+      <!-- Vertices -->
       <circle cx="0" cy="-16" r="2.8" fill="#34d399"/>
       <circle cx="13.8" cy="-8" r="2.8" fill="#10b981"/>
       <circle cx="13.8" cy="8" r="2.8" fill="#10b981"/>
@@ -345,38 +365,49 @@
 
     <!-- Mathematical Micro-Chart: Multi-Target Posterior Spectrum -->
     <g transform="translate(0, 0)">
-      <line x1="-75" y1="-38" x2="85" y2="-38" stroke="#1e293b" stroke-width="1.2"/>
-      <text x="65" y="-42" class="kn-tech-axis" text-anchor="start">P(X|e)</text>
-      <line x1="-75" y1="-81" x2="75" y2="-81" stroke="#10b981" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.25"/>
-      <path d="M -75 -38 C -68 -38, -58 -80, -48 -80 C -30 -80, -18 -55, 0 -55 C 18 -55, 32 -42, 48 -42 C 58 -42, 68 -38, 75 -38" 
+      <line x1="-65" y1="-38" x2="80" y2="-38" stroke="#1e293b" stroke-width="1.2"/>
+      <text x="56" y="-42" class="kn-tech-axis" text-anchor="start">P(X|e)</text>
+
+      <!-- 100% Probability Ceiling Reference -->
+      <line x1="-65" y1="-81" x2="65" y2="-81" stroke="#10b981" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.25"/>
+
+      <!-- Bayesian Continuous Prior Envelope -->
+      <path d="M -65 -38 C -58 -38, -50 -80, -42 -80 C -25 -80, -15 -55, 0 -55 C 15 -55, 28 -42, 42 -42 C 50 -42, 58 -38, 65 -38" 
             fill="none" stroke="#10b981" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.35"/>
+
+      <!-- Projection lines -->
       <line x1="0" y1="-55" x2="0" y2="-82" stroke="#34d399" stroke-width="0.8" stroke-dasharray="1.5 1.5" opacity="0.35"/>
-      <line x1="48" y1="-42" x2="48" y2="-82" stroke="#10b981" stroke-width="0.8" stroke-dasharray="1.5 1.5" opacity="0.35"/>
-      <!-- Hyc -->
-      <line x1="-48" y1="-38" x2="-48" y2="-80" stroke="#10b981" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="-48" cy="-80" r="2.6" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/>
-      <text x="-48" y="-95" class="kn-tech-axis" fill="#10b981" font-weight="700" text-anchor="middle">Hyc</text>
-      <text x="-48" y="-86" class="kn-tech-axis" fill="#10b981" font-weight="600" text-anchor="middle">97.8%</text>
-      <!-- Bio -->
+      <line x1="42" y1="-42" x2="42" y2="-82" stroke="#10b981" stroke-width="0.8" stroke-dasharray="1.5 1.5" opacity="0.35"/>
+
+      <!-- 1. Hycean Ocean (X2 = 1): Posterior 97.81% -->
+      <line x1="-42" y1="-38" x2="-42" y2="-80" stroke="#10b981" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="-42" cy="-80" r="2.6" fill="#ffffff" stroke="#10b981" stroke-width="1.5"/>
+      <text x="-42" y="-95" class="kn-tech-axis" fill="#10b981" font-weight="700" text-anchor="middle">Hyc</text>
+      <text x="-42" y="-86" class="kn-tech-axis" fill="#10b981" font-weight="600" text-anchor="middle">97.8%</text>
+
+      <!-- 2. Marine Biosphere (X3 = 1): Posterior 39.14% -->
       <line x1="0" y1="-38" x2="0" y2="-55" stroke="#34d399" stroke-width="5" stroke-linecap="round"/>
       <circle cx="0" cy="-55" r="2.6" fill="#ffffff" stroke="#34d399" stroke-width="1.5"/>
       <text x="0" y="-95" class="kn-tech-axis" fill="#34d399" font-weight="700" text-anchor="middle">Bio</text>
       <text x="0" y="-86" class="kn-tech-axis" fill="#34d399" font-weight="600" text-anchor="middle">39.1%</text>
-      <!-- CFC -->
-      <line x1="48" y1="-38" x2="48" y2="-42" stroke="#059669" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="48" cy="-42" r="2.2" fill="#ffffff" stroke="#10b981" stroke-width="1.4"/>
-      <text x="48" y="-95" class="kn-tech-axis" fill="#34d399" font-weight="700" text-anchor="middle">CFC</text>
-      <text x="48" y="-86" class="kn-tech-axis" fill="#34d399" font-weight="600" text-anchor="middle">5×10⁻⁶</text>
 
-      <text x="0" y="-16" class="kn-formula" fill="#10b981">P(H|e) = sin²(πy/32) = 97.8%</text>
-      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#10b981" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <!-- 3. CFC Technosignature (X8 = 1): Posterior 5.13 x 10^-6 -->
+      <line x1="42" y1="-38" x2="42" y2="-42" stroke="#059669" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="42" cy="-42" r="2.2" fill="#ffffff" stroke="#10b981" stroke-width="1.4"/>
+      <text x="42" y="-95" class="kn-tech-axis" fill="#34d399" font-weight="700" text-anchor="middle">CFC</text>
+      <text x="42" y="-86" class="kn-tech-axis" fill="#34d399" font-weight="600" text-anchor="middle">5×10⁻⁶</text>
+
+      <!-- QAE Decoding Formula -->
+      <text x="0" y="-18" class="kn-formula" fill="#10b981">P(H|e) = sin²(πy/32) = 97.8%</text>
+      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#10b981" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
-    <circle cx="0" cy="0" r="5.5" fill="#10b981"/>
+    <circle cx="0" cy="0" r="5" fill="#10b981"/>
 
-    <text x="0" y="32" class="kn-title" text-anchor="middle">6. Final Inference</text>
-    <text x="0" y="58" class="kn-desc" text-anchor="middle">Biosignature (CH₄ + CO₂): 39.14%</text>
-    <text x="0" y="78" class="kn-desc" text-anchor="middle">Technosignature (CFCs): 5.13×10⁻⁶</text>
-    <text x="0" y="104" class="kn-metric" fill="#10b981" text-anchor="middle">Biological prior ×4.5 post-JWST</text>
+    <!-- Explanatory descriptions (English) -->
+    <text x="0" y="36" class="kn-title" text-anchor="middle">6. Final Inference</text>
+    <text x="0" y="64" class="kn-desc" text-anchor="middle">Biosignature (CH₄ + CO₂): 39.14%</text>
+    <text x="0" y="84" class="kn-desc" text-anchor="middle">Technosignature (CFCs): 5.13×10⁻⁶</text>
+    <text x="0" y="112" class="kn-metric" fill="#10b981" text-anchor="middle">Biological prior ×4.5 post-JWST</text>
   </g>
 </svg>
