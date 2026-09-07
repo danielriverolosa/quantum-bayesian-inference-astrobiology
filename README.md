@@ -49,7 +49,7 @@ This work establishes an end-to-end **Quantum Bayesian Network (QBN)** architect
 
 <p align="center">
   <a href="figures/interactive_overview.html">
-    <img src="figures/croquis_keynote.svg?v=2" alt="Master Quantum Bayesian Inference Pipeline (K2-18b)" width="100%" />
+    <img src="figures/croquis_keynote.svg?v=3" alt="Master Quantum Bayesian Inference Pipeline (K2-18b)" width="100%" />
   </a>
 </p>
 <p align="center">
