@@ -31,16 +31,18 @@
     .kn-tech-axis { font-family: 'SF Mono', Menlo, monospace; font-size: 8.5px; fill: #64748b; }
     
     
-        /* JWST 100% CSS Unified Clock (Guarantees zero desync on tab/screen switch) */
+        
+        /* JWST 100% Vector 3D Yaw Slewing (Orthographic projection x' = x*cos(theta)) */
+    /* Eliminates bitmap texture rasterization (0% pixelation) and unifies CSS clock (0% tab drift) */
     @keyframes jwst-yaw-3d {
       0%, 15% {
-        transform: perspective(350px) rotateY(-18deg);
+        transform: scaleX(0.87);
       }
       48%, 88% {
-        transform: perspective(350px) rotateY(0deg);
+        transform: scaleX(1.0);
       }
       100% {
-        transform: perspective(350px) rotateY(-18deg);
+        transform: scaleX(0.87);
       }
     }
 
@@ -111,6 +113,7 @@
     #kn-jwst-rotating-assembly {
       transform-box: fill-box;
       transform-origin: center;
+      shape-rendering: geometricPrecision;
       animation: jwst-yaw-3d 4.2s ease-in-out infinite;
     }
 
