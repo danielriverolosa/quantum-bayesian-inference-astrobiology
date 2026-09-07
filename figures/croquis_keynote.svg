@@ -19,11 +19,11 @@
 
   <style>
     <![CDATA[
-    .kn-title { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 700; font-size: 19px; fill: #ffffff; letter-spacing: -0.2px; }
-    .kn-desc { font-family: -apple-system, 'Inter', sans-serif; font-weight: 400; font-size: 14.5px; fill: #94a3b8; line-height: 1.45; }
-    .kn-metric { font-family: -apple-system, 'Inter', sans-serif; font-weight: 600; font-size: 14px; }
-    .kn-formula { font-family: 'SF Mono', Menlo, 'Cascadia Code', 'Courier New', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0px; text-anchor: middle; }
-    .kn-tech-axis { font-family: 'SF Mono', Menlo, monospace; font-size: 8px; fill: #64748b; }
+    .kn-title { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 700; font-size: 20px; fill: #ffffff; letter-spacing: -0.2px; }
+    .kn-desc { font-family: -apple-system, 'Inter', sans-serif; font-weight: 400; font-size: 15px; fill: #94a3b8; line-height: 1.45; }
+    .kn-metric { font-family: -apple-system, 'Inter', sans-serif; font-weight: 700; font-size: 15px; }
+    .kn-formula { font-family: 'SF Mono', Menlo, 'Cascadia Code', 'Courier New', monospace; font-size: 11.5px; font-weight: 600; letter-spacing: 0px; text-anchor: middle; }
+    .kn-tech-axis { font-family: 'SF Mono', Menlo, monospace; font-size: 8.5px; fill: #64748b; }
     ]]>
   </style>
 
@@ -193,7 +193,7 @@
       <circle cx="45" cy="-80" r="3.2" fill="#ef4444"/>
       <circle cx="45" cy="-80" r="6.5" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.5"/>
       <!-- L'Ecuyer (2010) Relative Error Divergence Formula -->
-      <text x="0" y="-16" class="kn-formula" fill="#ef4444">RE = 1/√(M·p) ➔ <tspan font-size="14px" font-weight="700" dy="1px">∞</tspan></text>
+      <text x="0" y="-16" class="kn-formula" fill="#ef4444">RE = 1/√(M·p) ➔ <tspan font-size="14.5px" font-weight="700" dy="1px">∞</tspan></text>
       <line x1="0" y1="-8" x2="0" y2="-4" stroke="#ef4444" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
