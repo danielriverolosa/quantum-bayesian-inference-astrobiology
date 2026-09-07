@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Thesis · Quantum Bayesian Inference Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #03060c;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #070c18;
+      border-bottom: 1px solid #1e293b;
+      z-index: 10;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .header-left h1 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+    .header-left p {
+      font-size: 10.5px;
+      color: #64748b;
+      margin-top: 1px;
+    }
+    .controls-wrapper {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .group-label {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-right: 2px;
+    }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: #020408;
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
+      align-items: center;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 5px 12px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.05);
+    }
+    .tab-btn.active-mode {
+      background: #0284c7;
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 18px;
+      position: relative;
+    }
+    #viewer-frame {
+      width: 100%;
+      height: 100%;
+      max-width: 1720px;
+      max-height: 820px;
+      border-radius: 12px;
+      border: 1px solid #1e293b;
+      background: #000000;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    object {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .steps-legend {
+      margin-top: 8px;
+      font-size: 11.5px;
+      color: #94a3b8;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .steps-legend b {
+      color: #10b981;
+    }
+    .legend-desc {
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1>QUANTUM BAYESIAN INFERENCE PIPELINE // ARCHITECTURE VIEWER</h1>
+      <p>Master Monograph &bull; End-to-End Quantum Astrobiology &bull; K2-18b System</p>
+    </div>
+
+    <div class="controls-wrapper">
+      <span class="group-label">Display Mode:</span>
+      <div class="tabs" id="mode-tabs">
+        <button class="tab-btn active-mode" onclick="setMode('animated', this)">
+          ★ Master Animated Pipeline
+        </button>
+        <button class="tab-btn" onclick="setMode('static', this)">
+          Static Publication Mode
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div id="viewer-frame">
+      <object id="svg-view" type="image/svg+xml" data="croquis_keynote.svg"></object>
+    </div>
+
+    <div class="steps-legend">
+      <div><b>Status:</b> <span id="legend-status" class="legend-desc">Loading...</span></div>
+    </div>
+  </main>
+
+  <script>
+    const descriptions = {
+      'animated': '★ Master Animated Pipeline: Full dynamic visualization with continuous timeline flow, orbital transit motion, active noise cancellation, and rotating delocalized pi-electrons.',
+      'static': 'Static Publication Mode: 100% fixed vector rendering, optimized for print, academic slides, and thesis defense monographs without animated artifacts.'
+    };
+
+    let currentMode = 'animated';
+
+    function updateViewer() {
+      const filename = currentMode === 'animated' ? 'croquis_keynote.svg' : 'croquis_keynote_static.svg';
+      const obj = document.getElementById('svg-view');
+      obj.data = filename + '?v=' + Date.now();
+
+      const desc = descriptions[currentMode];
+      document.getElementById('legend-status').innerHTML = '<span>' + desc + '</span>';
+    }
+
+    function setMode(mode, btn) {
+      document.querySelectorAll('#mode-tabs .tab-btn').forEach(b => b.classList.remove('active-mode'));
+      btn.classList.add('active-mode');
+      currentMode = mode;
+      updateViewer();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateViewer();
+    });
+  </script>
+</body>
+</html>

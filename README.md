@@ -47,48 +47,15 @@ Next-generation space observatories—chiefly the **James Webb Space Telescope (
 
 This work establishes an end-to-end **Quantum Bayesian Network (QBN)** architecture coupled with **Quantum Amplitude Estimation (QAE)** in Qiskit to overcome both boundaries with bounded in-degree state preparation $\mathcal{O}(N \cdot 2^{k_{\max}})$:
 
-<div align="center">
-
-```mermaid
-stateDiagram-v2
-    direction TB
-
-    state "1. Observational Telemetry" as S1 {
-        JWST: JWST Transmission Spectroscopy (K2-18b)
-    }
-
-    state "2. Discrete Causal Modeling" as S2 {
-        DAG: 9-Node Bayesian Network (X₀ to X₈)
-        CPTs: Prior Calibration (Appendix A)
-    }
-
-    state "3. Quantum Core (QBN)" as S3 {
-        A: Operator 𝒜 (Amplitude Encoding)
-        Q: Operator 𝒬 (Grover Reflection)
-        A --> Q
-    }
-
-    state "4. Dual Inference Pathways" as S4 {
-        state "FTQC Blueprint (Ideal)" as FTQC {
-            QPE: 5-Qubit Phase Estimation + IQFT†
-        }
-        state "NISQ Regime (Noisy QPUs)" as NISQ {
-            ZNE: Zero-Noise Extrapolation (λ = 1, 3, 5)
-        }
-    }
-
-    state "5. Astrobiological Readout" as S5 {
-        P_DMS: Biosignature Posterior P(DMS | e)
-        P_CFC: Technosignature Posterior P(CFC | e)
-    }
-
-    S1 --> S2
-    S2 --> S3
-    S3 --> S4
-    S4 --> S5
-```
-
-</div>
+<p align="center">
+  <a href="figures/interactive_overview.html">
+    <img src="figures/croquis_keynote.svg" alt="Master Quantum Bayesian Inference Pipeline (K2-18b)" width="100%" />
+  </a>
+</p>
+<p align="center">
+  <em>Figure: Master 6-Stage Quantum Bayesian Inference Architecture (Keynote Minimal) — from transit observation and JWST spectral telemetry to NISQ Zero-Noise Extrapolation and final astrobiological hypothesis resolution.</em><br/>
+  <sub>💡 <strong>Interactive Exploration:</strong> Launch the <a href="figures/interactive_overview.html">Interactive Pipeline Dashboard</a> to switch between the master animated pipeline and static publication mode.</sub>
+</p>
 
 ---
 
@@ -111,6 +78,7 @@ Explore dedicated components across the repository:
 | Section | Description | Key Deliverables |
 | :--- | :--- | :--- |
 | 📓 **[Interactive Notebooks](src/)** | Executed Jupyter pipelines for classical stress tests, ideal QAE, and ZNE. | [`01_Classical_Limits`](src/chapter_2_classical/01_Classical_Limits_K218b.ipynb) &bull; [`02_QAE_Ideal`](src/chapter_4_quantum/02_QAE_Ideal_Simulation.ipynb) &bull; [`03_NISQ_ZNE`](src/chapter_4_quantum/03_NISQ_ZNE_Mitigation.ipynb) |
+| 🖼️ **[Pipeline Architecture](figures/)** | Master 6-step animated quantum Bayesian pipeline, interactive web dashboard, and vector assets. | [`croquis_keynote.svg`](figures/croquis_keynote.svg) &bull; [`interactive_overview.html`](figures/interactive_overview.html) &bull; [`croquis_keynote_static.svg`](figures/croquis_keynote_static.svg) |
 | 📊 **[Data & Priors](data/)** | Structured exoplanetary priors, JWST transmission spectra, and benchmark logs. | [`k218b_cpt_priors.json`](data/k218b_cpt_priors.json) &bull; [`transmission_spectrum.csv`](data/k218b_jwst_transmission_spectrum.csv) &bull; [`data/README.md`](data/README.md) |
 | 📚 **[Scientific Library](papers/)** | Archival repository containing 21 peer-reviewed open-access PDFs with DOIs. | Quantum Algorithms &bull; Error Mitigation &bull; Classical Complexity &bull; [`papers/README.md`](papers/README.md) |
 | 📑 **[Thesis LaTeX Source](thesis/)** | Full academic monograph source code for print, digital, and Overleaf editions. | Crown Quarto (`main.tex`) &bull; Digital A4 (`main_digital.tex`) &bull; Overleaf (`main_overleaf.tex`) |
