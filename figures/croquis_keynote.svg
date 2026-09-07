@@ -27,7 +27,8 @@
     .kn-formula { font-family: 'SF Mono', Menlo, 'Cascadia Code', 'Courier New', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0px; text-anchor: middle; }
     .kn-tech-axis { font-family: 'SF Mono', Menlo, monospace; font-size: 7px; fill: #64748b; }
     
-    /* JWST 3D Yaw Slewing Animation around Y-axis */
+    
+        /* JWST 100% CSS Unified Clock (Guarantees zero desync on tab/screen switch) */
     @keyframes jwst-yaw-3d {
       0%, 15% {
         transform: perspective(350px) rotateY(-18deg);
@@ -39,10 +40,89 @@
         transform: perspective(350px) rotateY(-18deg);
       }
     }
+
+    @keyframes jwst-star-dot {
+      0%, 15% {
+        transform: translateX(-7.5px);
+        opacity: 0;
+      }
+      18% {
+        opacity: 0.95;
+      }
+      46% {
+        transform: translateX(-0.5px);
+        opacity: 0.95;
+      }
+      48%, 100% {
+        transform: translateX(0px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes jwst-star-bloom {
+      0%, 46% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      52% {
+        transform: scale(1);
+        opacity: 0.75;
+      }
+      60% {
+        transform: scale(0.7);
+        opacity: 0.35;
+      }
+      80% {
+        transform: scale(0.68);
+        opacity: 0.3;
+      }
+      88%, 100% {
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
+
+    @keyframes jwst-star-core {
+      0%, 46% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      52% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      60% {
+        transform: scale(0.75);
+        opacity: 0.95;
+      }
+      80% {
+        transform: scale(0.7);
+        opacity: 0.9;
+      }
+      88%, 100% {
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
+
     #kn-jwst-rotating-assembly {
       transform-box: fill-box;
       transform-origin: center;
       animation: jwst-yaw-3d 4.2s ease-in-out infinite;
+    }
+
+    .kn-star-dot {
+      animation: jwst-star-dot 4.2s ease-in-out infinite;
+    }
+
+    .kn-star-bloom {
+      transform-origin: 0 0;
+      animation: jwst-star-bloom 4.2s ease-in-out infinite;
+    }
+
+    .kn-star-core {
+      transform-origin: 0 0;
+      animation: jwst-star-core 4.2s ease-in-out infinite;
     }
     ]]>
   </style>
@@ -112,7 +192,6 @@
     <g transform="translate(0, -170) scale(1.15)">
       <!-- JWST Whole Primary Mirror Rotating Assembly (Attitude Slewing to Star) -->
       <g id="kn-jwst-rotating-assembly">
-        
         <!-- 18 Gold Mirror Hexagonal Segments -->
         <polygon points="-23.79,-20.01 -29.22,-10.6 -40.08,-10.6 -45.51,-20.01 -40.08,-29.41 -29.22,-29.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
         <polygon points="-23.79,0.0 -29.22,9.4 -40.08,9.4 -45.51,0.0 -40.08,-9.4 -29.22,-9.4" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
@@ -135,296 +214,26 @@
         <polygon points="45.51,-20.01 40.08,-10.6 29.22,-10.6 23.79,-20.01 29.22,-29.41 40.08,-29.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
         <polygon points="45.51,0.0 40.08,9.4 29.22,9.4 23.79,0.0 29.22,-9.4 40.08,-9.4" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
         <polygon points="45.51,20.01 40.08,29.41 29.22,29.41 23.79,20.01 29.22,10.6 40.08,10.6" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
-        <!-- Starlight Focus: Moving point from left edge of each hexagon to its center, with starlight gleam -->
-        <g id="kn-jwst-intra-focus">
-          <!-- Hexagon 1 at (-34.65, -20.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-42.15; -42.15; -34.65; -34.65; -42.15" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="-20.01; -20.01; -20.01; -20.01; -20.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="-34.65" cy="-20.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="-34.65" cy="-20.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 2 at (-34.65, 0.0) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-42.15; -42.15; -34.65; -34.65; -42.15" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="0.0; 0.0; 0.0; 0.0; 0.0" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="-34.65" cy="0.0" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="-34.65" cy="0.0" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 3 at (-34.65, 20.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-42.15; -42.15; -34.65; -34.65; -42.15" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="20.01; 20.01; 20.01; 20.01; 20.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="-34.65" cy="20.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="-34.65" cy="20.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 4 at (-17.32, -30.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-24.82; -24.82; -17.32; -17.32; -24.82" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="-30.01; -30.01; -30.01; -30.01; -30.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="-17.32" cy="-30.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="-17.32" cy="-30.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 5 at (-17.32, -10.0) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-24.82; -24.82; -17.32; -17.32; -24.82" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="-10.0; -10.0; -10.0; -10.0; -10.0" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="-17.32" cy="-10.0" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="-17.32" cy="-10.0" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 6 at (-17.32, 10.0) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-24.82; -24.82; -17.32; -17.32; -24.82" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="10.0; 10.0; 10.0; 10.0; 10.0" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="-17.32" cy="10.0" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="-17.32" cy="10.0" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 7 at (-17.32, 30.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-24.82; -24.82; -17.32; -17.32; -24.82" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="30.01; 30.01; 30.01; 30.01; 30.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="-17.32" cy="30.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="-17.32" cy="30.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 8 at (0.0, -40.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-7.5; -7.5; 0.0; 0.0; -7.5" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="-40.01; -40.01; -40.01; -40.01; -40.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="0.0" cy="-40.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="0.0" cy="-40.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 9 at (0.0, -20.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-7.5; -7.5; 0.0; 0.0; -7.5" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="-20.01; -20.01; -20.01; -20.01; -20.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="0.0" cy="-20.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="0.0" cy="-20.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 10 at (0.0, 20.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-7.5; -7.5; 0.0; 0.0; -7.5" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="20.01; 20.01; 20.01; 20.01; 20.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="0.0" cy="20.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="0.0" cy="20.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 11 at (0.0, 40.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="-7.5; -7.5; 0.0; 0.0; -7.5" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="40.01; 40.01; 40.01; 40.01; 40.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="0.0" cy="40.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="0.0" cy="40.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 12 at (17.32, -30.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="9.82; 9.82; 17.32; 17.32; 9.82" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="-30.01; -30.01; -30.01; -30.01; -30.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="17.32" cy="-30.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="17.32" cy="-30.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 13 at (17.32, -10.0) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="9.82; 9.82; 17.32; 17.32; 9.82" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="-10.0; -10.0; -10.0; -10.0; -10.0" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="17.32" cy="-10.0" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="17.32" cy="-10.0" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 14 at (17.32, 10.0) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="9.82; 9.82; 17.32; 17.32; 9.82" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="10.0; 10.0; 10.0; 10.0; 10.0" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="17.32" cy="10.0" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="17.32" cy="10.0" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 15 at (17.32, 30.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="9.82; 9.82; 17.32; 17.32; 9.82" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="30.01; 30.01; 30.01; 30.01; 30.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="17.32" cy="30.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="17.32" cy="30.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 16 at (34.65, -20.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="27.15; 27.15; 34.65; 34.65; 27.15" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="-20.01; -20.01; -20.01; -20.01; -20.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="34.65" cy="-20.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="34.65" cy="-20.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 17 at (34.65, 0.0) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="27.15; 27.15; 34.65; 34.65; 27.15" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="0.0; 0.0; 0.0; 0.0; 0.0" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="34.65" cy="0.0" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="34.65" cy="0.0" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Hexagon 18 at (34.65, 20.01) -->
-          <circle r="1.2" fill="#ffffff" opacity="0">
-            <animate attributeName="cx" values="27.15; 27.15; 34.65; 34.65; 27.15" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="cy" values="20.01; 20.01; 20.01; 20.01; 20.01" keyTimes="0; 0.15; 0.48; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0.95; 0.95; 0; 0" keyTimes="0; 0.15; 0.46; 0.50; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Soft golden starlight bloom at hexagon center -->
-          <circle cx="34.65" cy="20.01" r="0" fill="#fef08a" opacity="0">
-            <animate attributeName="r" values="0; 0; 3.6; 2.5; 2.4; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 0.7; 0.35; 0.3; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
-          <!-- Focused starlight core at hexagon center (como si vieras la estrella de frente) -->
-          <circle cx="34.65" cy="20.01" r="0" fill="#ffffff" opacity="0">
-            <animate attributeName="r" values="0; 0; 2.2; 1.6; 1.5; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 0; 1; 0.95; 0.9; 0; 0" keyTimes="0; 0.46; 0.52; 0.60; 0.80; 0.88; 1" dur="4.2s" repeatCount="indefinite" />
-          </circle>
+        <!-- 18 Starlight Focus Nodes (100% CSS Unified Clock) -->
+        <g id="kn-jwst-css-focus">
+          <g transform="translate(-34.65, -20.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(-34.65, 0.0)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(-34.65, 20.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(-17.32, -30.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(-17.32, -10.0)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(-17.32, 10.0)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(-17.32, 30.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(0.0, -40.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(0.0, -20.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(0.0, 20.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(0.0, 40.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(17.32, -30.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(17.32, -10.0)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(17.32, 10.0)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(17.32, 30.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(34.65, -20.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(34.65, 0.0)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
+          <g transform="translate(34.65, 20.01)"><circle class="kn-star-bloom" cx="0" cy="0" r="3.6" fill="#fef08a"/><circle class="kn-star-core" cx="0" cy="0" r="2.0" fill="#ffffff"/><circle class="kn-star-dot" cx="0" cy="0" r="1.2" fill="#ffffff"/></g>
         </g>
       </g>
     </g>
