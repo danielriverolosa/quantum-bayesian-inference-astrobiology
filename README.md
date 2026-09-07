@@ -49,7 +49,7 @@ This work establishes an end-to-end **Quantum Bayesian Network (QBN)** architect
 
 <p align="center">
   <a href="figures/interactive_overview.html">
-    <img src="figures/croquis_keynote.svg?v=3" alt="Master Quantum Bayesian Inference Pipeline (K2-18b)" width="100%" />
+    <img src="figures/croquis_pipeline_keynote.svg" alt="Master Quantum Bayesian Inference Pipeline (K2-18b)" width="100%" />
   </a>
 </p>
 <p align="center">
@@ -78,7 +78,7 @@ Explore dedicated components across the repository:
 | Section | Description | Key Deliverables |
 | :--- | :--- | :--- |
 | 📓 **[Interactive Notebooks](src/)** | Executed Jupyter pipelines for classical stress tests, ideal QAE, and ZNE. | [`01_Classical_Limits`](src/chapter_2_classical/01_Classical_Limits_K218b.ipynb) &bull; [`02_QAE_Ideal`](src/chapter_4_quantum/02_QAE_Ideal_Simulation.ipynb) &bull; [`03_NISQ_ZNE`](src/chapter_4_quantum/03_NISQ_ZNE_Mitigation.ipynb) |
-| 🖼️ **[Pipeline Architecture](figures/)** | Master 6-step animated quantum Bayesian pipeline, interactive web dashboard, and vector assets. | [`croquis_keynote.svg`](figures/croquis_keynote.svg) &bull; [`interactive_overview.html`](figures/interactive_overview.html) &bull; [`croquis_keynote_static.svg`](figures/croquis_keynote_static.svg) |
+| 🖼️ **[Pipeline Architecture](figures/)** | Master 6-step animated quantum Bayesian pipeline (2-row keynote layout), interactive web dashboard, and vector assets. | [`croquis_pipeline_keynote.svg`](figures/croquis_pipeline_keynote.svg) &bull; [`interactive_overview.html`](figures/interactive_overview.html) &bull; [`croquis_pipeline_keynote_static.svg`](figures/croquis_pipeline_keynote_static.svg) |
 | 📊 **[Data & Priors](data/)** | Structured exoplanetary priors, JWST transmission spectra, and benchmark logs. | [`k218b_cpt_priors.json`](data/k218b_cpt_priors.json) &bull; [`transmission_spectrum.csv`](data/k218b_jwst_transmission_spectrum.csv) &bull; [`data/README.md`](data/README.md) |
 | 📚 **[Scientific Library](papers/)** | Archival repository containing 21 peer-reviewed open-access PDFs with DOIs. | Quantum Algorithms &bull; Error Mitigation &bull; Classical Complexity &bull; [`papers/README.md`](papers/README.md) |
 | 📑 **[Thesis LaTeX Source](thesis/)** | Full academic monograph source code for print, digital, and Overleaf editions. | Crown Quarto (`main.tex`) &bull; Digital A4 (`main_digital.tex`) &bull; Overleaf (`main_overleaf.tex`) |
