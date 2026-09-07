@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 720" width="100%" height="100%" style="background-color: #030509;">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 415" width="100%" height="100%" style="background-color: #030509;">
   <defs>
     <!-- Stream Flow Gradient -->
     <linearGradient id="kn-stream" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -19,34 +19,26 @@
 
   <style>
     <![CDATA[
-    .kn-header { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 500; fill: #64748b; letter-spacing: 2.5px; font-size: 12.5px; }
-    .kn-main-title { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 700; font-size: 22px; fill: #ffffff; letter-spacing: -0.3px; }
-    .kn-title { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 700; font-size: 18px; fill: #ffffff; letter-spacing: -0.2px; }
-    .kn-desc { font-family: -apple-system, 'Inter', sans-serif; font-weight: 400; font-size: 14px; fill: #94a3b8; line-height: 1.5; }
-    .kn-metric { font-family: -apple-system, 'Inter', sans-serif; font-weight: 500; font-size: 13.5px; }
-    .kn-formula { font-family: 'SF Mono', Menlo, 'Cascadia Code', 'Courier New', monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0px; text-anchor: middle; }
-    .kn-tech-axis { font-family: 'SF Mono', Menlo, monospace; font-size: 7px; fill: #64748b; }
+    .kn-title { font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; font-weight: 700; font-size: 19px; fill: #ffffff; letter-spacing: -0.2px; }
+    .kn-desc { font-family: -apple-system, 'Inter', sans-serif; font-weight: 400; font-size: 14.5px; fill: #94a3b8; line-height: 1.45; }
+    .kn-metric { font-family: -apple-system, 'Inter', sans-serif; font-weight: 600; font-size: 14px; }
+    .kn-formula { font-family: 'SF Mono', Menlo, 'Cascadia Code', 'Courier New', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0px; text-anchor: middle; }
+    .kn-tech-axis { font-family: 'SF Mono', Menlo, monospace; font-size: 8px; fill: #64748b; }
     ]]>
   </style>
 
-  <!-- Header -->
-  <g transform="translate(70, 48)">
-    <text x="0" y="0" class="kn-header">SCIENTIFIC &amp; ALGORITHMIC PIPELINE // M.SC. IN QUANTUM COMPUTING</text>
-    <text x="0" y="28" class="kn-main-title">Quantum Bayesian Inference for Atmospheric Characterization in Exoplanetary Systems</text>
-  </g>
-
   <!-- Continuous Flow Timeline Line (Smooth continuous 7s flow) -->
-  <line x1="80" y1="415" x2="1350" y2="415" stroke="#111827" stroke-width="2.5"/>
-  <line x1="80" y1="415" x2="1350" y2="415" stroke="url(#kn-stream)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="30 180">
+  <line x1="50" y1="270" x2="1390" y2="270" stroke="#111827" stroke-width="2.5"/>
+  <line x1="50" y1="270" x2="1390" y2="270" stroke="url(#kn-stream)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="30 180">
     <animate attributeName="stroke-dashoffset" from="420" to="0" dur="7s" repeatCount="indefinite"/>
   </line>
 
   <!-- ============================================================== -->
   <!-- 1. K2-18b (ASTROPHYSICAL TRANSIT OBSERVATION) -->
   <!-- ============================================================== -->
-  <g transform="translate(140, 415)">
+  <g transform="translate(120, 270)">
     <!-- Top Icon: Orbital transit across M2.5V dwarf (6s) -->
-    <g transform="translate(0, -170)">
+    <g transform="translate(0, -185)">
       <circle cx="0" cy="0" r="44" fill="url(#kn-star)"/>
       <g>
         <animateTransform attributeName="transform" type="translate"
@@ -73,25 +65,25 @@
       <text x="0" y="-45" class="kn-tech-axis" fill="#f97316" text-anchor="middle">Transit Depth δ = 3800 ppm</text>
       <line x1="-65" y1="-38" x2="65" y2="-38" stroke="#1e293b" stroke-width="1"/>
       <!-- Standard Rp/Rs transit formula -->
-      <text x="0" y="-18" class="kn-formula" fill="#f97316">ΔF/F = (Rp/Rs)² ≈ 0.38%</text>
-      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#f97316" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="0" y="-16" class="kn-formula" fill="#f97316">ΔF/F = (Rp/Rs)² ≈ 0.38%</text>
+      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#f97316" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
     <circle cx="0" cy="0" r="5" fill="#f97316"/>
 
     <!-- Explanatory descriptions (English) -->
-    <text x="0" y="36" class="kn-title" text-anchor="middle">1. K2-18b</text>
-    <text x="0" y="64" class="kn-desc" text-anchor="middle">Sub-Neptune around M2.5V dwarf</text>
-    <text x="0" y="84" class="kn-desc" text-anchor="middle">Orbital transit (δ = 3800 ppm)</text>
-    <text x="0" y="112" class="kn-metric" fill="#f97316" text-anchor="middle">Habitable Zone (T_eq ≈ 255 K)</text>
+    <text x="0" y="34" class="kn-title" text-anchor="middle">1. K2-18b</text>
+    <text x="0" y="60" class="kn-desc" text-anchor="middle">Sub-Neptune around M2.5V dwarf</text>
+    <text x="0" y="80" class="kn-desc" text-anchor="middle">Orbital transit (δ = 3800 ppm)</text>
+    <text x="0" y="106" class="kn-metric" fill="#f97316" text-anchor="middle">Habitable Zone (T_eq ≈ 255 K)</text>
   </g>
 
   <!-- ============================================================== -->
   <!-- 2. JWST (TRANSMISSION SPECTRUM & EVIDENCE VECTOR) -->
   <!-- ============================================================== -->
-  <g transform="translate(370, 415)">
-    <!-- Top Icon: JWST Primary Mirror 18 Hexagons (scale 1.15 at y=-170) -->
-    <g transform="translate(0, -170) scale(1.15)">
+  <g transform="translate(360, 270)">
+    <!-- Top Icon: JWST Primary Mirror 18 Hexagons (scale 1.15 at y=-185) -->
+    <g transform="translate(0, -185) scale(1.15)">
       <!-- Column -2 -->
       <polygon points="-23.79,-20.01 -29.22,-10.6 -40.08,-10.6 -45.51,-20.01 -40.08,-29.41 -29.22,-29.41" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
       <polygon points="-23.79,0.0 -29.22,9.4 -40.08,9.4 -45.51,0.0 -40.08,-9.4 -29.22,-9.4" fill="#eab308" stroke="#030509" stroke-width="1.2" stroke-linejoin="round"/>
@@ -146,25 +138,25 @@
       <text x="48" y="-80" class="kn-tech-axis" fill="#eab308" text-anchor="middle">DMS</text>
 
       <!-- Bayesian Evidence Vector Formula -->
-      <text x="0" y="-18" class="kn-formula" fill="#eab308">e = [CH₄=1, CO₂=1, H₂O=0]</text>
-      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#eab308" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="0" y="-16" class="kn-formula" fill="#eab308">e = [CH₄=1, CO₂=1, H₂O=0]</text>
+      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#eab308" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
     <circle cx="0" cy="0" r="5" fill="#eab308"/>
 
     <!-- Explanatory descriptions (English) -->
-    <text x="0" y="36" class="kn-title" text-anchor="middle">2. JWST (Spectrum)</text>
-    <text x="0" y="64" class="kn-desc" text-anchor="middle">Transmission spectroscopy</text>
-    <text x="0" y="84" class="kn-desc" text-anchor="middle">CH₄ &amp; CO₂ detection (1%)</text>
-    <text x="0" y="112" class="kn-metric" fill="#eab308" text-anchor="middle">Oceanic signature: H₂O &lt; 0.1%</text>
+    <text x="0" y="34" class="kn-title" text-anchor="middle">2. JWST (Spectrum)</text>
+    <text x="0" y="60" class="kn-desc" text-anchor="middle">Transmission spectroscopy</text>
+    <text x="0" y="80" class="kn-desc" text-anchor="middle">CH₄ &amp; CO₂ detection (1%)</text>
+    <text x="0" y="106" class="kn-metric" fill="#eab308" text-anchor="middle">Oceanic signature: H₂O &lt; 0.1%</text>
   </g>
 
   <!-- ============================================================== -->
   <!-- 3. CLASSICAL ALGORITHM (EXPONENTIAL WALL & L'ECUYER VARIANCE) -->
   <!-- ============================================================== -->
-  <g transform="translate(600, 415)">
+  <g transform="translate(600, 270)">
     <!-- Top Icon: Saturated Classical Processor -->
-    <g transform="translate(0, -170)">
+    <g transform="translate(0, -185)">
       <rect x="-30" y="-30" width="60" height="60" rx="6" fill="#090d15" stroke="#1e293b" stroke-width="1.4"/>
       <circle cx="-23" cy="-23" r="1.6" fill="#ef4444" fill-opacity="0.6"/>
       <!-- Red Pins -->
@@ -201,25 +193,25 @@
       <circle cx="45" cy="-80" r="3.2" fill="#ef4444"/>
       <circle cx="45" cy="-80" r="6.5" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.5"/>
       <!-- L'Ecuyer (2010) Relative Error Divergence Formula -->
-      <text x="0" y="-18" class="kn-formula" fill="#ef4444">RE = 1/√(M·p) ➔ <tspan font-size="14.5px" font-weight="700" dy="1px">∞</tspan></text>
-      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#ef4444" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="0" y="-16" class="kn-formula" fill="#ef4444">RE = 1/√(M·p) ➔ <tspan font-size="14px" font-weight="700" dy="1px">∞</tspan></text>
+      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#ef4444" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
     <circle cx="0" cy="0" r="5" fill="#ef4444"/>
 
     <!-- Explanatory descriptions (English) -->
-    <text x="0" y="36" class="kn-title" text-anchor="middle">3. Classical Algorithm</text>
-    <text x="0" y="64" class="kn-desc" text-anchor="middle">Exact inference: O(2^N) RAM</text>
-    <text x="0" y="84" class="kn-desc" text-anchor="middle">Divergent MCMC variance</text>
-    <text x="0" y="112" class="kn-metric" fill="#ef4444" text-anchor="middle">Bottleneck: 4×10⁸ (p=10⁻⁶)</text>
+    <text x="0" y="34" class="kn-title" text-anchor="middle">3. Classical Algorithm</text>
+    <text x="0" y="60" class="kn-desc" text-anchor="middle">Exact inference: O(2^N) RAM</text>
+    <text x="0" y="80" class="kn-desc" text-anchor="middle">Divergent MCMC variance</text>
+    <text x="0" y="106" class="kn-metric" fill="#ef4444" text-anchor="middle">Bottleneck: 4×10⁸ (p=10⁻⁶)</text>
   </g>
 
   <!-- ============================================================== -->
   <!-- 4. QUANTUM ALGORITHM (17 QUBITS: DAG + QAE + ANCILLA) -->
   <!-- ============================================================== -->
-  <g transform="translate(830, 415)">
+  <g transform="translate(840, 270)">
     <!-- Top Icon: QPU Chip with 3-Orbit Atom at 60° and White Nucleus -->
-    <g transform="translate(0, -170)">
+    <g transform="translate(0, -185)">
       <rect x="-30" y="-30" width="60" height="60" rx="6" fill="#0b0a14" stroke="#1e293b" stroke-width="1.4"/>
       <circle cx="-23" cy="-23" r="1.6" fill="#c084fc" fill-opacity="0.6"/>
       <!-- Purple Pins -->
@@ -262,25 +254,25 @@
       <path d="M -22 -38 A 18 18 0 0 0 -30 -52" fill="none" stroke="#c084fc" stroke-width="1"/>
       <text x="-19" y="-48" class="kn-tech-axis" fill="#c084fc">2θ</text>
       <!-- Grover Unitary Operator Formula (N=31) -->
-      <text x="0" y="-18" class="kn-formula" fill="#c084fc">Q|Ψ⟩ = e^(±i2θ)|Ψ⟩ (N=31)</text>
-      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#c084fc" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="0" y="-16" class="kn-formula" fill="#c084fc">Q|Ψ⟩ = e^(±i2θ)|Ψ⟩ (N=31)</text>
+      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#c084fc" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
     <circle cx="0" cy="0" r="5" fill="#c084fc"/>
 
     <!-- Explanatory descriptions (English) -->
-    <text x="0" y="36" class="kn-title" text-anchor="middle">4. Quantum Algorithm</text>
-    <text x="0" y="64" class="kn-desc" text-anchor="middle">17 Qubits (DAG + QAE + Ancilla)</text>
-    <text x="0" y="84" class="kn-desc" text-anchor="middle">Quadratic speedup O(1/M)</text>
-    <text x="0" y="112" class="kn-metric" fill="#c084fc" text-anchor="middle">QAE advantage: 10⁴ (p=10⁻⁶)</text>
+    <text x="0" y="34" class="kn-title" text-anchor="middle">4. Quantum Algorithm</text>
+    <text x="0" y="60" class="kn-desc" text-anchor="middle">17 Qubits (DAG + QAE + Ancilla)</text>
+    <text x="0" y="80" class="kn-desc" text-anchor="middle">Quadratic speedup O(1/M)</text>
+    <text x="0" y="106" class="kn-metric" fill="#c084fc" text-anchor="middle">QAE advantage: 10⁴ (p=10⁻⁶)</text>
   </g>
 
   <!-- ============================================================== -->
   <!-- 5. ZNE MITIGATION (NISQ NOISE CANCELLATION VIA RICHARDSON) -->
   <!-- ============================================================== -->
-  <g transform="translate(1060, 415)">
+  <g transform="translate(1080, 270)">
     <!-- Top Icon: Active Noise Cancellation (4s animation, enlarged scale) -->
-    <g transform="translate(0, -170) scale(1.35)">
+    <g transform="translate(0, -185) scale(1.35)">
       <line x1="-38" y1="0" x2="38" y2="0" stroke="#1e293b" stroke-width="1" stroke-dasharray="2 2"/>
       <path fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <animate attributeName="d" dur="4s" repeatCount="indefinite"
@@ -327,25 +319,25 @@
       <text x="-24" y="-81" class="kn-tech-axis" fill="#38bdf8" font-weight="700">E₀ ZNE</text>
 
       <!-- ZNE Zero-Noise Limit Formula -->
-      <text x="0" y="-18" class="kn-formula" fill="#38bdf8">lim(λ➔0) E(λ) = E₀(86%)</text>
-      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="0" y="-16" class="kn-formula" fill="#38bdf8">lim(λ➔0) E(λ) = E₀(86%)</text>
+      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
     <circle cx="0" cy="0" r="5" fill="#38bdf8"/>
 
     <!-- Explanatory descriptions (English) -->
-    <text x="0" y="36" class="kn-title" text-anchor="middle">5. ZNE Mitigation</text>
-    <text x="0" y="64" class="kn-desc" text-anchor="middle">Global folding λ ∈ {1,3,5}</text>
-    <text x="0" y="84" class="kn-desc" text-anchor="middle">Richardson extrapolation</text>
-    <text x="0" y="112" class="kn-metric" fill="#38bdf8" text-anchor="middle">Mitigated error: 86.44%</text>
+    <text x="0" y="34" class="kn-title" text-anchor="middle">5. ZNE Mitigation</text>
+    <text x="0" y="60" class="kn-desc" text-anchor="middle">Global folding λ ∈ {1,3,5}</text>
+    <text x="0" y="80" class="kn-desc" text-anchor="middle">Richardson extrapolation</text>
+    <text x="0" y="106" class="kn-metric" fill="#38bdf8" text-anchor="middle">Mitigated error: 86.44%</text>
   </g>
 
   <!-- ============================================================== -->
   <!-- 6. FINAL INFERENCE (RESEARCH OUTCOMES & HYPOTHESIS RESOLUTION) -->
   <!-- ============================================================== -->
-  <g transform="translate(1290, 415)">
+  <g transform="translate(1320, 270)">
     <!-- Top Icon: Hexagonal Molecular Ring (Delocalized pi-electrons rotating at 10s) -->
-    <g transform="translate(0, -170) scale(1.75)">
+    <g transform="translate(0, -185) scale(1.75)">
       <polygon points="0,-16 13.8,-8 13.8,8 0,16 -13.8,8 -13.8,-8" 
                fill="#064e3b" fill-opacity="0.18" stroke="#10b981" stroke-width="2.2" stroke-linejoin="round"/>
       <circle cx="0" cy="0" r="8.5" fill="none" stroke="#34d399" stroke-width="1.6" stroke-dasharray="7 5">
@@ -398,16 +390,16 @@
       <text x="42" y="-86" class="kn-tech-axis" fill="#34d399" font-weight="600" text-anchor="middle">5×10⁻⁶</text>
 
       <!-- QAE Decoding Formula -->
-      <text x="0" y="-18" class="kn-formula" fill="#10b981">P(H|e) = sin²(πy/32) = 97.8%</text>
-      <line x1="0" y1="-10" x2="0" y2="-4" stroke="#10b981" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
+      <text x="0" y="-16" class="kn-formula" fill="#10b981">P(H|e) = sin²(πy/32) = 97.8%</text>
+      <line x1="0" y1="-8" x2="0" y2="-4" stroke="#10b981" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>
     </g>
 
     <circle cx="0" cy="0" r="5" fill="#10b981"/>
 
     <!-- Explanatory descriptions (English) -->
-    <text x="0" y="36" class="kn-title" text-anchor="middle">6. Final Inference</text>
-    <text x="0" y="64" class="kn-desc" text-anchor="middle">Biosignature (CH₄ + CO₂): 39.14%</text>
-    <text x="0" y="84" class="kn-desc" text-anchor="middle">Technosignature (CFCs): 5.13×10⁻⁶</text>
-    <text x="0" y="112" class="kn-metric" fill="#10b981" text-anchor="middle">Biological prior ×4.5 post-JWST</text>
+    <text x="0" y="34" class="kn-title" text-anchor="middle">6. Final Inference</text>
+    <text x="0" y="60" class="kn-desc" text-anchor="middle">Biosignature (CH₄ + CO₂): 39.14%</text>
+    <text x="0" y="80" class="kn-desc" text-anchor="middle">Technosignature (CFCs): 5.13×10⁻⁶</text>
+    <text x="0" y="106" class="kn-metric" fill="#10b981" text-anchor="middle">Biological prior ×4.5 post-JWST</text>
   </g>
 </svg>
