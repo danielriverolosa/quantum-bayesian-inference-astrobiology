@@ -48,13 +48,10 @@ Next-generation space observatories—chiefly the **James Webb Space Telescope (
 This work establishes an end-to-end **Quantum Bayesian Network (QBN)** architecture coupled with **Quantum Amplitude Estimation (QAE)** in Qiskit to overcome both boundaries with bounded in-degree state preparation $\mathcal{O}(N \cdot 2^{k_{\max}})$:
 
 <p align="center">
-  <a href="figures/interactive_overview.html">
-    <img src="figures/croquis_keynote_2row.svg" alt="Master Quantum Bayesian Inference Pipeline (K2-18b)" width="100%" />
-  </a>
+  <img src="figures/croquis_keynote_2row.svg" alt="Master Quantum Bayesian Inference Pipeline (K2-18b)" width="100%" />
 </p>
 <p align="center">
-  <em>Figure: Master 6-Stage Quantum Bayesian Inference Architecture (Keynote Minimal) — from transit observation and JWST spectral telemetry to NISQ Zero-Noise Extrapolation and final astrobiological hypothesis resolution.</em><br/>
-  <sub>💡 <strong>Interactive Exploration:</strong> Launch the <a href="figures/interactive_overview.html">Interactive Pipeline Dashboard</a> to switch between the master animated pipeline and static publication mode.</sub>
+  <em>Figure: Master 6-Stage Quantum Bayesian Inference Architecture — from transit observation and JWST spectral telemetry to NISQ Zero-Noise Extrapolation and final astrobiological hypothesis resolution.</em>
 </p>
 
 ---
